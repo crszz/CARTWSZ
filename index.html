@@ -98,7 +98,7 @@
         /* CONTENEDOR DE IMÁGENES (siempre horizontal) */
         .products-container {
             position: absolute;
-            top: 45%; /* Subimos un poco para hacer espacio a la imagen adicional */
+            top: 45%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90vw;
@@ -137,14 +137,14 @@
             display: block;
         }
 
-        /* IMAGEN ADICIONAL DEBAJO (estilo card-mio) */
+        /* IMAGEN ADICIONAL DEBAJO (reducida al 50%) */
         .card-mio {
             position: absolute;
-            bottom: 90px; /* Encima de la barra de redes */
+            bottom: 90px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80vw;
-            max-width: 500px;
+            width: 40vw;          /* antes 80vw, ahora 40vw (mitad) */
+            max-width: 250px;     /* antes 500px, ahora 250px */
             border-radius: 20px;
             overflow: hidden;
             background: #fff;
@@ -165,7 +165,7 @@
             height: auto;
             display: block;
             object-fit: cover;
-            aspect-ratio: 16/9; /* Formato más horizontal para esta imagen */
+            aspect-ratio: 16/9;
         }
 
         /* REDES SOCIALES */
@@ -200,7 +200,7 @@
             fill: white;
         }
 
-        /* Ajustes responsive */
+        /* Ajustes responsive (tamaño de la imagen inferior también al 50%) */
         @media (max-width: 600px) {
             .products-container {
                 gap: 10px;
@@ -210,15 +210,19 @@
                 max-width: 48%;
             }
             .card-mio {
-                width: 90vw;
-                max-width: 400px;
+                width: 45vw;        /* antes 90vw, ahora 45vw */
+                max-width: 200px;    /* antes 400px, ahora 200px */
                 bottom: 80px;
             }
         }
         @media (max-width: 500px) {
             #custom-logo { height: 133px; }
             .products-container { top: 42%; gap: 8px; }
-            .card-mio { width: 92vw; bottom: 75px; }
+            .card-mio {
+                width: 46vw;        /* antes 92vw, ahora 46vw */
+                max-width: 200px;
+                bottom: 75px;
+            }
             .social-icon { width: 32px; height: 32px; }
             .social-bar { gap: 20px; }
         }
@@ -233,7 +237,11 @@
                 max-width: 48%;
                 border-radius: 16px;
             }
-            .card-mio { width: 94vw; bottom: 70px; }
+            .card-mio {
+                width: 47vw;        /* antes 94vw, ahora 47vw */
+                max-width: 180px;
+                bottom: 70px;
+            }
             .social-icon { width: 28px; height: 28px; }
             .social-bar { gap: 16px; }
         }
@@ -269,7 +277,7 @@
         </div>
     </div>
 
-    <!-- IMAGEN ADICIONAL DEBAJO -->
+    <!-- IMAGEN ADICIONAL DEBAJO (reducida al 50%) -->
     <article class="card-mio">
         <img src="images/01.jpeg" alt="01">
     </article>
