@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Carrusel - Logo gigante y producto</title>
+  <title>Carrusel - Logo 5x gigante</title>
   <style>
     *{
       margin: 0;
@@ -40,7 +40,7 @@
       padding: 20px 0 40px;
     }
 
-    /* LOGO: 3 VECES MÁS GRANDE */
+    /* LOGO: 5 VECES MÁS GRANDE (240px de alto) */
     .logo-container-mio {
       width: 100%;
       text-align: center;
@@ -50,11 +50,11 @@
     .logo-container-mio img {
       display: block;
       margin: 0 auto;
-      height: 144px;         /* 3 veces más grande (antes 48px) */
+      height: 240px;         /* 5 veces más grande (48px * 5 = 240px) */
       width: auto;
       max-width: 90vw;
       object-fit: contain;
-      border-radius: 16px;   /* opcional, se ve bonito */
+      border-radius: 20px;   /* suave */
     }
 
     /* Carrusel */
@@ -140,38 +140,45 @@
       fill: white !important;
     }
 
-    @media (max-width: 600px) {
-      .logo-container-mio img { height: 100px; } /* un poco más pequeño en móvil pero enorme igual */
+    /* Ajustes responsivos para el logo gigante */
+    @media (max-width: 768px) {
+      .logo-container-mio img { height: 180px; }
     }
-    @media (max-width: 430px){
+    @media (max-width: 600px) {
+      .logo-container-mio img { height: 150px; }
+    }
+    @media (max-width: 480px){
       body { padding: 20px 0; }
       .mi-carrusel-wrapper { gap: 24px; }
-      .logo-container-mio img { height: 90px; }
+      .logo-container-mio img { height: 130px; }
       .stage-mio { height: min(55vh, 420px); }
       .boton-wa-mio { min-width: 200px; height: 48px; line-height: 48px; font-size: 13px; }
       .social-links { gap: 26px !important; margin-top: 24px !important; }
       .social-icon { width: 34px !important; height: 34px !important; }
     }
     @media (max-width: 390px){
-      .logo-container-mio img { height: 80px; }
+      .logo-container-mio img { height: 110px; }
       .stage-mio { height: min(52vh, 400px); }
       .social-links { gap: 22px !important; }
       .social-icon { width: 32px !important; height: 32px !important; }
+    }
+    @media (max-width: 360px){
+      .logo-container-mio img { height: 90px; }
     }
   </style>
 </head>
 <body>
 <div class="mi-carrusel-wrapper">
-  <!-- LOGO: TAMAÑO 3 VECES MÁS GRANDE (144px de alto) -->
+  <!-- LOGO: TAMAÑO 5 VECES MÁS GRANDE (240px en desktop) -->
   <div class="logo-container-mio">
     <img src="images/WhatsApp%20Image%202026-05-21%20at%2015.40.16.jpeg" 
          alt="Logo"
-         onerror="this.onerror=null; this.src='https://placehold.co/400x200?text=LOGO+NO+ENCONTRADO'; this.style.height='auto';">
+         onerror="this.onerror=null; this.src='https://placehold.co/600x200?text=LOGO+NO+ENCONTRADO'; this.style.height='auto';">
   </div>
 
   <section class="stage-mio">
     <div class="carousel-mio" id="carouselFinal">
-      <!-- Tus imágenes del producto (todas con la misma) -->
+      <!-- Tus imágenes del producto -->
       <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
       <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
       <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
