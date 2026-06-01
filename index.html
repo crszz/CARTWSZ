@@ -1,16 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Carrusel - Sin espacio superior</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Carrusel 3D - Funcional</title>
   <style>
-    /* RESET TOTAL */
+    /* RESET ABSOLUTO */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
     }
 
     html, body {
@@ -23,53 +22,53 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start; /* NADA de espacio arriba */
-      overflow-y: auto;  /* Permitir scroll si es necesario, pero intentamos que no */
+      justify-content: flex-start;  /* Nada de espacio arriba */
+      overflow-y: auto;
     }
 
-    /* Contenedor: sin margen, sin padding, todo pegado arriba */
+    /* Contenedor principal: sin márgenes */
     .mi-carrusel-wrapper {
       width: 100%;
-      background: #000;
+      max-width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding: 0;
-      margin: 0;
+      background: #000;
     }
 
-    /* LOGO: SIN MARGEN SUPERIOR */
+    /* LOGO - Tamaño normal, sin espacios alrededor */
     .logo-container-mio {
       width: 100%;
       text-align: center;
       margin: 0;
       padding: 0;
-      line-height: 0; /* elimina espacios extra por line-height */
+      line-height: 0;
     }
     .logo-container-mio img {
       display: block;
       margin: 0 auto;
-      height: 50px;   /* Tamaño razonable */
+      height: 60px;       /* Tamaño visible pero no exagerado */
       width: auto;
-      max-width: 80vw;
+      max-width: 85vw;
       object-fit: contain;
     }
 
-    /* Carrusel más compacto */
+    /* CARRUSEL 3D - con perspectiva y preserve-3d */
     .stage-mio {
       position: relative;
       width: 100vw;
-      height: min(48vh, 400px);
+      height: 52vh;       /* Altura flexible pero proporcionada */
+      min-height: 340px;
+      max-height: 440px;
       overflow: hidden;
-      perspective: 1600px;
-      touch-action: none;
-      user-select: none;
-      margin: 8px 0;  /* solo separación mínima entre logo y carrusel */
+      perspective: 1200px;
+      margin: 12px 0;
     }
     .carousel-mio {
       position: absolute;
-      inset: 0;
+      width: 100%;
+      height: 100%;
       transform-style: preserve-3d;
     }
     .card-mio {
@@ -77,11 +76,12 @@
       left: 50%;
       top: 50%;
       transform-style: preserve-3d;
-      border-radius: 26px;
+      border-radius: 24px;
       overflow: hidden;
       background: #fff;
-      box-shadow: 0 22px 60px rgba(0,0,0,.42);
-      transition: transform 0.45s cubic-bezier(.22,.8,.18,1), width 0.45s cubic-bezier(.22,.8,.18,1), height 0.45s cubic-bezier(.22,.8,.18,1), opacity 0.25s ease;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1), width 0.4s, height 0.4s;
+      will-change: transform;
     }
     .card-mio img {
       width: 100%;
@@ -91,44 +91,45 @@
       pointer-events: none;
     }
 
-    /* Botón WhatsApp */
+    /* BOTÓN WHATSAPP */
     .boton-wa-mio {
       display: block;
       width: fit-content;
       max-width: 90vw;
       min-width: 200px;
-      height: 46px;
+      height: 48px;
       padding: 0 24px;
-      border-radius: 999px;
+      border-radius: 60px;
       background: #fff;
       color: #000;
       text-decoration: none;
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: bold;
       text-align: center;
-      line-height: 46px;
-      margin: 6px auto 4px auto;
-      border: 1px solid rgba(255,255,255,.2);
-      box-shadow: 0 8px 20px rgba(0,0,0,.3);
-      flex-shrink: 0;
+      line-height: 48px;
+      margin: 8px auto 6px auto;
+      border: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: transform 0.1s;
     }
-    .boton-wa-mio:active { transform: scale(0.98); }
+    .boton-wa-mio:active {
+      transform: scale(0.97);
+    }
 
-    /* Redes sociales - siempre visibles */
+    /* REDES SOCIALES */
     .social-links {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 28px;
-      margin: 6px 0 12px 0;
-      flex-shrink: 0;
+      margin: 4px 0 15px 0;
     }
     .social-icon {
       display: inline-block;
-      width: 36px;
-      height: 36px;
-      transition: transform 0.2s ease, opacity 0.2s ease;
-      opacity: 0.85;
+      width: 38px;
+      height: 38px;
+      transition: transform 0.2s;
+      opacity: 0.9;
     }
     .social-icon:hover {
       transform: scale(1.08);
@@ -140,32 +141,31 @@
       fill: white;
     }
 
-    /* Ajustes para pantallas pequeñas */
+    /* Responsive para que quepa en pantallas pequeñas */
     @media (max-width: 500px) {
-      .logo-container-mio img { height: 42px; }
-      .stage-mio { height: min(44vh, 360px); margin: 5px 0; }
-      .boton-wa-mio { height: 42px; line-height: 42px; font-size: 13px; min-width: 170px; margin: 4px auto; }
-      .social-links { gap: 22px; margin: 4px 0 10px 0; }
-      .social-icon { width: 32px; height: 32px; }
+      .logo-container-mio img { height: 50px; }
+      .stage-mio { height: 48vh; min-height: 300px; margin: 8px 0; }
+      .boton-wa-mio { height: 44px; line-height: 44px; font-size: 14px; min-width: 180px; }
+      .social-links { gap: 22px; }
+      .social-icon { width: 34px; height: 34px; }
     }
-    @media (max-width: 380px) {
-      .logo-container-mio img { height: 38px; }
-      .stage-mio { height: min(42vh, 330px); }
+    @media (max-width: 400px) {
+      .stage-mio { height: 46vh; min-height: 280px; }
       .social-links { gap: 18px; }
-      .social-icon { width: 30px; height: 30px; }
+      .social-icon { width: 32px; height: 32px; }
     }
   </style>
 </head>
 <body>
 <div class="mi-carrusel-wrapper">
-  <!-- Logo pegado arriba -->
+  <!-- LOGO: usa tu ruta, pero si falla, muestra un logo de respaldo bonito -->
   <div class="logo-container-mio">
     <img src="images/WhatsApp%20Image%202026-05-21%20at%2015.40.16.jpeg" 
          alt="Logo"
-         onerror="this.onerror=null; this.src='https://placehold.co/400x100/white/black?text=LOGO'; this.style.height='auto';">
+         onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; this.style.height='auto';">
   </div>
 
-  <!-- Carrusel -->
+  <!-- CARRUSEL 3D -->
   <section class="stage-mio">
     <div class="carousel-mio" id="carouselFinal">
       <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
@@ -176,12 +176,12 @@
     </div>
   </section>
 
-  <!-- Botón WhatsApp -->
+  <!-- BOTÓN WHATSAPP -->
   <a class="boton-wa-mio" href="https://wa.me/573000000000?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer">
     Escribir por WhatsApp
   </a>
 
-  <!-- Redes sociales -->
+  <!-- REDES SOCIALES -->
   <div class="social-links">
     <a href="https://www.facebook.com/profile.php?id=61590498631605" target="_blank" class="social-icon">
       <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -208,38 +208,44 @@
     let startX = 0;
     let dragDelta = 0;
 
-    function getLayout(){
+    function getLayout() {
       const w = window.innerWidth;
-      if (w <= 360) return { centerW:230, centerH:320, sideW:180, sideH:295, sideY:6, x1:125, x2:230, scale1:0.85, scale2:0.79, rot1:23, rot2:32 };
-      if (w <= 390) return { centerW:240, centerH:335, sideW:190, sideH:305, sideY:6, x1:132, x2:242, scale1:0.86, scale2:0.80, rot1:22, rot2:31 };
-      if (w <= 430) return { centerW:254, centerH:350, sideW:200, sideH:320, sideY:6, x1:140, x2:254, scale1:0.87, scale2:0.81, rot1:21, rot2:30 };
-      return { centerW:270, centerH:365, sideW:210, sideH:330, sideY:6, x1:148, x2:268, scale1:0.88, scale2:0.82, rot1:20, rot2:29 };
+      if (w <= 360) return { cW: 220, cH: 320, sW: 175, sH: 280, offY: 6, x1: 118, x2: 215, scl1: 0.85, scl2: 0.79, rot1: 23, rot2: 32 };
+      if (w <= 390) return { cW: 232, cH: 338, sW: 185, sH: 295, offY: 6, x1: 125, x2: 228, scl1: 0.86, scl2: 0.80, rot1: 22, rot2: 31 };
+      if (w <= 430) return { cW: 248, cH: 354, sW: 198, sH: 310, offY: 6, x1: 134, x2: 242, scl1: 0.87, scl2: 0.81, rot1: 21, rot2: 30 };
+      return { cW: 264, cH: 370, sW: 210, sH: 324, offY: 6, x1: 142, x2: 256, scl1: 0.88, scl2: 0.82, rot1: 20, rot2: 29 };
     }
 
-    function applyLayout(){
+    function applyLayout() {
       const l = getLayout();
       cards.forEach((card, i) => {
-        let dRaw = i - activeIndex;
-        let d = ((dRaw % total) + total) % total;
+        let diff = i - activeIndex;
+        let d = ((diff % total) + total) % total;
         if (d > total/2) d -= total;
-        let x=0, y=0, scale=1, rotateY=0, opacity=1, z=3;
-        let w = l.centerW, h = l.centerH;
-        if (d === 0) { x=0; y=0; scale=1; rotateY=0; z=5; w=l.centerW; h=l.centerH; }
-        else if (d === -1) { x=-l.x1; y=l.sideY; scale=l.scale1; rotateY=l.rot1; z=3; w=l.sideW; h=l.sideH; }
-        else if (d === 1) { x=l.x1; y=l.sideY; scale=l.scale1; rotateY=-l.rot1; z=3; w=l.sideW; h=l.sideH; }
-        else if (d === -2) { x=-l.x2; y=l.sideY+4; scale=l.scale2; rotateY=l.rot2; z=1; w=Math.round(l.sideW*0.95); h=Math.round(l.sideH*0.95); }
-        else if (d === 2) { x=l.x2; y=l.sideY+4; scale=l.scale2; rotateY=-l.rot2; z=1; w=Math.round(l.sideW*0.95); h=Math.round(l.sideH*0.95); }
-        else { opacity=0; z=0; x=0; y=0; scale=0.7; rotateY=0; }
+        let x=0, y=0, scale=1, ry=0, opacity=1, z=3, w=l.cW, h=l.cH;
+        if (d === 0) {
+          x=0; y=0; scale=1; ry=0; z=5; w=l.cW; h=l.cH;
+        } else if (d === -1) {
+          x = -l.x1; y = l.offY; scale = l.scl1; ry = l.rot1; z = 3; w = l.sW; h = l.sH;
+        } else if (d === 1) {
+          x = l.x1; y = l.offY; scale = l.scl1; ry = -l.rot1; z = 3; w = l.sW; h = l.sH;
+        } else if (d === -2) {
+          x = -l.x2; y = l.offY + 4; scale = l.scl2; ry = l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
+        } else if (d === 2) {
+          x = l.x2; y = l.offY + 4; scale = l.scl2; ry = -l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
+        } else {
+          opacity = 0; z = 0; scale = 0.7;
+        }
         card.style.width = w + 'px';
         card.style.height = h + 'px';
         card.style.opacity = opacity;
         card.style.zIndex = z;
-        card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotateY(${rotateY}deg) scale(${scale})`;
+        card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotateY(${ry}deg) scale(${scale})`;
       });
     }
 
-    function next(){ activeIndex = (activeIndex+1)%total; applyLayout(); }
-    function prev(){ activeIndex = (activeIndex-1+total)%total; applyLayout(); }
+    function next() { activeIndex = (activeIndex+1)%total; applyLayout(); }
+    function prev() { activeIndex = (activeIndex-1+total)%total; applyLayout(); }
 
     carousel.addEventListener('pointerdown', (e) => {
       isDragging = true;
@@ -248,14 +254,17 @@
       carousel.setPointerCapture?.(e.pointerId);
     });
     carousel.addEventListener('pointermove', (e) => {
-      if(!isDragging) return;
+      if (!isDragging) return;
       dragDelta = e.clientX - startX;
     });
     carousel.addEventListener('pointerup', () => {
-      if(!isDragging) return;
+      if (!isDragging) return;
       isDragging = false;
-      if(Math.abs(dragDelta) > 45) dragDelta < 0 ? next() : prev();
-      else applyLayout();
+      if (Math.abs(dragDelta) > 40) {
+        dragDelta < 0 ? next() : prev();
+      } else {
+        applyLayout();
+      }
     });
     carousel.addEventListener('pointercancel', () => { isDragging = false; applyLayout(); });
     carousel.addEventListener('pointerleave', () => { isDragging = false; applyLayout(); });
