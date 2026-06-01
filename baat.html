@@ -6,7 +6,6 @@
     <meta name="description" content="Descubre la nueva colección. Compra directa por WhatsApp y síguenos en redes.">
     <title>Tu Marca | Link in Bio</title>
 
-    <!-- Open Graph / Social (profesional como JLO) -->
     <meta property="og:locale" content="es_LA">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Tu Marca">
@@ -18,7 +17,6 @@
     <meta name="twitter:description" content="Explora lo último. Contáctanos por WhatsApp.">
     <meta name="twitter:image" content="https://tudominio.com/images/og-image.jpg">
 
-    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⭐</text></svg>">
 
     <style>
@@ -36,7 +34,6 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* PANTALLA DE CARGA MINIMALISTA (solo línea) */
         #loading-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -69,7 +66,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* CAPA PRINCIPAL OCULTA HASTA QUE CARGUE */
         #app-root {
             display: none;
             width: 100%;
@@ -77,7 +73,6 @@
             position: relative;
         }
 
-        /* LOGO CENTRADO ARRIBA (reducido 13%: 177px) */
         .logo-center-container {
             position: fixed;
             top: 24px;
@@ -88,14 +83,13 @@
             padding: 0 20px;
         }
         #custom-logo {
-            height: 177px;   /* antes 204px, ahora 177px (13% menos) */
+            height: 177px;
             width: auto;
             max-width: 85vw;
             object-fit: contain;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
         }
 
-        /* ÁREA PRINCIPAL DEL CARRUSEL */
         .stage-mio {
             position: absolute;
             top: 50%;
@@ -133,7 +127,6 @@
             pointer-events: none;
         }
 
-        /* BARRA INFERIOR (WhatsApp + redes) - SIN CAMBIOS */
         .bottom-bar {
             position: fixed;
             bottom: 0;
@@ -196,7 +189,6 @@
             fill: white;
         }
 
-        /* Ajustes responsive (reducidos 13%) */
         @media (max-width: 500px) {
             #custom-logo { height: 133px; }
             .stage-mio { height: 55vh; min-height: 300px; }
@@ -214,7 +206,6 @@
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA MINIMALISTA (línea de progreso) -->
 <div id="loading-screen">
     <div class="loading-bar-container">
         <div class="loading-bar-fill" id="loading-bar-fill"></div>
@@ -222,28 +213,23 @@
     <div class="loading-percentage-text" id="loading-percentage">0%</div>
 </div>
 
-<!-- APP PRINCIPAL -->
 <div id="app-root">
-    <!-- LOGO CENTRADO -->
     <div class="logo-center-container">
         <img id="custom-logo" 
              src="images/WhatsApp Image 2026-06-01 at 13.33.56.jpeg" 
-             alt="Logo"
-             onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; this.style.height='auto';">
+             alt="Logo">
     </div>
 
-    <!-- CARRUSEL 3D con las NUEVAS imágenes -->
     <div class="stage-mio">
         <div class="carousel-mio" id="carouselFinal">
-            <img src="images/Cambia_el_ángulo_de_esta_202606011553.jpeg" alt="1">
-            <img src="images/Crea_3_versiones_diferentes_angulos_202606011553.jpeg">
-            <img src="images/cambia_el_angulo_por_favor_202606011552.jpeg" alt="3">
-            <img src="images/Cambia_el_ángulo_de_esta_202606011553.jpeg" alt="4">
-            <img src="images/ponlo_en_horizontal_2K_202606011552.jpeg" alt="5">
+            <article class="card-mio"><img src="images/Cambia_el_ángulo_de_esta_202606011553.jpeg" alt="1"></article>
+            <article class="card-mio"><img src="images/Crea_3_versiones_diferentes_angulos_202606011553.jpeg" alt="2"></article>
+            <article class="card-mio"><img src="images/cambia_el_angulo_por_favor_202606011552.jpeg" alt="3"></article>
+            <article class="card-mio"><img src="images/Cambia_el_ángulo_de_esta_202606011553.jpeg" alt="4"></article>
+            <article class="card-mio"><img src="images/ponlo_en_horizontal_2K_202606011552.jpeg" alt="5"></article>
         </div>
     </div>
 
-    <!-- BARRA INFERIOR: WhatsApp + Redes Sociales -->
     <div class="bottom-bar">
         <a class="boton-wa-mio" href="https://wa.me/573000000000?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer">
             💬 Escribir por WhatsApp
@@ -267,7 +253,6 @@
 
 <script>
     (function() {
-        // ---------- SIMULACIÓN DE CARGA ----------
         const loadingScreen = document.getElementById('loading-screen');
         const barFill = document.getElementById('loading-bar-fill');
         const percentageEl = document.getElementById('loading-percentage');
@@ -295,7 +280,6 @@
             }
         }, 80);
 
-        // ---------- CARRUSEL 3D ----------
         function initCarousel() {
             const cards = Array.from(document.querySelectorAll('.card-mio'));
             const total = cards.length;
