@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="description" content="Descubre la nueva colección. Compra directa por WhatsApp y síguenos en redes.">
-    <title>Tu Marca | Link in Bio</title>
+    <meta name="description" content="Descubre nuestros productos. Síguenos en redes.">
+    <title>Tu Marca | Productos</title>
 
-    <!-- Open Graph / Social (profesional como JLO) -->
+    <!-- Open Graph / Social -->
     <meta property="og:locale" content="es_LA">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Tu Marca">
-    <meta property="og:description" content="Explora lo último. Contáctanos por WhatsApp.">
+    <meta property="og:description" content="Dos productos increíbles para ti.">
     <meta property="og:url" content="https://tudominio.com/">
     <meta property="og:image" content="https://tudominio.com/images/og-image.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Tu Marca">
-    <meta name="twitter:description" content="Explora lo último. Contáctanos por WhatsApp.">
+    <meta name="twitter:description" content="Dos productos increíbles para ti.">
     <meta name="twitter:image" content="https://tudominio.com/images/og-image.jpg">
 
     <!-- Favicon -->
@@ -36,7 +36,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* PANTALLA DE CARGA MINIMALISTA (solo línea) */
+        /* PANTALLA DE CARGA MINIMALISTA (línea) */
         #loading-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -69,7 +69,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* CAPA PRINCIPAL OCULTA HASTA QUE CARGUE */
+        /* CAPA PRINCIPAL */
         #app-root {
             display: none;
             width: 100%;
@@ -77,7 +77,7 @@
             position: relative;
         }
 
-        /* LOGO CENTRADO ARRIBA (reducido 13%: 177px) */
+        /* LOGO CENTRADO */
         .logo-center-container {
             position: fixed;
             top: 24px;
@@ -88,95 +88,86 @@
             padding: 0 20px;
         }
         #custom-logo {
-            height: 177px;   /* antes 204px, ahora 177px (13% menos) */
+            height: 177px;
             width: auto;
             max-width: 85vw;
             object-fit: contain;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
         }
 
-        /* ÁREA PRINCIPAL DEL CARRUSEL */
-        .stage-mio {
+        /* CONTENEDOR DE PRODUCTOS (reemplaza el carrusel) */
+        .products-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 100vw;
-            height: 60vh;
-            max-height: 600px;
-            min-height: 350px;
-            perspective: 1200px;
-        }
-        .carousel-mio {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            transform-style: preserve-3d;
-        }
-        .card-mio {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform-style: preserve-3d;
-            border-radius: 24px;
-            overflow: hidden;
-            background: #fff;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), width 0.4s, height 0.4s;
-            will-change: transform;
-        }
-        .card-mio img {
-            width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: cover;
-            pointer-events: none;
+            width: 90vw;
+            max-width: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            padding: 0 16px;
         }
 
-        /* BARRA INFERIOR (WhatsApp + redes) - SIN CAMBIOS */
-        .bottom-bar {
+        /* CADA CARD DE PRODUCTO */
+        .product-card {
+            flex: 1 1 260px;
+            max-width: 320px;
+            min-width: 240px;
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.2), 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .product-card:active {
+            transform: scale(0.98);
+        }
+        .product-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+        .product-card .product-info {
+            padding: 16px 18px 20px;
+            text-align: center;
+            background: #fff;
+        }
+        .product-card .product-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+        }
+        .product-card .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #25D366;
+        }
+
+        /* REDES SOCIALES (sin botón WA) */
+        .social-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             padding: 16px 20px 24px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            z-index: 50;
-            pointer-events: none;
-        }
-        .bottom-bar > * {
-            pointer-events: auto;
-        }
-        .boton-wa-mio {
-            display: inline-block;
-            width: fit-content;
-            min-width: 200px;
-            height: 48px;
-            padding: 0 24px;
-            border-radius: 60px;
-            background: #25D366;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 600;
-            text-align: center;
-            line-height: 48px;
-            box-shadow: 0 6px 20px rgba(37,211,102,0.4);
-            transition: transform 0.15s, box-shadow 0.2s;
-        }
-        .boton-wa-mio:active {
-            transform: scale(0.96);
-            box-shadow: 0 3px 10px rgba(37,211,102,0.6);
-        }
-        .social-links {
-            display: flex;
             justify-content: center;
             align-items: center;
             gap: 24px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            z-index: 50;
         }
         .social-icon {
             display: inline-block;
@@ -196,25 +187,55 @@
             fill: white;
         }
 
-        /* Ajustes responsive (reducidos 13%) */
+        /* Ajustes responsive */
+        @media (max-width: 600px) {
+            .products-container {
+                gap: 16px;
+                width: 95vw;
+            }
+            .product-card {
+                flex: 1 1 200px;
+                min-width: 160px;
+                max-width: 48%;
+            }
+            .product-card img {
+                height: 180px;
+            }
+            .product-card .product-name {
+                font-size: 15px;
+            }
+            .product-card .product-price {
+                font-size: 18px;
+            }
+        }
         @media (max-width: 500px) {
-            #custom-logo { height: 133px; }  /* antes 153px */
-            .stage-mio { height: 55vh; min-height: 300px; }
-            .boton-wa-mio { height: 44px; line-height: 44px; font-size: 14px; min-width: 180px; }
-            .social-links { gap: 20px; }
+            #custom-logo { height: 133px; }
+            .products-container { gap: 12px; }
+            .product-card img { height: 150px; }
             .social-icon { width: 32px; height: 32px; }
+            .social-bar { gap: 20px; }
         }
         @media (max-width: 400px) {
-            #custom-logo { height: 118px; }  /* antes 136px */
-            .stage-mio { height: 50vh; min-height: 280px; }
-            .social-links { gap: 16px; }
+            #custom-logo { height: 118px; }
+            .products-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 14px;
+            }
+            .product-card {
+                max-width: 280px;
+                width: 100%;
+                flex: none;
+            }
+            .product-card img { height: 200px; }
             .social-icon { width: 28px; height: 28px; }
+            .social-bar { gap: 16px; }
         }
     </style>
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA MINIMALISTA (línea de progreso) -->
+<!-- PANTALLA DE CARGA -->
 <div id="loading-screen">
     <div class="loading-bar-container">
         <div class="loading-bar-fill" id="loading-bar-fill"></div>
@@ -224,7 +245,7 @@
 
 <!-- APP PRINCIPAL -->
 <div id="app-root">
-    <!-- LOGO CENTRADO (reducido 13%) -->
+    <!-- LOGO -->
     <div class="logo-center-container">
         <img id="custom-logo" 
              src="images/WhatsApp Image 2026-06-01 at 13.33.56.jpeg" 
@@ -232,42 +253,46 @@
              onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; this.style.height='auto';">
     </div>
 
-    <!-- CARRUSEL 3D -->
-    <div class="stage-mio">
-        <div class="carousel-mio" id="carouselFinal">
-            <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
-            <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
-            <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
-            <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
-            <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
+    <!-- DOS CARDS DE PRODUCTO -->
+    <div class="products-container">
+        <!-- Producto 1 -->
+        <div class="product-card" onclick="window.open('https://wa.me/573000000000?text=Quiero%20el%20Producto%201','_blank')">
+            <img src="images/descarga%20%281%29.png" alt="Producto 1" onerror="this.src='https://picsum.photos/id/20/400/500'">
+            <div class="product-info">
+                <div class="product-name">Producto Premium 1</div>
+                <div class="product-price">$49.99</div>
+            </div>
+        </div>
+        <!-- Producto 2 -->
+        <div class="product-card" onclick="window.open('https://wa.me/573000000000?text=Quiero%20el%20Producto%202','_blank')">
+            <img src="images/descarga%20%281%29.png" alt="Producto 2" onerror="this.src='https://picsum.photos/id/21/400/500'">
+            <div class="product-info">
+                <div class="product-name">Producto Premium 2</div>
+                <div class="product-price">$59.99</div>
+            </div>
         </div>
     </div>
 
-    <!-- BARRA INFERIOR: WhatsApp + Redes Sociales -->
-    <div class="bottom-bar">
-        <a class="boton-wa-mio" href="https://wa.me/573000000000?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer">
-            💬 Escribir por WhatsApp
+    <!-- REDES SOCIALES (sin botón WhatsApp) -->
+    <div class="social-bar">
+        <a href="https://www.facebook.com/profile.php?id=61590498631605" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
         </a>
-        <div class="social-links">
-            <a href="https://www.facebook.com/profile.php?id=61590498631605" target="_blank" class="social-icon">
-                <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            </a>
-            <a href="https://www.instagram.com/cartwszz/" target="_blank" class="social-icon">
-                <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-            </a>
-            <a href="https://www.tiktok.com/@cartwszzy?lang=es-419" target="_blank" class="social-icon">
-                <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 15.58a6.34 6.34 0 0 0 10.86 4.7 6.33 6.33 0 0 0 1.81-4.5v-7a8.2 8.2 0 0 0 4.83 1.48V9.4a5.14 5.14 0 0 1-2.91-2.71z"/></svg>
-            </a>
-            <a href="https://www.youtube.com/@Cartwsz" target="_blank" class="social-icon">
-                <svg viewBox="0 0 24 24"><path d="M21.582 6.186a2.506 2.506 0 0 0-1.768-1.768C18.254 4 12 4 12 4s-6.254 0-7.814.418a2.505 2.505 0 0 0-1.768 1.768C2 7.746 2 12 2 12s0 4.254.418 5.814c.23.846.922 1.538 1.768 1.768C5.746 20 12 20 12 20s6.254 0 7.814-.418c.846-.23 1.538-.922 1.768-1.768C22 16.254 22 12 22 12s0-4.254-.418-5.814zM10 15V9l5 3-5 3z"/></svg>
-            </a>
-        </div>
+        <a href="https://www.instagram.com/cartwszz/" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@cartwszzy?lang=es-419" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 15.58a6.34 6.34 0 0 0 10.86 4.7 6.33 6.33 0 0 0 1.81-4.5v-7a8.2 8.2 0 0 0 4.83 1.48V9.4a5.14 5.14 0 0 1-2.91-2.71z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@Cartwsz" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24"><path d="M21.582 6.186a2.506 2.506 0 0 0-1.768-1.768C18.254 4 12 4 12 4s-6.254 0-7.814.418a2.505 2.505 0 0 0-1.768 1.768C2 7.746 2 12 2 12s0 4.254.418 5.814c.23.846.922 1.538 1.768 1.768C5.746 20 12 20 12 20s6.254 0 7.814-.418c.846-.23 1.538-.922 1.768-1.768C22 16.254 22 12 22 12s0-4.254-.418-5.814zM10 15V9l5 3-5 3z"/></svg>
+        </a>
     </div>
 </div>
 
 <script>
     (function() {
-        // ---------- SIMULACIÓN DE CARGA (línea de progreso minimalista) ----------
+        // Simulación de carga
         const loadingScreen = document.getElementById('loading-screen');
         const barFill = document.getElementById('loading-bar-fill');
         const percentageEl = document.getElementById('loading-percentage');
@@ -286,7 +311,6 @@
                     setTimeout(() => {
                         loadingScreen.style.display = 'none';
                         appRoot.style.display = 'block';
-                        initCarousel();
                     }, 400);
                 }, 200);
             } else {
@@ -294,80 +318,6 @@
                 percentageEl.textContent = progress + '%';
             }
         }, 80);
-
-        // ---------- CARRUSEL 3D ----------
-        function initCarousel() {
-            const cards = Array.from(document.querySelectorAll('.card-mio'));
-            const total = cards.length;
-            const carousel = document.getElementById('carouselFinal');
-            let activeIndex = 0;
-            let isDragging = false;
-            let startX = 0;
-            let dragDelta = 0;
-
-            function getLayout() {
-                const w = window.innerWidth;
-                if (w <= 360) return { cW: 220, cH: 320, sW: 175, sH: 280, offY: 6, x1: 118, x2: 215, scl1: 0.85, scl2: 0.79, rot1: 23, rot2: 32 };
-                if (w <= 390) return { cW: 232, cH: 338, sW: 185, sH: 295, offY: 6, x1: 125, x2: 228, scl1: 0.86, scl2: 0.80, rot1: 22, rot2: 31 };
-                if (w <= 430) return { cW: 248, cH: 354, sW: 198, sH: 310, offY: 6, x1: 134, x2: 242, scl1: 0.87, scl2: 0.81, rot1: 21, rot2: 30 };
-                return { cW: 264, cH: 370, sW: 210, sH: 324, offY: 6, x1: 142, x2: 256, scl1: 0.88, scl2: 0.82, rot1: 20, rot2: 29 };
-            }
-
-            function applyLayout() {
-                const l = getLayout();
-                cards.forEach((card, i) => {
-                    let diff = i - activeIndex;
-                    let d = ((diff % total) + total) % total;
-                    if (d > total/2) d -= total;
-                    let x=0, y=0, scale=1, ry=0, opacity=1, z=3, w=l.cW, h=l.cH;
-                    if (d === 0) {
-                        x=0; y=0; scale=1; ry=0; z=5; w=l.cW; h=l.cH;
-                    } else if (d === -1) {
-                        x = -l.x1; y = l.offY; scale = l.scl1; ry = l.rot1; z = 3; w = l.sW; h = l.sH;
-                    } else if (d === 1) {
-                        x = l.x1; y = l.offY; scale = l.scl1; ry = -l.rot1; z = 3; w = l.sW; h = l.sH;
-                    } else if (d === -2) {
-                        x = -l.x2; y = l.offY + 4; scale = l.scl2; ry = l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
-                    } else if (d === 2) {
-                        x = l.x2; y = l.offY + 4; scale = l.scl2; ry = -l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
-                    } else {
-                        opacity = 0; z = 0; scale = 0.7;
-                    }
-                    card.style.width = w + 'px';
-                    card.style.height = h + 'px';
-                    card.style.opacity = opacity;
-                    card.style.zIndex = z;
-                    card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotateY(${ry}deg) scale(${scale})`;
-                });
-            }
-
-            function next() { activeIndex = (activeIndex+1)%total; applyLayout(); }
-            function prev() { activeIndex = (activeIndex-1+total)%total; applyLayout(); }
-
-            carousel.addEventListener('pointerdown', (e) => {
-                isDragging = true;
-                startX = e.clientX;
-                dragDelta = 0;
-                carousel.setPointerCapture?.(e.pointerId);
-            });
-            carousel.addEventListener('pointermove', (e) => {
-                if (!isDragging) return;
-                dragDelta = e.clientX - startX;
-            });
-            carousel.addEventListener('pointerup', () => {
-                if (!isDragging) return;
-                isDragging = false;
-                if (Math.abs(dragDelta) > 40) {
-                    dragDelta < 0 ? next() : prev();
-                } else {
-                    applyLayout();
-                }
-            });
-            carousel.addEventListener('pointercancel', () => { isDragging = false; applyLayout(); });
-            carousel.addEventListener('pointerleave', () => { isDragging = false; applyLayout(); });
-            window.addEventListener('resize', applyLayout);
-            applyLayout();
-        }
     })();
 </script>
 
