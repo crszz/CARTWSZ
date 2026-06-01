@@ -115,7 +115,8 @@
             border-radius: 24px;
             overflow: hidden;
             background: #fff;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            /* SOMBRA REDUCIDA — antes: 0 20px 40px rgba(0,0,0,0.6) */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.22);
             transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), width 0.4s, height 0.4s;
             will-change: transform;
         }
@@ -126,6 +127,41 @@
             object-fit: cover;
             pointer-events: none;
         }
+
+        /* ── BOTONES FLECHA ── */
+        .carousel-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 200;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.18s, transform 0.12s;
+        }
+        .carousel-arrow:active {
+            background: rgba(255,255,255,0.18);
+            transform: translateY(-50%) scale(0.92);
+        }
+        .carousel-arrow svg {
+            width: 16px;
+            height: 16px;
+            stroke: #fff;
+            stroke-width: 2.2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        #arrow-prev { left: 12px; }
+        #arrow-next { right: 12px; }
 
         .bottom-bar {
             position: fixed;
@@ -220,6 +256,11 @@
              alt="Logo">
     </div>
 
+    <!-- BOTÓN PREV -->
+    <button class="carousel-arrow" id="arrow-prev" aria-label="Anterior">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+
     <div class="stage-mio">
         <div class="carousel-mio" id="carouselFinal">
             <article class="card-mio"><img src="images/1.jpeg" alt="1"></article>
@@ -229,6 +270,11 @@
             <article class="card-mio"><img src="images/5.jpeg" alt="5"></article>
         </div>
     </div>
+
+    <!-- BOTÓN NEXT -->
+    <button class="carousel-arrow" id="arrow-next" aria-label="Siguiente">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
 
     <div class="bottom-bar">
         <a class="boton-wa-mio" href="https://wa.me/573000000000?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer">
@@ -327,6 +373,10 @@
 
             function next() { activeIndex = (activeIndex+1)%total; applyLayout(); }
             function prev() { activeIndex = (activeIndex-1+total)%total; applyLayout(); }
+
+            /* Botones flecha */
+            document.getElementById('arrow-prev').addEventListener('click', prev);
+            document.getElementById('arrow-next').addEventListener('click', next);
 
             carousel.addEventListener('pointerdown', (e) => {
                 isDragging = true;
