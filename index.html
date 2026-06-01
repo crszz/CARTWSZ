@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Carrusel - Todo visible sin scroll</title>
+  <title>Carrusel - Sin espacio superior</title>
   <style>
+    /* RESET TOTAL */
     * {
       margin: 0;
       padding: 0;
@@ -16,57 +17,55 @@
       width: 100%;
       height: 100%;
       background: #000;
-      font-family: Arial, Helvetica, sans-serif;
-      overflow: hidden;       /* Evita scroll en body, todo dentro de la pantalla */
     }
 
     body {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
+      justify-content: flex-start; /* NADA de espacio arriba */
+      overflow-y: auto;  /* Permitir scroll si es necesario, pero intentamos que no */
     }
 
-    /* Contenedor principal ocupa toda la altura sin desbordar */
+    /* Contenedor: sin margen, sin padding, todo pegado arriba */
     .mi-carrusel-wrapper {
       width: 100%;
-      height: 100vh;
       background: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;  /* Distribuye espacio uniformemente */
-      padding: 16px 0 20px;
-      overflow-y: auto;                /* Si el contenido es muy grande, permite scroll, pero intentamos que no */
+      justify-content: flex-start;
+      padding: 0;
+      margin: 0;
     }
 
-    /* Logo: tamaño normal (50px) para que no robe espacio */
+    /* LOGO: SIN MARGEN SUPERIOR */
     .logo-container-mio {
-      flex-shrink: 0;
+      width: 100%;
       text-align: center;
-      margin: 5px 0;
+      margin: 0;
+      padding: 0;
+      line-height: 0; /* elimina espacios extra por line-height */
     }
     .logo-container-mio img {
       display: block;
       margin: 0 auto;
-      height: 50px;           /* Tamaño razonable */
+      height: 50px;   /* Tamaño razonable */
       width: auto;
       max-width: 80vw;
       object-fit: contain;
-      border-radius: 12px;
     }
 
-    /* Carrusel más compacto (altura: 50% de la pantalla como máximo) */
+    /* Carrusel más compacto */
     .stage-mio {
       position: relative;
       width: 100vw;
-      height: min(50vh, 420px);
-      flex-shrink: 0;
+      height: min(48vh, 400px);
       overflow: hidden;
       perspective: 1600px;
       touch-action: none;
       user-select: none;
-      margin: 10px 0;
+      margin: 8px 0;  /* solo separación mínima entre logo y carrusel */
     }
     .carousel-mio {
       position: absolute;
@@ -94,21 +93,21 @@
 
     /* Botón WhatsApp */
     .boton-wa-mio {
-      display: block !important;
-      width: fit-content !important;
-      max-width: 90vw !important;
+      display: block;
+      width: fit-content;
+      max-width: 90vw;
       min-width: 200px;
-      height: 48px;
-      padding: 0 24px !important;
+      height: 46px;
+      padding: 0 24px;
       border-radius: 999px;
-      background: #fff !important;
-      color: #000 !important;
-      text-decoration: none !important;
-      font-size: 14px !important;
-      font-weight: 700 !important;
+      background: #fff;
+      color: #000;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
       text-align: center;
-      line-height: 48px;
-      margin: 8px auto !important;
+      line-height: 46px;
+      margin: 6px auto 4px auto;
       border: 1px solid rgba(255,255,255,.2);
       box-shadow: 0 8px 20px rgba(0,0,0,.3);
       flex-shrink: 0;
@@ -117,42 +116,41 @@
 
     /* Redes sociales - siempre visibles */
     .social-links {
-      display: flex !important;
-      justify-content: center !important;
-      align-items: center !important;
-      gap: 28px !important;
-      margin: 10px 0 5px !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 28px;
+      margin: 6px 0 12px 0;
       flex-shrink: 0;
     }
     .social-icon {
-      display: inline-block !important;
-      width: 36px !important;
-      height: 36px !important;
-      transition: transform 0.2s ease, opacity 0.2s ease !important;
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
       opacity: 0.85;
     }
     .social-icon:hover {
-      transform: scale(1.08) !important;
+      transform: scale(1.08);
       opacity: 1;
     }
     .social-icon svg {
-      width: 100% !important;
-      height: 100% !important;
-      fill: white !important;
+      width: 100%;
+      height: 100%;
+      fill: white;
     }
 
-    /* Ajustes para pantallas muy pequeñas */
-    @media (max-width: 480px) {
-      .mi-carrusel-wrapper { justify-content: center; gap: 8px; padding: 10px 0; }
+    /* Ajustes para pantallas pequeñas */
+    @media (max-width: 500px) {
       .logo-container-mio img { height: 42px; }
-      .stage-mio { height: min(45vh, 380px); }
-      .boton-wa-mio { height: 44px; line-height: 44px; font-size: 13px; min-width: 180px; }
-      .social-links { gap: 22px; }
+      .stage-mio { height: min(44vh, 360px); margin: 5px 0; }
+      .boton-wa-mio { height: 42px; line-height: 42px; font-size: 13px; min-width: 170px; margin: 4px auto; }
+      .social-links { gap: 22px; margin: 4px 0 10px 0; }
       .social-icon { width: 32px; height: 32px; }
     }
     @media (max-width: 380px) {
       .logo-container-mio img { height: 38px; }
-      .stage-mio { height: min(42vh, 340px); }
+      .stage-mio { height: min(42vh, 330px); }
       .social-links { gap: 18px; }
       .social-icon { width: 30px; height: 30px; }
     }
@@ -160,7 +158,7 @@
 </head>
 <body>
 <div class="mi-carrusel-wrapper">
-  <!-- Logo tamaño normal (50px) -->
+  <!-- Logo pegado arriba -->
   <div class="logo-container-mio">
     <img src="images/WhatsApp%20Image%202026-05-21%20at%2015.40.16.jpeg" 
          alt="Logo"
@@ -183,7 +181,7 @@
     Escribir por WhatsApp
   </a>
 
-  <!-- Redes sociales (AHORA SÍ VISIBLES) -->
+  <!-- Redes sociales -->
   <div class="social-links">
     <a href="https://www.facebook.com/profile.php?id=61590498631605" target="_blank" class="social-icon">
       <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -212,10 +210,10 @@
 
     function getLayout(){
       const w = window.innerWidth;
-      if (w <= 360) return { centerW:240, centerH:340, sideW:190, sideH:310, sideY:8, x1:130, x2:240, scale1:0.86, scale2:0.80, rot1:24, rot2:33 };
-      if (w <= 390) return { centerW:250, centerH:355, sideW:200, sideH:320, sideY:8, x1:138, x2:252, scale1:0.87, scale2:0.81, rot1:23, rot2:32 };
-      if (w <= 430) return { centerW:264, centerH:370, sideW:210, sideH:335, sideY:8, x1:146, x2:264, scale1:0.88, scale2:0.82, rot1:22, rot2:31 };
-      return { centerW:280, centerH:385, sideW:220, sideH:345, sideY:8, x1:154, x2:278, scale1:0.89, scale2:0.83, rot1:21, rot2:30 };
+      if (w <= 360) return { centerW:230, centerH:320, sideW:180, sideH:295, sideY:6, x1:125, x2:230, scale1:0.85, scale2:0.79, rot1:23, rot2:32 };
+      if (w <= 390) return { centerW:240, centerH:335, sideW:190, sideH:305, sideY:6, x1:132, x2:242, scale1:0.86, scale2:0.80, rot1:22, rot2:31 };
+      if (w <= 430) return { centerW:254, centerH:350, sideW:200, sideH:320, sideY:6, x1:140, x2:254, scale1:0.87, scale2:0.81, rot1:21, rot2:30 };
+      return { centerW:270, centerH:365, sideW:210, sideH:330, sideY:6, x1:148, x2:268, scale1:0.88, scale2:0.82, rot1:20, rot2:29 };
     }
 
     function applyLayout(){
