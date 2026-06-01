@@ -1,74 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Carrusel 3D - Funcional</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Carrusel - Logo 5x gigante</title>
   <style>
-    /* RESET ABSOLUTO */
-    * {
+    *{
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     html, body {
       width: 100%;
-      height: 100%;
       background: #000;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     body {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: flex-start;  /* Nada de espacio arriba */
-      overflow-y: auto;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 0;
     }
 
-    /* Contenedor principal: sin márgenes */
     .mi-carrusel-wrapper {
       width: 100%;
-      max-width: 100%;
+      max-width: 100vw;
+      background: #000;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      background: #000;
+      justify-content: center;
+      gap: 32px;
+      padding: 20px 0 40px;
     }
 
-    /* LOGO - Tamaño normal, sin espacios alrededor */
+    /* LOGO: 5 VECES MÁS GRANDE (240px de alto) */
     .logo-container-mio {
       width: 100%;
       text-align: center;
-      margin: 0;
-      padding: 0;
-      line-height: 0;
+      margin-bottom: 20px;
+      margin-top: 10px;
     }
     .logo-container-mio img {
       display: block;
       margin: 0 auto;
-      height: 60px;       /* Tamaño visible pero no exagerado */
+      height: 240px;         /* 5 veces más grande (48px * 5 = 240px) */
       width: auto;
-      max-width: 85vw;
+      max-width: 90vw;
       object-fit: contain;
+      border-radius: 20px;   /* suave */
     }
 
-    /* CARRUSEL 3D - con perspectiva y preserve-3d */
+    /* Carrusel */
     .stage-mio {
       position: relative;
       width: 100vw;
-      height: 52vh;       /* Altura flexible pero proporcionada */
-      min-height: 340px;
-      max-height: 440px;
+      height: min(60vh, 480px);
       overflow: hidden;
-      perspective: 1200px;
-      margin: 12px 0;
+      perspective: 1600px;
+      touch-action: none;
+      user-select: none;
     }
     .carousel-mio {
       position: absolute;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       transform-style: preserve-3d;
     }
     .card-mio {
@@ -76,12 +77,11 @@
       left: 50%;
       top: 50%;
       transform-style: preserve-3d;
-      border-radius: 24px;
+      border-radius: 26px;
       overflow: hidden;
       background: #fff;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1), width 0.4s, height 0.4s;
-      will-change: transform;
+      box-shadow: 0 22px 60px rgba(0,0,0,.42);
+      transition: transform 0.45s cubic-bezier(.22,.8,.18,1), width 0.45s cubic-bezier(.22,.8,.18,1), height 0.45s cubic-bezier(.22,.8,.18,1), opacity 0.25s ease;
     }
     .card-mio img {
       width: 100%;
@@ -91,83 +91,94 @@
       pointer-events: none;
     }
 
-    /* BOTÓN WHATSAPP */
+    /* Botón WhatsApp */
     .boton-wa-mio {
-      display: block;
-      width: fit-content;
-      max-width: 90vw;
-      min-width: 200px;
-      height: 48px;
-      padding: 0 24px;
-      border-radius: 60px;
-      background: #fff;
-      color: #000;
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: bold;
+      display: block !important;
+      width: fit-content !important;
+      max-width: 90vw !important;
+      min-width: 220px;
+      height: 54px;
+      padding: 0 28px !important;
+      border-radius: 999px;
+      background: #fff !important;
+      color: #000 !important;
+      text-decoration: none !important;
+      font-size: 15px !important;
+      font-weight: 700 !important;
       text-align: center;
-      line-height: 48px;
-      margin: 8px auto 6px auto;
-      border: none;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      transition: transform 0.1s;
+      line-height: 54px;
+      margin: 20px auto 0 auto !important;
+      border: 1px solid rgba(255,255,255,.2);
+      box-shadow: 0 12px 30px rgba(0,0,0,.3);
     }
-    .boton-wa-mio:active {
-      transform: scale(0.97);
-    }
+    .boton-wa-mio:active { transform: scale(0.98); }
 
-    /* REDES SOCIALES */
+    /* Redes sociales */
     .social-links {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 28px;
-      margin: 4px 0 15px 0;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 32px !important;
+      margin-top: 30px !important;
+      margin-bottom: 20px !important;
+      flex-wrap: wrap !important;
     }
     .social-icon {
-      display: inline-block;
-      width: 38px;
-      height: 38px;
-      transition: transform 0.2s;
-      opacity: 0.9;
+      display: inline-block !important;
+      width: 40px !important;
+      height: 40px !important;
+      transition: transform 0.2s ease, opacity 0.2s ease !important;
+      opacity: 0.85;
     }
     .social-icon:hover {
-      transform: scale(1.08);
+      transform: scale(1.1) !important;
       opacity: 1;
     }
     .social-icon svg {
-      width: 100%;
-      height: 100%;
-      fill: white;
+      width: 100% !important;
+      height: 100% !important;
+      fill: white !important;
     }
 
-    /* Responsive para que quepa en pantallas pequeñas */
-    @media (max-width: 500px) {
-      .logo-container-mio img { height: 50px; }
-      .stage-mio { height: 48vh; min-height: 300px; margin: 8px 0; }
-      .boton-wa-mio { height: 44px; line-height: 44px; font-size: 14px; min-width: 180px; }
-      .social-links { gap: 22px; }
-      .social-icon { width: 34px; height: 34px; }
+    /* Ajustes responsivos para el logo gigante */
+    @media (max-width: 768px) {
+      .logo-container-mio img { height: 180px; }
     }
-    @media (max-width: 400px) {
-      .stage-mio { height: 46vh; min-height: 280px; }
-      .social-links { gap: 18px; }
-      .social-icon { width: 32px; height: 32px; }
+    @media (max-width: 600px) {
+      .logo-container-mio img { height: 150px; }
+    }
+    @media (max-width: 480px){
+      body { padding: 20px 0; }
+      .mi-carrusel-wrapper { gap: 24px; }
+      .logo-container-mio img { height: 130px; }
+      .stage-mio { height: min(55vh, 420px); }
+      .boton-wa-mio { min-width: 200px; height: 48px; line-height: 48px; font-size: 13px; }
+      .social-links { gap: 26px !important; margin-top: 24px !important; }
+      .social-icon { width: 34px !important; height: 34px !important; }
+    }
+    @media (max-width: 390px){
+      .logo-container-mio img { height: 110px; }
+      .stage-mio { height: min(52vh, 400px); }
+      .social-links { gap: 22px !important; }
+      .social-icon { width: 32px !important; height: 32px !important; }
+    }
+    @media (max-width: 360px){
+      .logo-container-mio img { height: 90px; }
     }
   </style>
 </head>
 <body>
 <div class="mi-carrusel-wrapper">
-  <!-- LOGO: usa tu ruta, pero si falla, muestra un logo de respaldo bonito -->
+  <!-- LOGO: TAMAÑO 5 VECES MÁS GRANDE (240px en desktop) -->
   <div class="logo-container-mio">
     <img src="images/WhatsApp%20Image%202026-05-21%20at%2015.40.16.jpeg" 
          alt="Logo"
-         onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; this.style.height='auto';">
+         onerror="this.onerror=null; this.src='https://placehold.co/600x200?text=LOGO+NO+ENCONTRADO'; this.style.height='auto';">
   </div>
 
-  <!-- CARRUSEL 3D -->
   <section class="stage-mio">
     <div class="carousel-mio" id="carouselFinal">
+      <!-- Tus imágenes del producto -->
       <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
       <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
       <article class="card-mio"><img src="images/descarga%20%281%29.png" alt="Producto" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
@@ -176,12 +187,10 @@
     </div>
   </section>
 
-  <!-- BOTÓN WHATSAPP -->
   <a class="boton-wa-mio" href="https://wa.me/573000000000?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer">
     Escribir por WhatsApp
   </a>
 
-  <!-- REDES SOCIALES -->
   <div class="social-links">
     <a href="https://www.facebook.com/profile.php?id=61590498631605" target="_blank" class="social-icon">
       <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -208,44 +217,38 @@
     let startX = 0;
     let dragDelta = 0;
 
-    function getLayout() {
+    function getLayout(){
       const w = window.innerWidth;
-      if (w <= 360) return { cW: 220, cH: 320, sW: 175, sH: 280, offY: 6, x1: 118, x2: 215, scl1: 0.85, scl2: 0.79, rot1: 23, rot2: 32 };
-      if (w <= 390) return { cW: 232, cH: 338, sW: 185, sH: 295, offY: 6, x1: 125, x2: 228, scl1: 0.86, scl2: 0.80, rot1: 22, rot2: 31 };
-      if (w <= 430) return { cW: 248, cH: 354, sW: 198, sH: 310, offY: 6, x1: 134, x2: 242, scl1: 0.87, scl2: 0.81, rot1: 21, rot2: 30 };
-      return { cW: 264, cH: 370, sW: 210, sH: 324, offY: 6, x1: 142, x2: 256, scl1: 0.88, scl2: 0.82, rot1: 20, rot2: 29 };
+      if (w <= 360) return { centerW:264, centerH:380, sideW:212, sideH:343, sideY:8, x1:144, x2:268, scale1:0.86, scale2:0.80, rot1:24, rot2:33 };
+      if (w <= 390) return { centerW:278, centerH:392, sideW:220, sideH:352, sideY:8, x1:152, x2:282, scale1:0.87, scale2:0.81, rot1:23, rot2:32 };
+      if (w <= 430) return { centerW:292, centerH:404, sideW:228, sideH:360, sideY:8, x1:162, x2:298, scale1:0.88, scale2:0.82, rot1:22, rot2:31 };
+      return { centerW:304, centerH:413, sideW:236, sideH:372, sideY:8, x1:170, x2:316, scale1:0.89, scale2:0.83, rot1:21, rot2:30 };
     }
 
-    function applyLayout() {
+    function applyLayout(){
       const l = getLayout();
       cards.forEach((card, i) => {
-        let diff = i - activeIndex;
-        let d = ((diff % total) + total) % total;
+        let dRaw = i - activeIndex;
+        let d = ((dRaw % total) + total) % total;
         if (d > total/2) d -= total;
-        let x=0, y=0, scale=1, ry=0, opacity=1, z=3, w=l.cW, h=l.cH;
-        if (d === 0) {
-          x=0; y=0; scale=1; ry=0; z=5; w=l.cW; h=l.cH;
-        } else if (d === -1) {
-          x = -l.x1; y = l.offY; scale = l.scl1; ry = l.rot1; z = 3; w = l.sW; h = l.sH;
-        } else if (d === 1) {
-          x = l.x1; y = l.offY; scale = l.scl1; ry = -l.rot1; z = 3; w = l.sW; h = l.sH;
-        } else if (d === -2) {
-          x = -l.x2; y = l.offY + 4; scale = l.scl2; ry = l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
-        } else if (d === 2) {
-          x = l.x2; y = l.offY + 4; scale = l.scl2; ry = -l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
-        } else {
-          opacity = 0; z = 0; scale = 0.7;
-        }
+        let x=0, y=0, scale=1, rotateY=0, opacity=1, z=3;
+        let w = l.centerW, h = l.centerH;
+        if (d === 0) { x=0; y=0; scale=1; rotateY=0; z=5; w=l.centerW; h=l.centerH; }
+        else if (d === -1) { x=-l.x1; y=l.sideY; scale=l.scale1; rotateY=l.rot1; z=3; w=l.sideW; h=l.sideH; }
+        else if (d === 1) { x=l.x1; y=l.sideY; scale=l.scale1; rotateY=-l.rot1; z=3; w=l.sideW; h=l.sideH; }
+        else if (d === -2) { x=-l.x2; y=l.sideY+4; scale=l.scale2; rotateY=l.rot2; z=1; w=Math.round(l.sideW*0.95); h=Math.round(l.sideH*0.95); }
+        else if (d === 2) { x=l.x2; y=l.sideY+4; scale=l.scale2; rotateY=-l.rot2; z=1; w=Math.round(l.sideW*0.95); h=Math.round(l.sideH*0.95); }
+        else { opacity=0; z=0; x=0; y=0; scale=0.7; rotateY=0; }
         card.style.width = w + 'px';
         card.style.height = h + 'px';
         card.style.opacity = opacity;
         card.style.zIndex = z;
-        card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotateY(${ry}deg) scale(${scale})`;
+        card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotateY(${rotateY}deg) scale(${scale})`;
       });
     }
 
-    function next() { activeIndex = (activeIndex+1)%total; applyLayout(); }
-    function prev() { activeIndex = (activeIndex-1+total)%total; applyLayout(); }
+    function next(){ activeIndex = (activeIndex+1)%total; applyLayout(); }
+    function prev(){ activeIndex = (activeIndex-1+total)%total; applyLayout(); }
 
     carousel.addEventListener('pointerdown', (e) => {
       isDragging = true;
@@ -254,17 +257,14 @@
       carousel.setPointerCapture?.(e.pointerId);
     });
     carousel.addEventListener('pointermove', (e) => {
-      if (!isDragging) return;
+      if(!isDragging) return;
       dragDelta = e.clientX - startX;
     });
     carousel.addEventListener('pointerup', () => {
-      if (!isDragging) return;
+      if(!isDragging) return;
       isDragging = false;
-      if (Math.abs(dragDelta) > 40) {
-        dragDelta < 0 ? next() : prev();
-      } else {
-        applyLayout();
-      }
+      if(Math.abs(dragDelta) > 45) dragDelta < 0 ? next() : prev();
+      else applyLayout();
     });
     carousel.addEventListener('pointercancel', () => { isDragging = false; applyLayout(); });
     carousel.addEventListener('pointerleave', () => { isDragging = false; applyLayout(); });
