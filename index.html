@@ -77,7 +77,7 @@
             position: relative;
         }
 
-        /* LOGO CENTRADO ARRIBA (ahora el doble de grande: 240px) */
+        /* LOGO CENTRADO ARRIBA (reducido 15%: 204px) */
         .logo-center-container {
             position: fixed;
             top: 24px;
@@ -88,7 +88,7 @@
             padding: 0 20px;
         }
         #custom-logo {
-            height: 240px;   /* antes 120px, ahora 240px (el doble) */
+            height: 204px;   /* antes 240px, ahora 204px (15% menos) */
             width: auto;
             max-width: 85vw;
             object-fit: contain;
@@ -196,16 +196,16 @@
             fill: white;
         }
 
-        /* Ajustes responsive (también el doble de grande) */
+        /* Ajustes responsive (reducidos 15%) */
         @media (max-width: 500px) {
-            #custom-logo { height: 180px; }  /* antes 90px */
+            #custom-logo { height: 153px; }  /* antes 180px */
             .stage-mio { height: 55vh; min-height: 300px; }
             .boton-wa-mio { height: 44px; line-height: 44px; font-size: 14px; min-width: 180px; }
             .social-links { gap: 20px; }
             .social-icon { width: 32px; height: 32px; }
         }
         @media (max-width: 400px) {
-            #custom-logo { height: 160px; }  /* antes 80px */
+            #custom-logo { height: 136px; }  /* antes 160px */
             .stage-mio { height: 50vh; min-height: 280px; }
             .social-links { gap: 16px; }
             .social-icon { width: 28px; height: 28px; }
@@ -224,7 +224,7 @@
 
 <!-- APP PRINCIPAL -->
 <div id="app-root">
-    <!-- LOGO CENTRADO GIGANTE con la nueva imagen -->
+    <!-- LOGO CENTRADO (reducido 15%) -->
     <div class="logo-center-container">
         <img id="custom-logo" 
              src="images/WhatsApp Image 2026-06-01 at 13.33.56.jpeg" 
