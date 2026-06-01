@@ -90,43 +90,79 @@
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
         }
 
-        .stage-mio {
+        /* NUEVO CARRUSEL PLANO */
+        .carousel-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 100vw;
+            width: 90vw;
+            max-width: 600px;
             height: 60vh;
-            max-height: 600px;
+            max-height: 500px;
             min-height: 350px;
-            perspective: 1200px;
+            overflow: hidden;
         }
-        .carousel-mio {
-            width: 100%;
+        .carousel-track {
+            display: flex;
             height: 100%;
-            position: absolute;
-            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
         }
-        .card-mio {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform-style: preserve-3d;
+        .carousel-card {
+            flex: 0 0 100%;
+            height: 100%;
             border-radius: 24px;
             overflow: hidden;
             background: #fff;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), width 0.4s, height 0.4s;
-            will-change: transform;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .card-mio img {
+        .carousel-card img {
             width: 100%;
             height: 100%;
-            display: block;
             object-fit: cover;
-            pointer-events: none;
+            display: block;
         }
 
+        /* FLECHAS SUTILES */
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            transition: background 0.2s, opacity 0.2s;
+            opacity: 0.6;
+            border: none;
+        }
+        .arrow:hover {
+            background: rgba(255,255,255,0.3);
+            opacity: 1;
+        }
+        .arrow svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+        .arrow-left {
+            left: 10px;
+        }
+        .arrow-right {
+            right: 10px;
+        }
+
+        /* BARRA INFERIOR (WhatsApp + redes) */
         .bottom-bar {
             position: fixed;
             bottom: 0;
@@ -189,16 +225,17 @@
             fill: white;
         }
 
+        /* Responsive */
         @media (max-width: 500px) {
             #custom-logo { height: 133px; }
-            .stage-mio { height: 55vh; min-height: 300px; }
+            .carousel-container { height: 55vh; min-height: 300px; }
             .boton-wa-mio { height: 44px; line-height: 44px; font-size: 14px; min-width: 180px; }
             .social-links { gap: 20px; }
             .social-icon { width: 32px; height: 32px; }
         }
         @media (max-width: 400px) {
             #custom-logo { height: 118px; }
-            .stage-mio { height: 50vh; min-height: 280px; }
+            .carousel-container { height: 50vh; min-height: 280px; }
             .social-links { gap: 16px; }
             .social-icon { width: 28px; height: 28px; }
         }
@@ -214,22 +251,32 @@
 </div>
 
 <div id="app-root">
+    <!-- LOGO -->
     <div class="logo-center-container">
         <img id="custom-logo" 
              src="images/WhatsApp Image 2026-06-01 at 13.33.56.jpeg" 
              alt="Logo">
     </div>
 
-    <div class="stage-mio">
-        <div class="carousel-mio" id="carouselFinal">
-            <article class="card-mio"><img src="images/1.jpeg" alt="1"></article>
-            <article class="card-mio"><img src="images/2.jpeg" alt="2"></article>
-            <article class="card-mio"><img src="images/3.jpeg" alt="3"></article>
-            <article class="card-mio"><img src="images/4.jpeg" alt="4"></article>
-            <article class="card-mio"><img src="images/5.jpeg" alt="5"></article>
+    <!-- NUEVO CARRUSEL PLANO CON FLECHAS -->
+    <div class="carousel-container" id="carouselContainer">
+        <div class="carousel-track" id="carouselTrack">
+            <div class="carousel-card"><img src="images/1.jpeg" alt="1"></div>
+            <div class="carousel-card"><img src="images/2.jpeg" alt="2"></div>
+            <div class="carousel-card"><img src="images/3.jpeg" alt="3"></div>
+            <div class="carousel-card"><img src="images/4.jpeg" alt="4"></div>
+            <div class="carousel-card"><img src="images/5.jpeg" alt="5"></div>
         </div>
+        <!-- Flechas -->
+        <button class="arrow arrow-left" id="prevBtn" aria-label="Anterior">
+            <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <button class="arrow arrow-right" id="nextBtn" aria-label="Siguiente">
+            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
     </div>
 
+    <!-- BARRA INFERIOR -->
     <div class="bottom-bar">
         <a class="boton-wa-mio" href="https://wa.me/573000000000?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer">
             💬 WhatsApp
@@ -253,6 +300,7 @@
 
 <script>
     (function() {
+        // Carga
         const loadingScreen = document.getElementById('loading-screen');
         const barFill = document.getElementById('loading-bar-fill');
         const percentageEl = document.getElementById('loading-percentage');
@@ -280,77 +328,76 @@
             }
         }, 80);
 
+        // Nuevo carrusel plano
         function initCarousel() {
-            const cards = Array.from(document.querySelectorAll('.card-mio'));
+            const track = document.getElementById('carouselTrack');
+            const cards = Array.from(track.children);
             const total = cards.length;
-            const carousel = document.getElementById('carouselFinal');
-            let activeIndex = 0;
+            let currentIndex = 0;
             let isDragging = false;
             let startX = 0;
-            let dragDelta = 0;
+            let currentTranslate = 0;
+            let prevTranslate = 0;
 
-            function getLayout() {
-                const w = window.innerWidth;
-                if (w <= 360) return { cW: 220, cH: 320, sW: 175, sH: 280, offY: 6, x1: 118, x2: 215, scl1: 0.85, scl2: 0.79, rot1: 23, rot2: 32 };
-                if (w <= 390) return { cW: 232, cH: 338, sW: 185, sH: 295, offY: 6, x1: 125, x2: 228, scl1: 0.86, scl2: 0.80, rot1: 22, rot2: 31 };
-                if (w <= 430) return { cW: 248, cH: 354, sW: 198, sH: 310, offY: 6, x1: 134, x2: 242, scl1: 0.87, scl2: 0.81, rot1: 21, rot2: 30 };
-                return { cW: 264, cH: 370, sW: 210, sH: 324, offY: 6, x1: 142, x2: 256, scl1: 0.88, scl2: 0.82, rot1: 20, rot2: 29 };
-            }
+            const updateSlidePosition = () => {
+                track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            };
 
-            function applyLayout() {
-                const l = getLayout();
-                cards.forEach((card, i) => {
-                    let diff = i - activeIndex;
-                    let d = ((diff % total) + total) % total;
-                    if (d > total/2) d -= total;
-                    let x=0, y=0, scale=1, ry=0, opacity=1, z=3, w=l.cW, h=l.cH;
-                    if (d === 0) {
-                        x=0; y=0; scale=1; ry=0; z=5; w=l.cW; h=l.cH;
-                    } else if (d === -1) {
-                        x = -l.x1; y = l.offY; scale = l.scl1; ry = l.rot1; z = 3; w = l.sW; h = l.sH;
-                    } else if (d === 1) {
-                        x = l.x1; y = l.offY; scale = l.scl1; ry = -l.rot1; z = 3; w = l.sW; h = l.sH;
-                    } else if (d === -2) {
-                        x = -l.x2; y = l.offY + 4; scale = l.scl2; ry = l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
-                    } else if (d === 2) {
-                        x = l.x2; y = l.offY + 4; scale = l.scl2; ry = -l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
-                    } else {
-                        opacity = 0; z = 0; scale = 0.7;
-                    }
-                    card.style.width = w + 'px';
-                    card.style.height = h + 'px';
-                    card.style.opacity = opacity;
-                    card.style.zIndex = z;
-                    card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotateY(${ry}deg) scale(${scale})`;
-                });
-            }
+            const next = () => {
+                currentIndex = (currentIndex + 1) % total;
+                updateSlidePosition();
+            };
+            const prev = () => {
+                currentIndex = (currentIndex - 1 + total) % total;
+                updateSlidePosition();
+            };
 
-            function next() { activeIndex = (activeIndex+1)%total; applyLayout(); }
-            function prev() { activeIndex = (activeIndex-1+total)%total; applyLayout(); }
+            document.getElementById('nextBtn').addEventListener('click', next);
+            document.getElementById('prevBtn').addEventListener('click', prev);
 
-            carousel.addEventListener('pointerdown', (e) => {
+            // Arrastre táctil/ratón
+            track.addEventListener('pointerdown', (e) => {
                 isDragging = true;
                 startX = e.clientX;
-                dragDelta = 0;
-                carousel.setPointerCapture?.(e.pointerId);
+                prevTranslate = -currentIndex * track.clientWidth;
+                track.style.transition = 'none';
+                track.setPointerCapture?.(e.pointerId);
             });
-            carousel.addEventListener('pointermove', (e) => {
+            track.addEventListener('pointermove', (e) => {
                 if (!isDragging) return;
-                dragDelta = e.clientX - startX;
+                const delta = e.clientX - startX;
+                currentTranslate = prevTranslate + delta;
+                // Limitar arrastre un poco
+                track.style.transform = `translateX(${currentTranslate}px)`;
             });
-            carousel.addEventListener('pointerup', () => {
+            track.addEventListener('pointerup', () => {
                 if (!isDragging) return;
                 isDragging = false;
-                if (Math.abs(dragDelta) > 40) {
-                    dragDelta < 0 ? next() : prev();
+                track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                const movedBy = currentTranslate - prevTranslate;
+                // Si se movió suficiente, cambiar slide
+                if (movedBy < -50) {
+                    next();
+                } else if (movedBy > 50) {
+                    prev();
                 } else {
-                    applyLayout();
+                    updateSlidePosition();
                 }
             });
-            carousel.addEventListener('pointercancel', () => { isDragging = false; applyLayout(); });
-            carousel.addEventListener('pointerleave', () => { isDragging = false; applyLayout(); });
-            window.addEventListener('resize', applyLayout);
-            applyLayout();
+            track.addEventListener('pointercancel', () => {
+                isDragging = false;
+                track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                updateSlidePosition();
+            });
+            track.addEventListener('pointerleave', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    track.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                    updateSlidePosition();
+                }
+            });
+            window.addEventListener('resize', updateSlidePosition);
+            updateSlidePosition();
         }
     })();
 </script>
