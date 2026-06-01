@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="Descubre nuestros productos. Síguenos en redes.">
+    <title>Tu Marca | Productos</title>
+
+    <!-- Open Graph / Social -->
+    <meta property="og:locale" content="es_LA">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Tu Marca">
+    <meta property="og:description" content="Dos productos increíbles para ti.">
+    <meta property="og:url" content="https://tudominio.com/">
+    <meta property="og:image" content="https://tudominio.com/images/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tu Marca">
+    <meta name="twitter:description" content="Dos productos increíbles para ti.">
+    <meta name="twitter:image" content="https://tudominio.com/images/og-image.jpg">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⭐</text></svg>">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            overflow: hidden;
+            position: fixed;
+            top: 0; bottom: 0; left: 0; right: 0;
+            background: black;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* PANTALLA DE CARGA MINIMALISTA (línea) */
+        #loading-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: black;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .loading-bar-container {
+            width: 180px;
+            height: 3px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .loading-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: #66cddd;
+            border-radius: 3px;
+            transition: width 0.08s linear;
+        }
+        .loading-percentage-text {
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 0.5px;
+        }
+
+        /* CAPA PRINCIPAL */
+        #app-root {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* LOGO CENTRADO */
+        .logo-center-container {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            text-align: center;
+            padding: 0 20px;
+        }
+        #custom-logo {
+            height: 177px;
+            width: auto;
+            max-width: 85vw;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+        }
+
+        /* CONTENEDOR DE IMÁGENES (siempre horizontal) */
+        .products-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90vw;
+            max-width: 650px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: nowrap; /* Nunca apilar */
+            padding: 0 10px;
+        }
+
+        /* CADA IMAGEN */
+        .product-card {
+            flex: 1 1 auto;
+            max-width: 48%;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+        }
+        .product-card:active {
+            transform: scale(0.98);
+        }
+        .product-card img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 3/4; /* Relación de aspecto fija para todas las pantallas */
+            object-fit: cover;
+            display: block;
+        }
+
+        /* REDES SOCIALES */
+        .social-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 20px 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            z-index: 50;
+        }
+        .social-icon {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            transition: transform 0.2s;
+            opacity: 0.85;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+        .social-icon:hover {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+        .social-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: white;
+        }
+
+        /* Ajustes responsive (siempre horizontal) */
+        @media (max-width: 600px) {
+            .products-container {
+                gap: 10px;
+                width: 95vw;
+            }
+            .product-card {
+                max-width: 48%;
+            }
+        }
+        @media (max-width: 500px) {
+            #custom-logo { height: 133px; }
+            .products-container { gap: 8px; }
+            .social-icon { width: 32px; height: 32px; }
+            .social-bar { gap: 20px; }
+        }
+        @media (max-width: 400px) {
+            #custom-logo { height: 118px; }
+            .products-container {
+                gap: 6px;
+                width: 98vw;
+            }
+            .product-card {
+                max-width: 48%;
+                border-radius: 16px;
+            }
+            .social-icon { width: 28px; height: 28px; }
+            .social-bar { gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PANTALLA DE CARGA -->
+<div id="loading-screen">
+    <div class="loading-bar-container">
+        <div class="loading-bar-fill" id="loading-bar-fill"></div>
+    </div>
+    <div class="loading-percentage-text" id="loading-percentage">0%</div>
+</div>
+
+<!-- APP PRINCIPAL -->
+<div id="app-root">
+    <!-- LOGO -->
+    <div class="logo-center-container">
+        <img id="custom-logo" 
+             src="images/WhatsApp Image 2026-06-01 at 13.33.56.jpeg" 
+             alt="Logo"
+             onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; this.style.height='auto';">
+    </div>
+
+    <!-- DOS IMÁGENES HORIZONTALES (sin texto) -->
+    <div class="products-container">
+        <div class="product-card" onclick="window.open('https://wa.me/573000000000?text=Quiero%20el%20Producto%201','_blank')">
+            <img src="images/descarga%20%281%29.png" alt="Producto 1" onerror="this.src='https://picsum.photos/id/20/400/500'">
+        </div>
+        <div class="product-card" onclick="window.open('https://wa.me/573000000000?text=Quiero%20el%20Producto%202','_blank')">
+            <img src="images/descarga%20%281%29.png" alt="Producto 2" onerror="this.src='https://picsum.photos/id/21/400/500'">
+        </div>
+    </div>
+
+    <!-- REDES SOCIALES -->
+    <div class="social-bar">
+        <a href="https://www.facebook.com/profile.php?id=61590498631605" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/cartwszz/" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@cartwszzy?lang=es-419" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 15.58a6.34 6.34 0 0 0 10.86 4.7 6.33 6.33 0 0 0 1.81-4.5v-7a8.2 8.2 0 0 0 4.83 1.48V9.4a5.14 5.14 0 0 1-2.91-2.71z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@Cartwsz" target="_blank" class="social-icon">
+            <svg viewBox="0 0 24 24"><path d="M21.582 6.186a2.506 2.506 0 0 0-1.768-1.768C18.254 4 12 4 12 4s-6.254 0-7.814.418a2.505 2.505 0 0 0-1.768 1.768C2 7.746 2 12 2 12s0 4.254.418 5.814c.23.846.922 1.538 1.768 1.768C5.746 20 12 20 12 20s6.254 0 7.814-.418c.846-.23 1.538-.922 1.768-1.768C22 16.254 22 12 22 12s0-4.254-.418-5.814zM10 15V9l5 3-5 3z"/></svg>
+        </a>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // Simulación de carga
+        const loadingScreen = document.getElementById('loading-screen');
+        const barFill = document.getElementById('loading-bar-fill');
+        const percentageEl = document.getElementById('loading-percentage');
+        const appRoot = document.getElementById('app-root');
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.floor(Math.random() * 6) + 1;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                barFill.style.width = '100%';
+                percentageEl.textContent = '100%';
+                setTimeout(() => {
+                    loadingScreen.style.opacity = '0';
+                    loadingScreen.style.transition = 'opacity 0.4s ease';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                        appRoot.style.display = 'block';
+                    }, 400);
+                }, 200);
+            } else {
+                barFill.style.width = progress + '%';
+                percentageEl.textContent = progress + '%';
+            }
+        }, 80);
+    })();
+</script>
+
+</body>
+</html>
