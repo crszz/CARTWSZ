@@ -198,14 +198,14 @@
 
         /* Ajustes responsive (reducidos 13%) */
         @media (max-width: 500px) {
-            #custom-logo { height: 133px; }  /* antes 153px */
+            #custom-logo { height: 133px; }
             .stage-mio { height: 55vh; min-height: 300px; }
             .boton-wa-mio { height: 44px; line-height: 44px; font-size: 14px; min-width: 180px; }
             .social-links { gap: 20px; }
             .social-icon { width: 32px; height: 32px; }
         }
         @media (max-width: 400px) {
-            #custom-logo { height: 118px; }  /* antes 136px */
+            #custom-logo { height: 118px; }
             .stage-mio { height: 50vh; min-height: 280px; }
             .social-links { gap: 16px; }
             .social-icon { width: 28px; height: 28px; }
@@ -224,7 +224,7 @@
 
 <!-- APP PRINCIPAL -->
 <div id="app-root">
-    <!-- LOGO CENTRADO (reducido 13%) -->
+    <!-- LOGO CENTRADO -->
     <div class="logo-center-container">
         <img id="custom-logo" 
              src="images/WhatsApp Image 2026-06-01 at 13.33.56.jpeg" 
@@ -232,13 +232,13 @@
              onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; this.style.height='auto';">
     </div>
 
-    <!-- CARRUSEL 3D con las nuevas imágenes -->
+    <!-- CARRUSEL 3D con las 5 imágenes corregidas -->
     <div class="stage-mio">
         <div class="carousel-mio" id="carouselFinal">
             <article class="card-mio"><img src="images/Cambia_el_ángulo_de_esta_202606011553.jpeg" alt="Producto 1" onerror="this.onerror=null; this.src='https://picsum.photos/id/20/400/500'"></article>
             <article class="card-mio"><img src="images/Crea_3_versiones_diferentes_angulos_202606011553.jpeg" alt="Producto 2" onerror="this.onerror=null; this.src='https://picsum.photos/id/21/400/500'"></article>
             <article class="card-mio"><img src="images/cambia_el_angulo_por_favor_202606011552.jpeg" alt="Producto 3" onerror="this.onerror=null; this.src='https://picsum.photos/id/22/400/500'"></article>
-            <article class="card-mio"><img src="images/ponlo_en_horizontal_2K_202606011552 (1).jpeg" alt="Producto 4" onerror="this.onerror=null; this.src='https://picsum.photos/id/23/400/500'"></article>
+            <article class="card-mio"><img src="images/ponlo_en_horizontal_2K_202606011552%20(1).jpeg" alt="Producto 4" onerror="this.onerror=null; this.src='https://picsum.photos/id/23/400/500'"></article>
             <article class="card-mio"><img src="images/ponlo_en_horizontal_2K_202606011552.jpeg" alt="Producto 5" onerror="this.onerror=null; this.src='https://picsum.photos/id/24/400/500'"></article>
         </div>
     </div>
@@ -267,7 +267,7 @@
 
 <script>
     (function() {
-        // ---------- SIMULACIÓN DE CARGA (línea de progreso minimalista) ----------
+        // ---------- SIMULACIÓN DE CARGA ----------
         const loadingScreen = document.getElementById('loading-screen');
         const barFill = document.getElementById('loading-bar-fill');
         const percentageEl = document.getElementById('loading-percentage');
