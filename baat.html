@@ -115,9 +115,7 @@
             border-radius: 24px;
             overflow: hidden;
             background: #fff;
-            /* SOMBRA REDUCIDA — antes: 0 20px 40px rgba(0,0,0,0.6) */
             box-shadow: 0 8px 20px rgba(0,0,0,0.22);
-            transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), width 0.4s, height 0.4s;
             will-change: transform;
         }
         .card-mio img {
@@ -128,7 +126,6 @@
             pointer-events: none;
         }
 
-        /* ── BOTONES FLECHA ── */
         .carousel-arrow {
             position: fixed;
             top: 50%;
@@ -251,12 +248,11 @@
 
 <div id="app-root">
     <div class="logo-center-container">
-        <img id="custom-logo" 
-             src="images/WhatsApp Image 2026-06-01 at 13.33.56.jpeg" 
+        <img id="custom-logo"
+             src="images/WhatsApp Image 2026-06-01 at 13.33.56.jpeg"
              alt="Logo">
     </div>
 
-    <!-- BOTÓN PREV -->
     <button class="carousel-arrow" id="arrow-prev" aria-label="Anterior">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
@@ -271,7 +267,6 @@
         </div>
     </div>
 
-    <!-- BOTÓN NEXT -->
     <button class="carousel-arrow" id="arrow-next" aria-label="Siguiente">
         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
@@ -334,6 +329,13 @@
             let isDragging = false;
             let startX = 0;
             let dragDelta = 0;
+            let lastX = 0;
+            let lastTime = 0;
+            let velocity = 0;
+
+            const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+            const DUR_NORMAL = '600ms';
+            const DUR_SNAP = '380ms';
 
             function getLayout() {
                 const w = window.innerWidth;
@@ -343,15 +345,16 @@
                 return { cW: 264, cH: 370, sW: 210, sH: 324, offY: 6, x1: 142, x2: 256, scl1: 0.88, scl2: 0.82, rot1: 20, rot2: 29 };
             }
 
-            function applyLayout() {
+            function applyLayout(snap) {
                 const l = getLayout();
+                const dur = snap ? DUR_SNAP : DUR_NORMAL;
                 cards.forEach((card, i) => {
                     let diff = i - activeIndex;
                     let d = ((diff % total) + total) % total;
-                    if (d > total/2) d -= total;
-                    let x=0, y=0, scale=1, ry=0, opacity=1, z=3, w=l.cW, h=l.cH;
+                    if (d > total / 2) d -= total;
+                    let x = 0, y = 0, scale = 1, ry = 0, opacity = 1, z = 3, w = l.cW, h = l.cH;
                     if (d === 0) {
-                        x=0; y=0; scale=1; ry=0; z=5; w=l.cW; h=l.cH;
+                        x = 0; y = 0; scale = 1; ry = 0; z = 5; w = l.cW; h = l.cH;
                     } else if (d === -1) {
                         x = -l.x1; y = l.offY; scale = l.scl1; ry = l.rot1; z = 3; w = l.sW; h = l.sH;
                     } else if (d === 1) {
@@ -367,40 +370,94 @@
                     card.style.height = h + 'px';
                     card.style.opacity = opacity;
                     card.style.zIndex = z;
+                    card.style.transition = `transform ${dur} ${EASE}, width ${dur} ${EASE}, height ${dur} ${EASE}, opacity ${dur} ${EASE}`;
                     card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotateY(${ry}deg) scale(${scale})`;
                 });
             }
 
-            function next() { activeIndex = (activeIndex+1)%total; applyLayout(); }
-            function prev() { activeIndex = (activeIndex-1+total)%total; applyLayout(); }
+            function applyDrag(delta) {
+                const l = getLayout();
+                const progress = Math.max(-1, Math.min(1, delta / (l.x1 * 1.4)));
+                cards.forEach((card, i) => {
+                    let diff = i - activeIndex;
+                    let d = ((diff % total) + total) % total;
+                    if (d > total / 2) d -= total;
+                    let x = 0, y = 0, scale = 1, ry = 0, opacity = 1, z = 3, w = l.cW, h = l.cH;
+                    if (d === 0) {
+                        x = delta * 0.55; y = 0; scale = 1; ry = 0; z = 5; w = l.cW; h = l.cH;
+                    } else if (d === -1) {
+                        const t = progress < 0 ? Math.abs(progress) : 0;
+                        x = -l.x1 + delta * 0.55; y = l.offY * (1 - t); scale = l.scl1 + (1 - l.scl1) * t; ry = l.rot1 * (1 - t); z = 3; w = l.sW; h = l.sH;
+                    } else if (d === 1) {
+                        const t = progress > 0 ? progress : 0;
+                        x = l.x1 + delta * 0.55; y = l.offY * (1 - t); scale = l.scl1 + (1 - l.scl1) * t; ry = -l.rot1 * (1 - t); z = 3; w = l.sW; h = l.sH;
+                    } else if (d === -2) {
+                        x = -l.x2 + delta * 0.3; y = l.offY + 4; scale = l.scl2; ry = l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
+                    } else if (d === 2) {
+                        x = l.x2 + delta * 0.3; y = l.offY + 4; scale = l.scl2; ry = -l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
+                    } else {
+                        opacity = 0; z = 0; scale = 0.7;
+                    }
+                    card.style.width = w + 'px';
+                    card.style.height = h + 'px';
+                    card.style.opacity = opacity;
+                    card.style.zIndex = z;
+                    card.style.transition = 'none';
+                    card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotateY(${ry}deg) scale(${scale})`;
+                });
+            }
 
-            /* Botones flecha */
+            function next() { activeIndex = (activeIndex + 1) % total; applyLayout(false); }
+            function prev() { activeIndex = (activeIndex - 1 + total) % total; applyLayout(false); }
+
             document.getElementById('arrow-prev').addEventListener('click', prev);
             document.getElementById('arrow-next').addEventListener('click', next);
+
+            carousel.style.touchAction = 'pan-y';
 
             carousel.addEventListener('pointerdown', (e) => {
                 isDragging = true;
                 startX = e.clientX;
                 dragDelta = 0;
-                carousel.setPointerCapture?.(e.pointerId);
+                lastX = e.clientX;
+                lastTime = Date.now();
+                velocity = 0;
+                carousel.setPointerCapture && carousel.setPointerCapture(e.pointerId);
             });
+
             carousel.addEventListener('pointermove', (e) => {
                 if (!isDragging) return;
+                const now = Date.now();
+                const dt = now - lastTime;
+                if (dt > 0) {
+                    velocity = (e.clientX - lastX) / dt;
+                    lastX = e.clientX;
+                    lastTime = now;
+                }
                 dragDelta = e.clientX - startX;
+                applyDrag(dragDelta);
             });
-            carousel.addEventListener('pointerup', () => {
+
+            function endDrag() {
                 if (!isDragging) return;
                 isDragging = false;
-                if (Math.abs(dragDelta) > 40) {
-                    dragDelta < 0 ? next() : prev();
+                const VELOCITY_THRESHOLD = 0.3;
+                const DISTANCE_THRESHOLD = 40;
+                if (velocity < -VELOCITY_THRESHOLD || (velocity >= -VELOCITY_THRESHOLD && dragDelta < -DISTANCE_THRESHOLD)) {
+                    next();
+                } else if (velocity > VELOCITY_THRESHOLD || (velocity <= VELOCITY_THRESHOLD && dragDelta > DISTANCE_THRESHOLD)) {
+                    prev();
                 } else {
-                    applyLayout();
+                    applyLayout(true);
                 }
-            });
-            carousel.addEventListener('pointercancel', () => { isDragging = false; applyLayout(); });
-            carousel.addEventListener('pointerleave', () => { isDragging = false; applyLayout(); });
-            window.addEventListener('resize', applyLayout);
-            applyLayout();
+                velocity = 0;
+            }
+
+            carousel.addEventListener('pointerup', endDrag);
+            carousel.addEventListener('pointercancel', endDrag);
+            carousel.addEventListener('pointerleave', endDrag);
+            window.addEventListener('resize', () => applyLayout(false));
+            applyLayout(false);
         }
     })();
 </script>
