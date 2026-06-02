@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="description" content="Descubre la nueva colección. Compra directa por WhatsApp y síguenos en redes.">
     <title>Tu Marca | Link in Bio</title>
-
-    <!-- Open Graph / Social (profesional como JLO) -->
     <meta property="og:locale" content="es_LA">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Tu Marca">
@@ -17,16 +15,10 @@
     <meta name="twitter:title" content="Tu Marca">
     <meta name="twitter:description" content="Explora lo último. Contáctanos por WhatsApp.">
     <meta name="twitter:image" content="https://tudominio.com/images/og-image.jpg">
-
-    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⭐</text></svg>">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             margin: 0;
             overflow: hidden;
@@ -35,8 +27,6 @@
             background: black;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
-
-        /* PANTALLA DE CARGA MINIMALISTA (solo línea) */
         #loading-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -68,16 +58,12 @@
             color: rgba(255,255,255,0.7);
             letter-spacing: 0.5px;
         }
-
-        /* CAPA PRINCIPAL OCULTA HASTA QUE CARGUE */
         #app-root {
             display: none;
             width: 100%;
             height: 100%;
             position: relative;
         }
-
-        /* LOGO CENTRADO ARRIBA (reducido 13%: 177px) */
         .logo-center-container {
             position: fixed;
             top: 24px;
@@ -88,14 +74,12 @@
             padding: 0 20px;
         }
         #custom-logo {
-            height: 177px;   /* antes 204px, ahora 177px (13% menos) */
+            height: 177px;
             width: auto;
             max-width: 85vw;
             object-fit: contain;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
         }
-
-        /* ÁREA PRINCIPAL DEL CARRUSEL */
         .stage-mio {
             position: absolute;
             top: 50%;
@@ -121,7 +105,8 @@
             border-radius: 24px;
             overflow: hidden;
             background: #fff;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            /* SOMBRA REDUCIDA */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.22);
             transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), width 0.4s, height 0.4s;
             will-change: transform;
         }
@@ -133,7 +118,40 @@
             pointer-events: none;
         }
 
-        /* BARRA INFERIOR (WhatsApp + redes) - SIN CAMBIOS */
+        /* ── BOTONES FLECHA ── */
+        .carousel-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 200;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.18s, transform 0.12s;
+        }
+        .carousel-arrow:active {
+            background: rgba(255,255,255,0.18);
+            transform: translateY(-50%) scale(0.92);
+        }
+        .carousel-arrow svg {
+            width: 16px;
+            height: 16px;
+            stroke: #fff;
+            stroke-width: 2.2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        #arrow-prev { left: 12px; }
+        #arrow-next { right: 12px; }
+
         .bottom-bar {
             position: fixed;
             bottom: 0;
@@ -148,9 +166,7 @@
             z-index: 50;
             pointer-events: none;
         }
-        .bottom-bar > * {
-            pointer-events: auto;
-        }
+        .bottom-bar > * { pointer-events: auto; }
         .boton-wa-mio {
             display: inline-block;
             width: fit-content;
@@ -186,26 +202,18 @@
             opacity: 0.85;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
-        .social-icon:hover {
-            transform: scale(1.1);
-            opacity: 1;
-        }
-        .social-icon svg {
-            width: 100%;
-            height: 100%;
-            fill: white;
-        }
+        .social-icon:hover { transform: scale(1.1); opacity: 1; }
+        .social-icon svg { width: 100%; height: 100%; fill: white; }
 
-        /* Ajustes responsive (reducidos 13%) */
         @media (max-width: 500px) {
-            #custom-logo { height: 133px; }  /* antes 153px */
+            #custom-logo { height: 133px; }
             .stage-mio { height: 55vh; min-height: 300px; }
             .boton-wa-mio { height: 44px; line-height: 44px; font-size: 14px; min-width: 180px; }
             .social-links { gap: 20px; }
             .social-icon { width: 32px; height: 32px; }
         }
         @media (max-width: 400px) {
-            #custom-logo { height: 118px; }  /* antes 136px */
+            #custom-logo { height: 118px; }
             .stage-mio { height: 50vh; min-height: 280px; }
             .social-links { gap: 16px; }
             .social-icon { width: 28px; height: 28px; }
@@ -214,7 +222,6 @@
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA MINIMALISTA (línea de progreso) -->
 <div id="loading-screen">
     <div class="loading-bar-container">
         <div class="loading-bar-fill" id="loading-bar-fill"></div>
@@ -222,17 +229,19 @@
     <div class="loading-percentage-text" id="loading-percentage">0%</div>
 </div>
 
-<!-- APP PRINCIPAL -->
 <div id="app-root">
-    <!-- LOGO CENTRADO (reducido 13%) -->
     <div class="logo-center-container">
-        <img id="custom-logo" 
-             src="images/WhatsApp Image 2026-06-01 at 13.33.56.jpeg" 
+        <img id="custom-logo"
+             src="images/WhatsApp Image 2026-06-01 at 13.33.56.jpeg"
              alt="Logo"
              onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; this.style.height='auto';">
     </div>
 
-    <!-- CARRUSEL 3D -->
+    <!-- BOTÓN PREV -->
+    <button class="carousel-arrow" id="arrow-prev" aria-label="Anterior">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+
     <div class="stage-mio">
         <div class="carousel-mio" id="carouselFinal">
             <article class="card-mio"><img src="images/a5.jpeg" alt="1"></article>
@@ -243,7 +252,11 @@
         </div>
     </div>
 
-    <!-- BARRA INFERIOR: WhatsApp + Redes Sociales -->
+    <!-- BOTÓN NEXT -->
+    <button class="carousel-arrow" id="arrow-next" aria-label="Siguiente">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
     <div class="bottom-bar">
         <a class="boton-wa-mio" href="https://wa.me/573000000000?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer">
             💬 WhatsApp
@@ -267,7 +280,6 @@
 
 <script>
     (function() {
-        // ---------- SIMULACIÓN DE CARGA (línea de progreso minimalista) ----------
         const loadingScreen = document.getElementById('loading-screen');
         const barFill = document.getElementById('loading-bar-fill');
         const percentageEl = document.getElementById('loading-percentage');
@@ -295,7 +307,6 @@
             }
         }, 80);
 
-        // ---------- CARRUSEL 3D ----------
         function initCarousel() {
             const cards = Array.from(document.querySelectorAll('.card-mio'));
             const total = cards.length;
@@ -343,6 +354,10 @@
 
             function next() { activeIndex = (activeIndex+1)%total; applyLayout(); }
             function prev() { activeIndex = (activeIndex-1+total)%total; applyLayout(); }
+
+            /* Botones flecha */
+            document.getElementById('arrow-prev').addEventListener('click', prev);
+            document.getElementById('arrow-next').addEventListener('click', next);
 
             carousel.addEventListener('pointerdown', (e) => {
                 isDragging = true;
