@@ -160,23 +160,18 @@
         #arrow-prev { left: 12px; }
         #arrow-next { right: 12px; }
 
-        /* ========== INFORMACIÓN DEL PRODUCTO (DEBAJO DEL CARRUSEL) ========== */
+        /* ========== INFORMACIÓN DEL PRODUCTO (AHORA DENTRO DE LA BARRA INFERIOR) ========== */
         .product-detail {
-            position: absolute;
-            top: calc(50% + 32vh); /* justo debajo del carrusel (mitad de 60vh + espacio) */
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
-            z-index: 150;
-            pointer-events: none;
+            gap: 4px;
+            margin-bottom: 6px; /* separación con el botón de WhatsApp */
         }
 
         .product-label {
             font-family: "Digital-7", "DS-Digital", "Orbitron", "Share Tech Mono", monospace;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 400;
             letter-spacing: 2px;
             color: #ffffff;
@@ -191,12 +186,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1px;
+            gap: 0px;
         }
 
         .old-price {
             font-family: "Digital-7", "DS-Digital", "Orbitron", "Share Tech Mono", monospace;
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 300;
             letter-spacing: 1px;
             color: rgba(255,255,255,0.45);
@@ -209,7 +204,7 @@
 
         .new-price {
             font-family: "Digital-7", "DS-Digital", "Orbitron", "Share Tech Mono", monospace;
-            font-size: 26px;
+            font-size: 23px;
             font-weight: 700;
             letter-spacing: 1.5px;
             color: #66cddd;
@@ -227,14 +222,14 @@
 
         .stock-info {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 500;
             letter-spacing: 0.8px;
             color: rgba(255,255,255,0.6);
             text-align: center;
             text-transform: uppercase;
             background: rgba(255,255,255,0.06);
-            padding: 4px 14px;
+            padding: 3px 12px;
             border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.12);
             backdrop-filter: blur(4px);
@@ -248,12 +243,12 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 16px 20px 24px;
+            padding: 10px 20px 24px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            gap: 8px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
             z-index: 50;
             pointer-events: none;
         }
@@ -309,12 +304,10 @@
         @media (max-width: 500px) {
             #custom-logo { height: 133px; }
             .stage-mio { height: 55vh; min-height: 300px; }
-            /* Ajustamos la posición del detalle para que quede debajo del carrusel más pequeño */
-            .product-detail { top: calc(50% + 29vh); }
-            .product-label { font-size: 22px; letter-spacing: 1.5px; }
-            .old-price { font-size: 15px; }
-            .new-price { font-size: 22px; }
-            .stock-info { font-size: 10px; padding: 3px 12px; }
+            .product-label { font-size: 20px; }
+            .old-price { font-size: 13px; }
+            .new-price { font-size: 20px; }
+            .stock-info { font-size: 9px; padding: 2px 10px; }
             .boton-wa-mio { height: 44px; line-height: 44px; font-size: 14px; min-width: 180px; }
             .social-links { gap: 20px; }
             .social-icon { width: 32px; height: 32px; }
@@ -322,11 +315,10 @@
         @media (max-width: 400px) {
             #custom-logo { height: 118px; }
             .stage-mio { height: 50vh; min-height: 280px; }
-            .product-detail { top: calc(50% + 27vh); }
             .product-label { font-size: 18px; letter-spacing: 1px; }
-            .old-price { font-size: 13px; }
+            .old-price { font-size: 12px; }
             .new-price { font-size: 18px; }
-            .stock-info { font-size: 9px; padding: 2px 10px; }
+            .stock-info { font-size: 8px; padding: 2px 9px; }
             .social-links { gap: 16px; }
             .social-icon { width: 28px; height: 28px; }
         }
@@ -362,21 +354,21 @@
         </div>
     </div>
 
-    <!-- Información del Bate (siempre debajo del carrusel) -->
-    <div class="product-detail">
-        <div class="product-label">Bate</div>
-        <div class="price-container">
-            <span class="old-price">$215.000</span>
-            <span class="new-price">$179.420</span>
-        </div>
-        <div class="stock-info">2 unidades disponibles</div>
-    </div>
-
     <button class="carousel-arrow" id="arrow-next" aria-label="Siguiente">
         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
 
     <div class="bottom-bar">
+        <!-- Información del Bate (justo arriba del botón, sin solaparse) -->
+        <div class="product-detail">
+            <div class="product-label">Bate</div>
+            <div class="price-container">
+                <span class="old-price">$215.000</span>
+                <span class="new-price">$179.420</span>
+            </div>
+            <div class="stock-info">2 unidades disponibles</div>
+        </div>
+
         <a class="boton-wa-mio" href="https://wa.me/573000000000?text=Hola%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer">
             💬 WhatsApp
         </a>
