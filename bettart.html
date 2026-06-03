@@ -106,7 +106,6 @@
             overflow: hidden;
             background: #fff;
             box-shadow: 0 8px 20px rgba(0,0,0,0.22);
-            transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), width 0.4s, height 0.4s;
             will-change: transform;
         }
         .card-mio img {
@@ -116,7 +115,6 @@
             object-fit: cover;
             pointer-events: none;
         }
-
         .carousel-arrow {
             position: fixed;
             top: 50%;
@@ -150,51 +148,32 @@
         #arrow-prev { left: 12px; }
         #arrow-next { right: 12px; }
 
-        /* ========== DETALLE DEL PRODUCTO ========== */
         .product-detail {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             margin-bottom: 6px;
         }
-
-        /* ✨ NUEVO ESTILO ELEGANTE PARA EL DESCUENTO */
-        .discount-text {
-            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;  /* Limpia, moderna, elegante */
-            font-size: 24px;
+        .discount-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ff3b30;
+            border-radius: 100px;
+            padding: 7px 18px;
+            font-size: 20px;
             font-weight: 800;
-            letter-spacing: 1px;
-            color: #ff3b30;
-            text-align: center;
-            line-height: 1.1;
-            /* Sin contorno, solo sombras suaves */
-            text-shadow:
-                0 0 45px rgba(0,0,0,0.25),   /* sombra oscura difuminada que destaca sin bordes */
-                0 0 10px rgba(255,59,48,0.5),
-                0 2px 6px rgba(0,0,0,0.5);
-            user-select: none;
-            animation: discountGlow 2.5s ease-in-out infinite;
+            color: #fff;
+            letter-spacing: -0.5px;
         }
-
-        @keyframes discountGlow {
-            0%, 100% {
-                text-shadow:
-                    0 0 45px rgba(0,0,0,0.25),
-                    0 0 10px rgba(255,59,48,0.5),
-                    0 2px 6px rgba(0,0,0,0.5);
-            }
-            50% {
-                text-shadow:
-                    0 0 45px rgba(0,0,0,0.25),
-                    0 0 20px rgba(255,59,48,0.8),
-                    0 0 30px rgba(255,59,48,0.3),
-                    0 2px 6px rgba(0,0,0,0.5);
-            }
+        .discount-badge span {
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0.85;
+            letter-spacing: 0.3px;
         }
-
         .stock-info {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             font-size: 10px;
             font-weight: 500;
             letter-spacing: 0.8px;
@@ -205,10 +184,7 @@
             padding: 3px 12px;
             border-radius: 20px;
             border: 1px solid rgba(255,255,255,0.12);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
             user-select: none;
-            margin-top: 2px;
         }
 
         .bottom-bar {
@@ -264,11 +240,11 @@
         .social-icon:hover { transform: scale(1.1); opacity: 1; }
         .social-icon svg { width: 100%; height: 100%; fill: white; }
 
-        /* ========== RESPONSIVE ========== */
         @media (max-width: 500px) {
             #custom-logo { height: 133px; }
             .stage-mio { height: 55vh; min-height: 300px; }
-            .discount-text { font-size: 21px; }
+            .discount-badge { font-size: 17px; padding: 6px 15px; }
+            .discount-badge span { font-size: 11px; }
             .stock-info { font-size: 9px; padding: 2px 10px; }
             .boton-wa-mio { height: 44px; line-height: 44px; font-size: 14px; min-width: 180px; }
             .social-links { gap: 20px; }
@@ -277,7 +253,8 @@
         @media (max-width: 400px) {
             #custom-logo { height: 118px; }
             .stage-mio { height: 50vh; min-height: 280px; }
-            .discount-text { font-size: 19px; }
+            .discount-badge { font-size: 15px; padding: 5px 13px; }
+            .discount-badge span { font-size: 10px; }
             .stock-info { font-size: 8px; padding: 2px 9px; }
             .social-links { gap: 16px; }
             .social-icon { width: 28px; height: 28px; }
@@ -320,9 +297,8 @@
     </button>
 
     <div class="bottom-bar">
-        <!-- 👇 Bloque con el descuento y las unidades -->
         <div class="product-detail">
-            <div class="discount-text">20% off</div>
+            <div class="discount-badge">20% <span>OFF</span></div>
             <div class="stock-info">4 unidades disponibles</div>
         </div>
 
@@ -383,6 +359,13 @@
             let isDragging = false;
             let startX = 0;
             let dragDelta = 0;
+            let lastX = 0;
+            let lastTime = 0;
+            let velocity = 0;
+
+            const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+            const DUR_NORMAL = '600ms';
+            const DUR_SNAP = '380ms';
 
             function getLayout() {
                 const w = window.innerWidth;
@@ -392,15 +375,16 @@
                 return { cW: 264, cH: 370, sW: 210, sH: 324, offY: 6, x1: 142, x2: 256, scl1: 0.88, scl2: 0.82, rot1: 20, rot2: 29 };
             }
 
-            function applyLayout() {
+            function applyLayout(snap) {
                 const l = getLayout();
+                const dur = snap ? DUR_SNAP : DUR_NORMAL;
                 cards.forEach((card, i) => {
                     let diff = i - activeIndex;
                     let d = ((diff % total) + total) % total;
-                    if (d > total/2) d -= total;
-                    let x=0, y=0, scale=1, ry=0, opacity=1, z=3, w=l.cW, h=l.cH;
+                    if (d > total / 2) d -= total;
+                    let x = 0, y = 0, scale = 1, ry = 0, opacity = 1, z = 3, w = l.cW, h = l.cH;
                     if (d === 0) {
-                        x=0; y=0; scale=1; ry=0; z=5; w=l.cW; h=l.cH;
+                        x = 0; y = 0; scale = 1; ry = 0; z = 5; w = l.cW; h = l.cH;
                     } else if (d === -1) {
                         x = -l.x1; y = l.offY; scale = l.scl1; ry = l.rot1; z = 3; w = l.sW; h = l.sH;
                     } else if (d === 1) {
@@ -416,39 +400,94 @@
                     card.style.height = h + 'px';
                     card.style.opacity = opacity;
                     card.style.zIndex = z;
+                    card.style.transition = `transform ${dur} ${EASE}, width ${dur} ${EASE}, height ${dur} ${EASE}, opacity ${dur} ${EASE}`;
                     card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotateY(${ry}deg) scale(${scale})`;
                 });
             }
 
-            function next() { activeIndex = (activeIndex+1)%total; applyLayout(); }
-            function prev() { activeIndex = (activeIndex-1+total)%total; applyLayout(); }
+            function applyDrag(delta) {
+                const l = getLayout();
+                const progress = Math.max(-1, Math.min(1, delta / (l.x1 * 1.4)));
+                cards.forEach((card, i) => {
+                    let diff = i - activeIndex;
+                    let d = ((diff % total) + total) % total;
+                    if (d > total / 2) d -= total;
+                    let x = 0, y = 0, scale = 1, ry = 0, opacity = 1, z = 3, w = l.cW, h = l.cH;
+                    if (d === 0) {
+                        x = delta * 0.55; y = 0; scale = 1; ry = 0; z = 5; w = l.cW; h = l.cH;
+                    } else if (d === -1) {
+                        const t = progress < 0 ? Math.abs(progress) : 0;
+                        x = -l.x1 + delta * 0.55; y = l.offY * (1 - t); scale = l.scl1 + (1 - l.scl1) * t; ry = l.rot1 * (1 - t); z = 3; w = l.sW; h = l.sH;
+                    } else if (d === 1) {
+                        const t = progress > 0 ? progress : 0;
+                        x = l.x1 + delta * 0.55; y = l.offY * (1 - t); scale = l.scl1 + (1 - l.scl1) * t; ry = -l.rot1 * (1 - t); z = 3; w = l.sW; h = l.sH;
+                    } else if (d === -2) {
+                        x = -l.x2 + delta * 0.3; y = l.offY + 4; scale = l.scl2; ry = l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
+                    } else if (d === 2) {
+                        x = l.x2 + delta * 0.3; y = l.offY + 4; scale = l.scl2; ry = -l.rot2; z = 1; w = Math.round(l.sW * 0.94); h = Math.round(l.sH * 0.94);
+                    } else {
+                        opacity = 0; z = 0; scale = 0.7;
+                    }
+                    card.style.width = w + 'px';
+                    card.style.height = h + 'px';
+                    card.style.opacity = opacity;
+                    card.style.zIndex = z;
+                    card.style.transition = 'none';
+                    card.style.transform = `translate(-50%, -50%) translateX(${x}px) translateY(${y}px) rotateY(${ry}deg) scale(${scale})`;
+                });
+            }
+
+            function next() { activeIndex = (activeIndex + 1) % total; applyLayout(false); }
+            function prev() { activeIndex = (activeIndex - 1 + total) % total; applyLayout(false); }
 
             document.getElementById('arrow-prev').addEventListener('click', prev);
             document.getElementById('arrow-next').addEventListener('click', next);
+
+            carousel.style.touchAction = 'pan-y';
 
             carousel.addEventListener('pointerdown', (e) => {
                 isDragging = true;
                 startX = e.clientX;
                 dragDelta = 0;
-                carousel.setPointerCapture?.(e.pointerId);
+                lastX = e.clientX;
+                lastTime = Date.now();
+                velocity = 0;
+                carousel.setPointerCapture && carousel.setPointerCapture(e.pointerId);
             });
+
             carousel.addEventListener('pointermove', (e) => {
                 if (!isDragging) return;
+                const now = Date.now();
+                const dt = now - lastTime;
+                if (dt > 0) {
+                    velocity = (e.clientX - lastX) / dt;
+                    lastX = e.clientX;
+                    lastTime = now;
+                }
                 dragDelta = e.clientX - startX;
+                applyDrag(dragDelta);
             });
-            carousel.addEventListener('pointerup', () => {
+
+            function endDrag() {
                 if (!isDragging) return;
                 isDragging = false;
-                if (Math.abs(dragDelta) > 40) {
-                    dragDelta < 0 ? next() : prev();
+                const VELOCITY_THRESHOLD = 0.3;
+                const DISTANCE_THRESHOLD = 40;
+                if (velocity < -VELOCITY_THRESHOLD || (velocity >= -VELOCITY_THRESHOLD && dragDelta < -DISTANCE_THRESHOLD)) {
+                    next();
+                } else if (velocity > VELOCITY_THRESHOLD || (velocity <= VELOCITY_THRESHOLD && dragDelta > DISTANCE_THRESHOLD)) {
+                    prev();
                 } else {
-                    applyLayout();
+                    applyLayout(true);
                 }
-            });
-            carousel.addEventListener('pointercancel', () => { isDragging = false; applyLayout(); });
-            carousel.addEventListener('pointerleave', () => { isDragging = false; applyLayout(); });
-            window.addEventListener('resize', applyLayout);
-            applyLayout();
+                velocity = 0;
+            }
+
+            carousel.addEventListener('pointerup', endDrag);
+            carousel.addEventListener('pointercancel', endDrag);
+            carousel.addEventListener('pointerleave', endDrag);
+            window.addEventListener('resize', () => applyLayout(false));
+            applyLayout(false);
         }
     })();
 </script>
