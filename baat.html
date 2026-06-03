@@ -166,7 +166,7 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            margin-bottom: 6px; /* separación con el botón de WhatsApp */
+            margin-bottom: 6px;
         }
 
         .product-label {
@@ -184,20 +184,35 @@
 
         .discount-text {
             font-family: "Digital-7", "DS-Digital", "Orbitron", "Share Tech Mono", monospace;
-            font-size: 23px; /* mismo tamaño que el precio nuevo anterior */
+            font-size: 23px;
             font-weight: 700;
             letter-spacing: 1.5px;
-            color: #ff3b30; /* rojo llamativo */
+            color: #ff3b30;
             text-align: center;
             line-height: 1.1;
-            text-shadow: 0 0 12px rgba(255,59,48,0.6), 0 2px 6px rgba(0,0,0,0.7);
+            /* Sombra sutil: difuminado oscuro detrás (20% más oscuro), más el brillo rojo */
+            text-shadow:
+                0 0 40px rgba(0,0,0,0.15),   /* sombra difusa oscura que oscurece la zona de fondo */
+                0 0 12px rgba(255,59,48,0.6),
+                0 2px 6px rgba(0,0,0,0.7);
             user-select: none;
             animation: discountGlow 2.5s ease-in-out infinite;
         }
 
         @keyframes discountGlow {
-            0%,100% { text-shadow: 0 0 12px rgba(255,59,48,0.6), 0 2px 6px rgba(0,0,0,0.7); }
-            50% { text-shadow: 0 0 22px rgba(255,59,48,0.9), 0 0 35px rgba(255,59,48,0.4), 0 2px 6px rgba(0,0,0,0.7); }
+            0%, 100% {
+                text-shadow:
+                    0 0 40px rgba(0,0,0,0.15),
+                    0 0 12px rgba(255,59,48,0.6),
+                    0 2px 6px rgba(0,0,0,0.7);
+            }
+            50% {
+                text-shadow:
+                    0 0 40px rgba(0,0,0,0.15),
+                    0 0 22px rgba(255,59,48,0.9),
+                    0 0 35px rgba(255,59,48,0.4),
+                    0 2px 6px rgba(0,0,0,0.7);
+            }
         }
 
         .stock-info {
@@ -337,9 +352,9 @@
     </button>
 
     <div class="bottom-bar">
-        <!-- Información del Bate: solo descuento y stock -->
+        <!-- Información del Bate: descuento y stock -->
         <div class="product-detail">
-            <div class="product-label"></div> <!-- vacío como lo dejaste -->
+            <div class="product-label"></div>
             <div class="discount-text">17% off</div>
             <div class="stock-info">2 unidades disponibles</div>
         </div>
