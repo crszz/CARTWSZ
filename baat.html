@@ -433,55 +433,45 @@
            Vuelta 1: cada 1500ms  →  índices 0→1→2
            Vuelta 2: cada 2000ms  →  índices 0→1→2  (y para)
         ====================================================== */
-        function initPillRotator() {
-            const TOTAL = 3;
-            let current = 0;
-            let stepCount = 0;        // cuántos cambios llevamos (máx 5 para 2 vueltas)
-            const ROUND1_DELAY = 1500;
-            const ROUND2_DELAY = 2000;
+function initPillRotator() {
+    const TOTAL = 3;
+    let current = 0;
+    let round = 1;
+    let stepInRound = 0;
 
-            function goTo(next) {
-                const pills = document.querySelectorAll('.pill-slide');
-                const dots  = document.querySelectorAll('.pill-dot');
+    function step() {
+        const next = (current + 1) % TOTAL;
 
-                // Salida del actual
-                pills[current].classList.remove('active');
-                pills[current].classList.add('exit');
+        // Salida
+        const pills = document.querySelectorAll('.pill-slide');
+        const dots  = document.querySelectorAll('.pill-dot');
+        pills[current].classList.remove('active');
+        pills[current].classList.add('exit');
+        dots[current].classList.remove('active');
 
-                // Entrada del siguiente
-                pills[next].classList.add('active');
+        // Entrada
+        pills[next].classList.add('active');
+        dots[next].classList.add('active');
 
-                // Dots
-                dots[current].classList.remove('active');
-                dots[next].classList.add('active');
+        const leaving = current;
+        setTimeout(() => { pills[leaving].classList.remove('exit'); }, 400);
 
-                // Limpiar clase exit después de la transición
-                const leaving = current;
-                setTimeout(() => {
-                    pills[leaving].classList.remove('exit');
-                }, 400);
+        current = next;
+        stepInRound++;
 
-                current = next;
-            }
-
-            function step() {
-                stepCount++;
-                // stepCount 1,2 → vuelta 1 (pasos 0→1, 1→2, 2→0)
-                // stepCount 3,4,5 → vuelta 2
-                const next = (current + 1) % TOTAL;
-                goTo(next);
-
-                if (stepCount < 5) {
-                    // aún hay pasos por hacer
-                    const delay = stepCount < 3 ? ROUND1_DELAY : ROUND2_DELAY;
-                    setTimeout(step, delay);
-                }
-                // stepCount === 5 → terminó la segunda vuelta, no programa más
-            }
-
-            // Arrancar después del primer delay (vuelta 1)
-            setTimeout(step, ROUND1_DELAY);
+        // Al completar una vuelta completa (3 pasos), subir de round
+        if (stepInRound === TOTAL) {
+            stepInRound = 0;
+            if (round === 1) round = 2;
+            // round 2 en adelante se queda en 2 (loop infinito a 3s)
         }
+
+        const delay = round === 1 ? 1500 : 3000;
+        setTimeout(step, delay);
+    }
+
+    setTimeout(step, 1500);
+}
 
         /* ======================================================
            CARRUSEL
