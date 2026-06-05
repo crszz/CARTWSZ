@@ -155,24 +155,70 @@
             gap: 6px;
             margin-bottom: 6px;
         }
-        .discount-badge {
+
+        .pill-rotator {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            width: 280px;
+        }
+        .pill-slide {
+            position: absolute;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: #ff3b30;
             border-radius: 100px;
             padding: 7px 18px;
             font-size: 20px;
             font-weight: 800;
             color: #fff;
             letter-spacing: -0.5px;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            pointer-events: none;
         }
-        .discount-badge span {
+        .pill-slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .pill-slide.exit {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        .pill-descuento { background: #ff3b30; }
+        .pill-envio     { background: #1c1c1e; border: 1.5px solid rgba(255,255,255,0.18); font-size: 16px; letter-spacing: 0; }
+        .pill-precio    { background: #1c1c1e; border: 1.5px solid rgba(255,255,255,0.18); font-size: 20px; }
+        .pill-slide span {
             font-size: 12px;
             font-weight: 600;
             opacity: 0.85;
             letter-spacing: 0.3px;
         }
+
+        .pill-dots {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+        }
+        .pill-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            transition: background 0.3s, transform 0.3s;
+        }
+        .pill-dot.active {
+            background: #fff;
+            transform: scale(1.25);
+        }
+
         .stock-info {
             font-size: 10px;
             font-weight: 500;
@@ -243,8 +289,8 @@
         @media (max-width: 500px) {
             #custom-logo { height: 133px; }
             .stage-mio { height: 55vh; min-height: 300px; }
-            .discount-badge { font-size: 17px; padding: 6px 15px; }
-            .discount-badge span { font-size: 11px; }
+            .pill-slide { font-size: 17px; padding: 6px 15px; }
+            .pill-envio { font-size: 14px; }
             .stock-info { font-size: 9px; padding: 2px 10px; }
             .boton-wa-mio { height: 44px; line-height: 44px; font-size: 14px; min-width: 180px; }
             .social-links { gap: 20px; }
@@ -253,8 +299,8 @@
         @media (max-width: 400px) {
             #custom-logo { height: 118px; }
             .stage-mio { height: 50vh; min-height: 280px; }
-            .discount-badge { font-size: 15px; padding: 5px 13px; }
-            .discount-badge span { font-size: 10px; }
+            .pill-slide { font-size: 15px; padding: 5px 13px; }
+            .pill-envio { font-size: 13px; }
             .stock-info { font-size: 8px; padding: 2px 9px; }
             .social-links { gap: 16px; }
             .social-icon { width: 28px; height: 28px; }
@@ -298,7 +344,19 @@
 
     <div class="bottom-bar">
         <div class="product-detail">
-            <div class="discount-badge">20% <span>OFF</span></div>
+
+            <div class="pill-rotator">
+                <div class="pill-slide pill-descuento active" id="pill-0">20% <span>OFF</span></div>
+                <div class="pill-slide pill-envio"            id="pill-1">🚚 Envío incluido Bogotá</div>
+                <div class="pill-slide pill-precio"           id="pill-2">$120.000</div>
+            </div>
+
+            <div class="pill-dots">
+                <div class="pill-dot active" id="dot-0"></div>
+                <div class="pill-dot"        id="dot-1"></div>
+                <div class="pill-dot"        id="dot-2"></div>
+            </div>
+
             <div class="stock-info">4 unidades disponibles</div>
         </div>
 
@@ -343,6 +401,7 @@
                         loadingScreen.style.display = 'none';
                         appRoot.style.display = 'block';
                         initCarousel();
+                        initPillRotator();
                     }, 400);
                 }, 200);
             } else {
@@ -350,6 +409,36 @@
                 percentageEl.textContent = progress + '%';
             }
         }, 80);
+
+        function initPillRotator() {
+            const TOTAL = 3;
+            let current = 0;
+            let totalSteps = 0;
+
+            function step() {
+                const next = (current + 1) % TOTAL;
+                const pills = document.querySelectorAll('.pill-slide');
+                const dots  = document.querySelectorAll('.pill-dot');
+
+                pills[current].classList.remove('active');
+                pills[current].classList.add('exit');
+                dots[current].classList.remove('active');
+
+                pills[next].classList.add('active');
+                dots[next].classList.add('active');
+
+                const leaving = current;
+                setTimeout(() => { pills[leaving].classList.remove('exit'); }, 400);
+
+                current = next;
+                totalSteps++;
+
+                const delay = totalSteps < TOTAL ? 1500 : 3000;
+                setTimeout(step, delay);
+            }
+
+            setTimeout(step, 1500);
+        }
 
         function initCarousel() {
             const cards = Array.from(document.querySelectorAll('.card-mio'));
