@@ -6,9 +6,9 @@
 <title>Abogados en Bogotá | Civil, Penal, Laboral y Familia — Idrobo Asociados</title>
 <meta name="description" content="Grupo empresarial con bufete de abogados en Bogotá con más de 15 años de experiencia en derecho civil, penal, laboral, de familia y corporativo. Primera consulta gratuita. Agenda hoy.">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<link rel="canonical" href="https://pinedayasociados.com/">
+<link rel="canonical" href="https://pinedayasociados.com/" data-cfg-canonical>
 <meta name="theme-color" content="#0B1220">
-<link rel="preload" as="image" href="https://organicbionatural.com/wp-content/uploads/2026/10/11111.jpg">
+<link rel="preload" as="image" href="https://organicbionatural.com/wp-content/uploads/2026/10/11111.jpg" data-cfg="logo-preload">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_CO">
 <meta property="og:site_name" content="Idrobo Asociados">
@@ -27,7 +27,7 @@
 <meta name="geo.placename" content="Bogotá">
 <meta name="geo.position" content="4.6867;-74.0456">
 <meta name="ICBM" content="4.6867, -74.0456">
-<script type="application/ld+json">
+<script type="application/ld+json" id="site-jsonld">
 {
   "@context": "https://schema.org",
   "@type": "LegalService",
@@ -1192,6 +1192,141 @@ body.is-scrolled .header-inner{
 <body>
 <div id="pineda-app">
 
+<!-- ============================================================
+     ⚙️  BLOQUE DE CONFIGURACIÓN GLOBAL
+     ============================================================
+     Cambia SOLO estos valores y se actualizará automáticamente en
+     toda la página: navbar, hero, footer, correos, teléfonos,
+     TODOS los botones de WhatsApp (flotante, footer, redes,
+     mensaje de éxito y error), redes sociales, meta tags y JSON-LD.
+     ============================================================ -->
+<script id="site-config">
+window.SITE_CONFIG = {
+  /* ---- MARCA ---- */
+  brandName:    "Idrobo Asociados",                          // Nombre en navbar, hero, footer, etc.
+  brandTagline: "Grupo Empresarial",                         // Subtítulo pequeño (navbar/footer)
+  brandSubline: "Grupo Empresarial · Abogados en Bogotá",    // Subtítulo del hero
+
+  /* ---- LOGO ---- */
+  logoUrl:      "https://organicbionatural.com/wp-content/uploads/2026/10/11111.jpg",
+
+  /* ---- CONTACTO ---- */
+  email:        "contacto@pinedayasociados.com",  // Todos los mailto:
+  phone:        "+57 601 000 0000",               // Texto visible del teléfono
+  phoneRaw:     "+576010000000",                  // Enlaces tel:
+
+  /* ---- WHATSAPP (sin '+' ni espacios) ----
+     Este número actualiza: botón flotante, botón en footer,
+     ícono de WhatsApp junto a redes sociales, botones de éxito
+     y error tras enviar el formulario de consulta. */
+  whatsapp:     "573102816899",
+
+  /* ---- REDES SOCIALES ---- */
+  facebook:     "https://facebook.com/",
+  instagram:    "https://instagram.com/",
+  tiktok:       "https://tiktok.com/",
+
+  /* ---- SITIO ---- */
+  siteUrl:      "https://pinedayasociados.com/"
+};
+</script>
+
+<!-- ============================================================
+     🔁 APLICADOR AUTOMÁTICO DE CONFIGURACIÓN
+     (No necesitas tocar este script)
+     ============================================================ -->
+<script>
+(function applySiteConfig(){
+  var C = window.SITE_CONFIG;
+  if(!C) return;
+
+  var setMeta = function(sel, val){ var el = document.querySelector(sel); if(el) el.setAttribute('content', val); };
+  var setAttr = function(sel, attr, val){ var el = document.querySelector(sel); if(el) el.setAttribute(attr, val); };
+
+  /* ---------- 1) Document title ---------- */
+  document.title = "Abogados en Bogotá | Civil, Penal, Laboral y Familia — " + C.brandName;
+
+  /* ---------- 2) Meta tags ---------- */
+  setMeta('meta[property="og:site_name"]', C.brandName);
+  setMeta('meta[property="og:title"]', "Abogados en Bogotá | " + C.brandName);
+  setMeta('meta[property="og:url"]', C.siteUrl);
+  setMeta('meta[property="og:image"]', C.logoUrl);
+  setMeta('meta[property="og:image:alt"]', C.brandName + " — Abogados en Bogotá");
+  setMeta('meta[name="twitter:title"]', "Abogados en Bogotá | " + C.brandName);
+  setMeta('meta[name="twitter:image"]', C.logoUrl);
+  setAttr('link[rel="canonical"]', 'href', C.siteUrl);
+  setAttr('link[data-cfg="logo-preload"]', 'href', C.logoUrl);
+
+  /* ---------- 3) JSON-LD ---------- */
+  var ld = document.getElementById('site-jsonld');
+  if(ld){
+    try {
+      var data = JSON.parse(ld.textContent);
+      data.name = C.brandName;
+      data.alternateName = "Grupo Empresarial " + C.brandName;
+      data.url = C.siteUrl;
+      data["@id"] = C.siteUrl.replace(/\/$/, "") + "/#legalservice";
+      data.email = C.email;
+      data.telephone = C.phoneRaw;
+      data.image = C.logoUrl;
+      data.logo = C.logoUrl;
+      ld.textContent = JSON.stringify(data, null, 2);
+    } catch(_){}
+  }
+
+  /* ---------- 4) Elementos con data-cfg ---------- */
+  document.querySelectorAll('[data-cfg]').forEach(function(el){
+    var key = el.getAttribute('data-cfg');
+    switch(key){
+      case 'brandName':
+        el.textContent = C.brandName;
+        break;
+      case 'brandTagline':
+        el.textContent = C.brandTagline;
+        break;
+      case 'brandSubline':
+        el.textContent = C.brandSubline;
+        break;
+      case 'logo':
+        el.setAttribute('src', C.logoUrl);
+        if(!el.getAttribute('alt')) el.setAttribute('alt', C.brandName);
+        break;
+      case 'email':
+        el.setAttribute('href', 'mailto:' + C.email);
+        if(el.getAttribute('data-cfg-text') !== 'false') el.textContent = C.email;
+        break;
+      case 'phone':
+        el.setAttribute('href', 'tel:' + C.phoneRaw);
+        if(el.getAttribute('data-cfg-text') !== 'false') el.textContent = C.phone;
+        break;
+      case 'wa':
+        el.setAttribute('href', 'https://wa.me/' + C.whatsapp);
+        break;
+      case 'facebook':
+        el.setAttribute('href', C.facebook);
+        break;
+      case 'instagram':
+        el.setAttribute('href', C.instagram);
+        break;
+      case 'tiktok':
+        el.setAttribute('href', C.tiktok);
+        break;
+    }
+  });
+
+  /* ---------- 5) aria-label y title con marca ---------- */
+  document.querySelectorAll('[data-cfg-aria]').forEach(function(el){
+    el.setAttribute('aria-label', C.brandName);
+  });
+  document.querySelectorAll('[data-cfg-title]').forEach(function(el){
+    el.setAttribute('title', el.getAttribute('data-cfg-title').replace('{brand}', C.brandName));
+  });
+  document.querySelectorAll('[data-cfg-alt]').forEach(function(el){
+    el.setAttribute('alt', C.brandName);
+  });
+})();
+</script>
+
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="i-arrow-right" viewBox="0 0 16 16" fill="none"><path d="M2 8h11M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-arrow-up" viewBox="0 0 16 16" fill="none"><path d="M8 14V3M3 8l5-5 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -1216,9 +1351,9 @@ body.is-scrolled .header-inner{
 
 <header class="site-header">
 <div class="wrap header-inner">
-<a href="#inicio" class="brand" aria-label="Idrobo Asociados">
-  <span class="brand__mark" aria-hidden="true"><img src="https://organicbionatural.com/wp-content/uploads/2026/10/11111.jpg" alt=""></span>
-  <span class="brand__name">Idrobo Asociados <small>Grupo Empresarial</small></span>
+<a href="#inicio" class="brand" data-cfg-aria>
+  <span class="brand__mark" aria-hidden="true"><img src="https://organicbionatural.com/wp-content/uploads/2026/10/11111.jpg" alt="" data-cfg="logo" data-cfg-alt></span>
+  <span class="brand__name"><span data-cfg="brandName">Idrobo Asociados</span> <small data-cfg="brandTagline">Grupo Empresarial</small></span>
 </a>
 <nav class="main-nav" aria-label="Navegación principal"><a href="#areas">Áreas</a><a href="#nosotros">Nosotros</a><a href="#faq">Preguntas</a><a href="#ubicacion">Ubicación</a></nav>
 <div class="header-actions">
@@ -1241,12 +1376,12 @@ body.is-scrolled .header-inner{
 <div class="scrolly__content">
 <div class="scrolly__scene" data-scene="0">
 <div class="scrolly__logo" aria-hidden="true">
-  <img src="https://organicbionatural.com/wp-content/uploads/2026/10/11111.jpg" alt="Idrobo Asociados">
+  <img src="https://organicbionatural.com/wp-content/uploads/2026/10/11111.jpg" alt="Idrobo Asociados" data-cfg="logo" data-cfg-alt>
 </div>
-<h1 class="scrolly__splash-name">Idrobo Asociados<small>Grupo Empresarial · Abogados en Bogotá</small></h1>
+<h1 class="scrolly__splash-name"><span data-cfg="brandName">Idrobo Asociados</span><small data-cfg="brandSubline">Grupo Empresarial · Abogados en Bogotá</small></h1>
 </div>
 <div class="scrolly__scene" data-scene="1"><div class="scrolly__copy">
-<span class="scrolly__kicker">Idrobo Asociados</span>
+<span class="scrolly__kicker" data-cfg="brandName">Idrobo Asociados</span>
 <h2 class="scrolly__title">Defendemos <em>lo que</em> más importa.</h2>
 <p class="scrolly__lead">Asesoría legal integral en materia civil, penal, laboral, familiar y corporativa.</p>
 <div class="scrolly__actions"><a href="#consulta" class="btn btn--primary">Consulta gratis <svg width="13" height="13" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></div>
@@ -1338,13 +1473,13 @@ body.is-scrolled .header-inner{
       <div class="icono-exito">✓</div>
       <h3>¡Recibimos tu consulta!</h3>
       <p>En un momento nos comunicaremos contigo.</p>
-      <a href="#" id="btnWhatsapp" target="_blank" rel="noopener" class="btn-whatsapp">Escribir por WhatsApp</a>
+      <a href="#" id="btnWhatsapp" target="_blank" rel="noopener" class="btn-whatsapp" data-cfg="wa">Escribir por WhatsApp</a>
     </div>
     <div class="consulta-status" id="mensajeError">
       <div class="icono-error">!</div>
       <h3>Algo salió mal</h3>
       <p>Intenta de nuevo o escríbenos directamente:</p>
-      <a href="#" id="btnWhatsappError" target="_blank" rel="noopener" class="btn-whatsapp">Escribir por WhatsApp</a>
+      <a href="#" id="btnWhatsappError" target="_blank" rel="noopener" class="btn-whatsapp" data-cfg="wa">Escribir por WhatsApp</a>
     </div>
   </div>
 </section>
@@ -1352,7 +1487,7 @@ body.is-scrolled .header-inner{
 <section class="results-portal" id="resultados" aria-labelledby="results-title">
 <div class="results-portal__sticky">
 <div class="results-portal__bg" aria-hidden="true"></div>
-<img class="results-portal__seo-img" src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1800&q=80&auto=format&fit=crop" alt="Sala de juzgados en Bogotá — Idrobo Asociados, abogados litigantes" width="1920" height="1280" loading="lazy" decoding="async">
+<img class="results-portal__seo-img" src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1800&q=80&auto=format&fit=crop" alt="Sala de juzgados en Bogotá — Idrobo Asociados, abogados litigantes" width="1920" height="1280" loading="lazy" decoding="async" data-cfg-alt>
 <div class="results-portal__duotone" aria-hidden="true"></div>
 <div class="results-portal__veil" aria-hidden="true"></div>
 <div class="results-portal__panel results-portal__panel--l" aria-hidden="true"></div>
@@ -1365,7 +1500,7 @@ body.is-scrolled .header-inner{
   <span class="results-portal__title-half results-portal__title-half--l" aria-hidden="true">Resultados</span><span class="results-portal__title-half results-portal__title-half--r" aria-hidden="true">Exitosos</span>
 </h2>
 <p class="results-portal__sub">Números que respaldan cada caso.</p>
-<span class="results-portal__meta results-portal__meta--bl">Idrobo Asociados</span>
+<span class="results-portal__meta results-portal__meta--bl" data-cfg="brandName">Idrobo Asociados</span>
 <span class="results-portal__meta results-portal__meta--br">Bogotá · Colombia</span>
 </div>
 <div class="results-portal__stats" id="statsGrid">
@@ -1404,13 +1539,13 @@ body.is-scrolled .header-inner{
 <div class="location__info">
 <div class="location__block reveal" data-delay="1"><h3>Dirección</h3><p>Calle 100 # 15-20, Oficina 501<br>Bogotá, Colombia</p></div>
 <div class="location__block reveal" data-delay="2"><h3>Horario</h3><p>Lunes a viernes, 8:00 a 18:00<br>Sábados con cita previa</p></div>
-<div class="location__block reveal" data-delay="3"><h3>Contacto</h3><p><a href="mailto:contacto@pinedayasociados.com">contacto@pinedayasociados.com</a><br><a href="tel:+576010000000">+57 601 000 0000</a></p></div>
+<div class="location__block reveal" data-delay="3"><h3>Contacto</h3><p><a href="mailto:contacto@pinedayasociados.com" data-cfg="email">contacto@pinedayasociados.com</a><br><a href="tel:+576010000000" data-cfg="phone">+57 601 000 0000</a></p></div>
 <div class="location__block reveal" data-delay="4"><h3>Síguenos</h3>
 <div class="social">
-<a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook" title="Idrobo Asociados en Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
-<a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram" title="Idrobo Asociados en Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
-<a href="https://tiktok.com/" target="_blank" rel="noopener" aria-label="TikTok" title="Idrobo Asociados en TikTok"><svg aria-hidden="true"><use href="#i-tt"/></svg></a>
-<a href="#" data-wa target="_blank" rel="noopener" aria-label="WhatsApp" title="Escríbenos por WhatsApp"><svg aria-hidden="true"><use href="#i-wa"/></svg></a>
+<a href="#" target="_blank" rel="noopener" data-cfg="facebook" data-cfg-aria data-cfg-title="{brand} en Facebook"><svg aria-hidden="true"><use href="#i-fb"/></svg></a>
+<a href="#" target="_blank" rel="noopener" data-cfg="instagram" data-cfg-aria data-cfg-title="{brand} en Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+<a href="#" target="_blank" rel="noopener" data-cfg="tiktok" data-cfg-aria data-cfg-title="{brand} en TikTok"><svg aria-hidden="true"><use href="#i-tt"/></svg></a>
+<a href="#" target="_blank" rel="noopener" data-cfg="wa" aria-label="WhatsApp" title="Escríbenos por WhatsApp"><svg aria-hidden="true"><use href="#i-wa"/></svg></a>
 </div></div>
 </div>
 <div class="location__map reveal">
@@ -1427,17 +1562,17 @@ body.is-scrolled .header-inner{
 <div class="wrap">
 <div class="footer__top">
 <div class="footer__brand">
-  <a href="#inicio" class="brand" aria-label="Idrobo Asociados">
-    <span class="brand__mark"><img src="https://organicbionatural.com/wp-content/uploads/2026/10/11111.jpg" alt=""></span>
-    <span class="brand__name">Idrobo Asociados <small>Grupo Empresarial</small></span>
+  <a href="#inicio" class="brand" data-cfg-aria>
+    <span class="brand__mark"><img src="https://organicbionatural.com/wp-content/uploads/2026/10/11111.jpg" alt="" data-cfg="logo" data-cfg-alt></span>
+    <span class="brand__name"><span data-cfg="brandName">Idrobo Asociados</span> <small data-cfg="brandTagline">Grupo Empresarial</small></span>
   </a>
   <p class="footer__about">Grupo empresarial con bufete de abogados con sede en Bogotá. Asesoría legal integral para personas y empresas en todo el territorio nacional.</p>
 </div>
 <div class="footer__col"><h4>Áreas</h4><ul><li><a href="#areas">Derecho Civil en Bogotá</a></li><li><a href="#areas">Derecho Penal en Bogotá</a></li><li><a href="#areas">Derecho Laboral en Bogotá</a></li><li><a href="#areas">Derecho de Familia en Bogotá</a></li></ul></div>
 <div class="footer__col"><h4>Bufete</h4><ul><li><a href="#nosotros">Sobre nosotros</a></li><li><a href="#resultados">Resultados</a></li><li><a href="#faq">Preguntas frecuentes</a></li><li><a href="#ubicacion">Ubicación</a></li></ul></div>
-<div class="footer__col"><h4>Contacto</h4><ul><li><a href="mailto:contacto@pinedayasociados.com">contacto@pinedayasociados.com</a></li><li><a href="tel:+576010000000">+57 601 000 000</a></li><li><a href="#" data-wa target="_blank" rel="noopener">WhatsApp</a></li></ul></div>
+<div class="footer__col"><h4>Contacto</h4><ul><li><a href="mailto:contacto@pinedayasociados.com" data-cfg="email">contacto@pinedayasociados.com</a></li><li><a href="tel:+576010000000" data-cfg="phone">+57 601 000 000</a></li><li><a href="#" data-cfg="wa" target="_blank" rel="noopener">WhatsApp</a></li></ul></div>
 </div>
-<div class="footer__bottom"><span>© <span id="year"></span> Idrobo Asociados. Todos los derechos reservados.</span><a href="#inicio" class="back-top">Volver arriba <svg aria-hidden="true"><use href="#i-arrow-up"/></svg></a></div>
+<div class="footer__bottom"><span>© <span id="year"></span> <span data-cfg="brandName">Idrobo Asociados</span>. Todos los derechos reservados.</span><a href="#inicio" class="back-top">Volver arriba <svg aria-hidden="true"><use href="#i-arrow-up"/></svg></a></div>
 </div>
 </footer>
 
@@ -1447,11 +1582,21 @@ body.is-scrolled .header-inner{
 
 <script>
 !function(){"use strict";document.documentElement.classList.add("js");
-const WA_NUMBER="573102816899";
+const CFG = window.SITE_CONFIG || {};
+const WA_NUMBER = String(CFG.whatsapp || "").replace(/[^0-9]/g,"");
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbyA7WQ3fAkVp6ha5eF1vgLRhUE7UY8pyZfhxCF3feOLGmEaltvxZKDBriG6RsratY7a/exec";
 const t=(s,e=document)=>e.querySelector(s),e=(s,p=document)=>Array.from(p.querySelectorAll(s)),n=(v,a,b)=>Math.max(a,Math.min(b,v));
 !function(){const a=document.getElementById("pineda-app");if(!a)return;let p=a.parentElement,c=0;for(;p&&c<8;)p.classList.add("pineda-elementor-bridge"),p=p.parentElement,c++}();
-e("[data-wa]").forEach(a=>a.href="https://wa.me/"+WA_NUMBER);
+/* Refresca TODOS los enlaces wa.me con el número del SITE_CONFIG */
+function refreshWaNumbers(){
+  e("[data-cfg='wa'], [data-wa]").forEach(function(a){
+    a.href = "https://wa.me/" + WA_NUMBER;
+  });
+}
+refreshWaNumbers();
+/* Re-aplica tras posible carga diferida */
+window.addEventListener("load", refreshWaNumbers, {once:true});
+
 const yr=document.getElementById("year");yr&&(yr.textContent=(new Date).getFullYear());
 const mb=document.getElementById("menuToggle"),mn=document.getElementById("mobileNav");
 if(mb&&mn){const set=o=>{document.body.classList.toggle("menu-open",o);mb.setAttribute("aria-expanded",String(o))};
@@ -1709,6 +1854,7 @@ y&&y.addEventListener("click", async function(){
     return;
   }
 
+  /* URL de WhatsApp con el mensaje del usuario, usando el número del CONFIG */
   const wl="https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent("Hola, quiero consultar mi caso:\n\n"+h.value.trim());
   C&&(C.href=wl); M&&(M.href=wl);
 
