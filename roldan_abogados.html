@@ -136,13 +136,133 @@ body.is-scrolled .site-header{transform:none;pointer-events:auto}
 .menu-toggle:hover{transform:scale(1.06)}
 .menu-toggle:active{transform:scale(.94);transition-duration:.1s}
 .menu-toggle svg{width:17px;height:17px}
-.mobile-nav{position:absolute;top:calc(100% + .35rem);left:var(--gutter);right:var(--gutter);z-index:10000;display:grid;gap:.15rem;padding:.6rem;border:1px solid var(--c-line);border-radius:var(--r-lg);background:color-mix(in srgb,var(--c-paper) 96%,transparent);backdrop-filter:saturate(200%) blur(12px);-webkit-backdrop-filter:saturate(200%) blur(12px);box-shadow:var(--sh-4);opacity:0;visibility:hidden;transform:translate3d(0,-8px,0) scale(.98);transform-origin:top right;transition:opacity .3s var(--e-apple),transform .4s var(--e-out),visibility .3s;pointer-events:auto}
+.mobile-nav{position:absolute;top:calc(100% + .35rem);left:var(--gutter);right:var(--gutter);z-index:10000;display:grid;gap:.15rem;padding:.6rem;border:1px solid var(--c-line);border-radius:var(--r-lg);background:color-mix(in srgb,var(--c-paper) 96%,transparent);backdrop-filter:saturate(200%) blur(12px);-webkit-backdrop-filter:saturate(200%) blur(12px);box-shadow:var(--sh-4);opacity:0;visibility:hidden;transform:translate3d(0,-8px,0) scale(.98);transform-origin:top right;transition:opacity .3s var(--e-apple),transform .4s var(--e-out),visibility .3s;pointer-events:auto;max-height:calc(100vh - 100px);overflow-y:auto}
 .mobile-nav a{display:block;padding:.9rem 1rem;border-radius:var(--r-md);font-size:1rem;font-weight:500}
 .mobile-nav a:active{background:color-mix(in srgb,var(--c-ink) 7%,transparent)}
 .mobile-nav .mobile-nav__cta{margin-top:.35rem;text-align:center;color:#fff;background:linear-gradient(180deg,#DFB055,#B8892B);border-radius:var(--r-full)}
 body.menu-open .mobile-nav{opacity:1;visibility:visible;transform:none;pointer-events:auto}
 .skip-link{position:fixed;top:-100px;left:1rem;z-index:10001;padding:.7rem 1.1rem;border-radius:var(--r-md);background:var(--c-ink);color:var(--c-paper);font-weight:600}
 .skip-link:focus{top:1rem}
+
+/* ============================================================
+   NAV DROPDOWN (desktop)
+   ============================================================ */
+.nav-item{position:relative}
+.nav-item > a{display:inline-flex!important;align-items:center;gap:.35rem}
+.nav-item .nav-chevron{width:11px;height:11px;flex-shrink:0;transition:transform .3s var(--e-apple);opacity:.7}
+.nav-item:hover > a .nav-chevron,
+.nav-item:focus-within > a .nav-chevron{transform:rotate(180deg);opacity:1}
+.nav-dropdown{
+  position:absolute;
+  top:calc(100% + .55rem);
+  left:50%;
+  transform:translateX(-50%) translateY(6px);
+  min-width:240px;
+  padding:.5rem;
+  border:1px solid var(--c-line);
+  border-radius:18px;
+  background:color-mix(in srgb,var(--c-paper) 98%,transparent);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:0 24px 48px -18px rgba(11,18,32,.22),0 8px 20px -10px rgba(11,18,32,.12);
+  display:grid;
+  gap:.1rem;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .25s var(--e-apple),transform .35s var(--e-out),visibility .25s;
+  z-index:200;
+}
+.nav-dropdown::before{
+  content:"";
+  position:absolute;
+  top:-8px;left:0;right:0;
+  height:8px;
+  background:transparent;
+}
+.nav-item:hover .nav-dropdown,
+.nav-item:focus-within .nav-dropdown{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+}
+.nav-dropdown a{
+  display:flex!important;
+  align-items:center;
+  gap:.6rem;
+  padding:.72rem .9rem!important;
+  border-radius:12px!important;
+  font-size:.88rem!important;
+  font-weight:500!important;
+  color:var(--c-ink)!important;
+  letter-spacing:-.008em!important;
+  line-height:1.3!important;
+  transition:background .2s var(--e-apple),color .2s var(--e-apple),padding-left .2s var(--e-apple)!important;
+}
+.nav-dropdown a:hover{
+  background:color-mix(in srgb,var(--c-gold) 12%,transparent)!important;
+  color:var(--c-gold)!important;
+}
+.nav-dropdown a .nav-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--c-gold);opacity:.5;flex-shrink:0;
+}
+.nav-dropdown__sep{
+  height:1px;margin:.35rem .5rem;
+  background:var(--c-line);
+}
+
+/* ============================================================
+   MOBILE NAV — acordeones
+   ============================================================ */
+.mobile-nav__group{
+  border:0;
+  border-radius:var(--r-md);
+  overflow:hidden;
+}
+.mobile-nav__group > summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.5rem;
+  padding:.9rem 1rem;
+  border-radius:var(--r-md);
+  font-size:1rem;
+  font-weight:500;
+  color:var(--c-ink);
+  cursor:pointer;
+  list-style:none;
+  transition:background .2s var(--e-apple);
+}
+.mobile-nav__group > summary::-webkit-details-marker{display:none}
+.mobile-nav__group > summary::marker{content:""}
+.mobile-nav__group > summary:hover{background:color-mix(in srgb,var(--c-ink) 6%,transparent)}
+.mobile-nav__group > summary .nav-chevron{
+  width:14px;height:14px;
+  flex-shrink:0;
+  color:var(--c-muted);
+  transition:transform .3s var(--e-apple);
+}
+.mobile-nav__group[open] > summary .nav-chevron{transform:rotate(180deg)}
+.mobile-nav__sub{
+  display:grid;
+  gap:.05rem;
+  padding:.1rem .35rem .5rem .65rem;
+}
+.mobile-nav__sub a{
+  padding:.7rem .85rem!important;
+  border-radius:10px!important;
+  font-size:.9rem!important;
+  font-weight:500!important;
+  color:var(--c-muted)!important;
+  transition:background .2s var(--e-apple),color .2s var(--e-apple)!important;
+}
+.mobile-nav__sub a:hover,
+.mobile-nav__sub a:active{
+  background:color-mix(in srgb,var(--c-gold) 10%,transparent)!important;
+  color:var(--c-gold)!important;
+}
 
 .scroll-indicator{position:fixed;top:auto;bottom:clamp(2.5rem,7vh,4.5rem);left:50%;transform:translateX(-50%) translateY(0);z-index:90;display:flex;flex-direction:column;align-items:center;gap:.85rem;color:rgba(250,247,240,.82);font-size:.68rem;font-weight:600;letter-spacing:.55em;text-transform:uppercase;text-indent:.55em;pointer-events:none;opacity:1;transition:opacity .5s var(--e-apple),transform .5s var(--e-apple);text-shadow:0 1px 12px rgba(0,0,0,.55)}
 .scroll-indicator.is-hidden{opacity:0;transform:translateX(-50%) translateY(14px)}
@@ -255,6 +375,145 @@ body.menu-open .mobile-nav{opacity:1;visibility:visible;transform:none;pointer-e
 .consulta-status p{margin:0 0 1.5rem;color:rgba(232,232,236,.68);font-size:.92rem;line-height:1.6}
 .btn-whatsapp{display:inline-flex;padding:.9rem 1.7rem;border-radius:980px;background:linear-gradient(180deg,#2DD673,#20A855);color:#fff!important;font-size:.92rem;font-weight:500;box-shadow:0 10px 24px -12px rgba(37,211,102,.6)}
 
+/* ============================================================
+   SERVICIOS · ROLDÁN ABOGADOS
+   ============================================================ */
+.svc{
+  position:relative;width:100%;
+  padding:clamp(3.5rem,8vh,6rem) clamp(1rem,4vw,3rem) clamp(3rem,6vh,5rem);
+  background:
+    radial-gradient(ellipse 60% 55% at 15% 0%, rgba(184,137,43,.07), transparent 60%),
+    radial-gradient(ellipse 50% 50% at 90% 100%, rgba(122,31,46,.05), transparent 60%),
+    var(--c-paper);
+  overflow:hidden;
+}
+.svc-head{width:100%;max-width:46rem;margin:0 auto clamp(2rem,4vh,3rem);text-align:center}
+.svc-eyebrow{display:inline-block;margin-bottom:.75rem;color:var(--c-gold);font-size:.68rem;font-weight:600;letter-spacing:.24em;text-transform:uppercase}
+.svc-title{margin:0 auto;max-width:22ch;color:var(--c-ink);font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:600;line-height:1.08;letter-spacing:-.034em;text-wrap:balance}
+.svc-title em{font-style:normal;color:var(--c-gold)}
+.svc-lead{max-width:46ch;margin:.9rem auto 0;color:var(--c-muted);font-size:clamp(.9rem,1vw,1rem);line-height:1.55}
+.svc-carousel{position:relative;width:100%;max-width:74rem;margin:0 auto;display:flex;border-radius:clamp(1.75rem,3vw,2.75rem);overflow:hidden;border:1px solid var(--c-line);box-shadow:0 1px 2px rgba(11,18,32,.04),0 8px 24px -8px rgba(11,18,32,.08),0 32px 64px -24px rgba(11,18,32,.18);min-height:620px}
+.svc-panel{
+  position:relative;
+  flex:0 0 42%;
+  min-width:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 25%, rgba(212,165,68,.14), transparent 60%),
+    radial-gradient(ellipse 70% 70% at 85% 90%, rgba(122,31,46,.22), transparent 60%),
+    linear-gradient(160deg,#0B1220 0%,#131B2E 55%,#0B1220 100%);
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  padding:clamp(2rem,4vw,3.5rem) clamp(1.75rem,3vw,3rem) clamp(5rem,8vh,6rem);
+  z-index:2;
+}
+.svc-panel::after{content:"";position:absolute;right:0;top:12%;bottom:12%;width:1px;background:linear-gradient(180deg,transparent,rgba(212,165,68,.35) 20%,rgba(212,165,68,.35) 80%,transparent);pointer-events:none}
+.svc-panel::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0B1220 0%,rgba(11,18,32,0) 18%),linear-gradient(0deg,#0B1220 0%,rgba(11,18,32,0) 25%);pointer-events:none;z-index:3}
+.svc-chips{position:relative;width:100%;height:60px;z-index:4}
+.svc-chip-wrap{position:absolute;top:0;left:0;height:60px;display:flex;align-items:center;will-change:transform,opacity;transition:transform .65s cubic-bezier(.22,1,.36,1),opacity .55s cubic-bezier(.25,.1,.25,1)}
+.svc-chip{display:inline-flex;align-items:center;gap:.85rem;padding:.82rem 1.35rem;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.035);color:rgba(250,247,240,.55);font-size:.82rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;transition:background .35s,color .35s,border-color .35s,transform .35s,box-shadow .35s}
+.svc-chip:hover{color:#FAF7F0;border-color:rgba(255,255,255,.32);background:rgba(255,255,255,.07)}
+.svc-chip__icon{display:grid;place-items:center;width:20px;height:20px;flex-shrink:0;color:currentColor;transition:color .35s}
+.svc-chip__icon svg{width:100%;height:100%;display:block}
+.svc-chip__label{display:block;line-height:1}
+.svc-chip-wrap.is-active .svc-chip{background:linear-gradient(180deg,#FFFDF8,#F6F1E4);color:var(--c-ink);border-color:rgba(212,165,68,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 8px 22px -8px rgba(184,137,43,.55),0 2px 8px -4px rgba(0,0,0,.35);transform:scale(1.02)}
+.svc-chip-wrap.is-active .svc-chip__icon{color:var(--c-gold)}
+
+/* ✨ CAMBIO 1: Flechas juntas abajo */
+.svc-nav-arrows{
+  position:absolute;
+  left:50%;
+  bottom:1.5rem;
+  transform:translateX(-50%);
+  display:flex;
+  gap:.5rem;
+  z-index:6;
+  padding:.35rem;
+  border-radius:999px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+}
+.svc-nav-arrow{
+  display:grid;place-items:center;
+  width:36px;height:36px;
+  border-radius:50%;
+  background:transparent;
+  border:1px solid transparent;
+  color:rgba(250,247,240,.5);
+  cursor:pointer;
+  transition:background .3s,color .3s,border-color .3s,transform .3s;
+}
+.svc-nav-arrow svg{width:14px;height:14px;display:block}
+.svc-nav-arrow:hover{background:rgba(212,165,68,.16);border-color:rgba(212,165,68,.42);color:#D4A544;transform:translateY(-1px)}
+.svc-nav-arrow:active{transform:scale(.94);transition-duration:.1s}
+
+.svc-stage{position:relative;flex:1 1 auto;min-width:0;background:radial-gradient(circle at 50% 50%,#FFFFFF 0%,#FAF7F0 70%,#F1ECE0 100%);display:flex;align-items:center;justify-content:center;padding:clamp(2rem,5vw,3.5rem);overflow:hidden}
+.svc-stage::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(11,18,32,.045) 1px,transparent 1px);background-size:22px 22px;mask-image:radial-gradient(ellipse 60% 60% at 50% 50%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 60% 60% at 50% 50%,#000 30%,transparent 75%);pointer-events:none}
+.svc-frame{position:relative;width:100%;max-width:420px;aspect-ratio:4/5;z-index:1}
+.svc-card{position:absolute;inset:0;border-radius:2.4rem;overflow:hidden;background:#0B1220;border:6px solid #FAF7F0;box-shadow:0 2px 6px rgba(11,18,32,.08),0 20px 44px -14px rgba(11,18,32,.22),0 40px 80px -30px rgba(11,18,32,.28);transform-origin:center center;will-change:transform,opacity;transition:transform .65s cubic-bezier(.22,1,.36,1),opacity .5s cubic-bezier(.25,.1,.25,1);backface-visibility:hidden}
+.svc-card__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) blur(2px) brightness(.75);transition:filter .6s,transform .6s}
+.svc-card.is-active .svc-card__img{filter:grayscale(0) blur(0) brightness(1);transform:scale(1.02)}
+.svc-card__overlay{position:absolute;inset-inline:0;bottom:0;padding:3.5rem 1.6rem 1.6rem;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.55) 45%,rgba(0,0,0,0) 100%);color:#fff;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .6s}
+.svc-card.is-active .svc-card__overlay{opacity:1;transform:translateY(0)}
+.svc-card__tag{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .75rem;margin-bottom:.85rem;border-radius:999px;background:rgba(255,255,255,.95);color:var(--c-ink);font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;box-shadow:0 4px 12px -4px rgba(0,0,0,.4)}
+.svc-card__tag b{color:var(--c-gold);font-weight:800}
+.svc-card__title{margin:0 0 .5rem;font-size:clamp(1.15rem,1.6vw,1.5rem);font-weight:600;line-height:1.15;letter-spacing:-.024em;text-shadow:0 2px 18px rgba(0,0,0,.5)}
+.svc-card__desc{margin:0;font-size:clamp(.82rem,1vw,.94rem);line-height:1.5;color:rgba(255,255,255,.82);text-shadow:0 1px 10px rgba(0,0,0,.45);max-width:34ch}
+.svc-card__live{position:absolute;top:1.1rem;left:1.1rem;display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .8rem;border-radius:999px;background:rgba(11,18,32,.55);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.85);font-size:.6rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;opacity:0;transition:opacity .4s}
+.svc-card.is-active .svc-card__live{opacity:1}
+.svc-card__dot{width:6px;height:6px;border-radius:50%;background:#30D158;box-shadow:0 0 0 3px rgba(48,209,88,.18);animation:svcPulse 2.4s ease-in-out infinite}
+@keyframes svcPulse{0%,100%{box-shadow:0 0 0 3px rgba(48,209,88,.18)}50%{box-shadow:0 0 0 6px rgba(48,209,88,0)}}
+.svc-controls{position:absolute;left:50%;bottom:1rem;transform:translateX(-50%);display:none;gap:.5rem;z-index:5}
+.svc-controls button{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:rgba(11,18,32,.65);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.14);color:#fff;transition:background .3s,transform .3s}
+.svc-controls button:active{transform:scale(.92)}
+.svc-controls svg{width:16px;height:16px;display:block}
+
+@media (max-width:1024px){
+  .svc-carousel{min-height:560px}
+  .svc-panel{flex-basis:44%;padding:2rem 2rem 4.5rem}
+  .svc-frame{max-width:360px}
+}
+@media (max-width:860px){
+  .svc{padding:3rem 1rem 2.25rem}
+  .svc-head{margin-bottom:1.75rem}
+  .svc-title{max-width:20ch;font-size:clamp(1.5rem,6vw,1.9rem)}
+  .svc-lead{font-size:.88rem}
+  .svc-carousel{flex-direction:column-reverse;border-radius:1.75rem;min-height:0}
+  .svc-panel{flex:0 0 auto;width:100%;padding:.85rem .85rem 1rem;align-items:stretch;background:linear-gradient(180deg,#0B1220 0%,#0F1626 100%);border-bottom-left-radius:1.75rem;border-bottom-right-radius:1.75rem}
+  .svc-panel::before,.svc-panel::after{display:none}
+  .svc-nav-arrows{display:none}
+  .svc-chips{position:static;height:auto;display:flex;gap:.5rem;overflow-x:auto;overflow-y:hidden;padding:.35rem .25rem .55rem;scroll-behavior:smooth;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%)}
+  .svc-chips::-webkit-scrollbar{display:none}
+  .svc-chip-wrap{position:static;top:auto;left:auto;height:auto;transform:none!important;opacity:1!important;z-index:auto!important;transition:none;flex-shrink:0;scroll-snap-align:center}
+  .svc-chip{padding:.68rem 1.1rem;font-size:.7rem;letter-spacing:.06em;gap:.6rem}
+  .svc-chip__icon{width:16px;height:16px}
+  .svc-chip-wrap.is-active .svc-chip{transform:scale(1)}
+  .svc-stage{padding:1.5rem 1rem 1.75rem;border-top-left-radius:1.75rem;border-top-right-radius:1.75rem;min-height:0}
+  .svc-stage::before{display:none}
+  .svc-frame{max-width:min(100%,360px);aspect-ratio:4/5}
+  .svc-card{border-width:4px;border-radius:1.6rem;box-shadow:0 2px 6px rgba(11,18,32,.08),0 18px 40px -14px rgba(11,18,32,.24)}
+  .svc-card__overlay{padding:2.75rem 1.15rem 1.15rem}
+  .svc-card__title{font-size:1.05rem}
+  .svc-card__desc{font-size:.82rem;max-width:none}
+  .svc-card__tag{font-size:.56rem;padding:.3rem .65rem;margin-bottom:.6rem}
+  .svc-card__live{top:.85rem;left:.85rem;padding:.32rem .68rem;font-size:.55rem;letter-spacing:.18em}
+  .svc-controls{display:flex}
+}
+@media (max-width:420px){
+  .svc{padding:2.5rem .75rem 2rem}
+  .svc-title{font-size:clamp(1.35rem,6.4vw,1.7rem)}
+  .svc-frame{max-width:320px}
+  .svc-chip{padding:.62rem .95rem;font-size:.64rem}
+  .svc-controls button{width:34px;height:34px}
+  .svc-controls svg{width:14px;height:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  .svc-chip-wrap,.svc-chip,.svc-card,.svc-card__img,.svc-card__overlay,.svc-card__live,.svc-controls button,.svc-nav-arrow{transition:none!important;animation:none!important}
+  .svc-card__dot{animation:none!important}
+}
+
 .results-portal{position:relative;width:100%;height:190vh;background:#050609}
 .results-portal__sticky{position:sticky;top:0;width:100%;height:100vh;height:100svh;height:100dvh;min-height:0;overflow:hidden;isolation:isolate;background:#050609}
 .results-portal__bg{position:absolute;inset:-6%;z-index:0;background-image:radial-gradient(ellipse 70% 60% at 30% 22%, rgba(184,137,43,.42), transparent 55%),radial-gradient(ellipse 60% 60% at 82% 82%, rgba(122,31,46,.55), transparent 62%),url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1800&q=80&auto=format&fit=crop'),linear-gradient(135deg,#1a1c2e 0%,#0B1220 50%,#050609 100%);background-size:cover,cover,cover,cover;background-position:center;background-repeat:no-repeat;transform:scale(1.15);will-change:transform}
@@ -285,162 +544,35 @@ body.menu-open .mobile-nav{opacity:1;visibility:visible;transform:none;pointer-e
 .results-portal__stats .stat__value span:last-child:not(:first-child){color:var(--c-gold-2);font-size:.55em}
 .results-portal__stats .stat__label{max-width:22ch;margin-top:.9rem;color:rgba(250,247,240,.66);font-size:.88rem;line-height:1.55}
 
-/* ============================================================
-   STACKED CAROUSEL — "Sobre nosotros"
-   ============================================================ */
-.stacked-carousel-section{
-  position:relative;
-  z-index:1;
-  isolation:isolate;
-  width:100%;
-  background:#FFFFFF;
-  padding:clamp(3.5rem,7vh,5rem) var(--gutter) clamp(3rem,6vh,4.5rem);
-  overflow:hidden;
-}
-.stacked-carousel-section__head{
-  width:100%;
-  max-width:44rem;
-  margin:0 auto clamp(1.5rem,3vh,2.25rem);
-  text-align:center;
-}
-.stacked-carousel-section__head .eyebrow{
-  display:inline-block;
-  margin-bottom:.55rem;
-  color:var(--c-gold);
-  font-size:.68rem;
-  font-weight:600;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-}
-.stacked-carousel-section__title{
-  margin:0 auto;
-  max-width:22ch;
-  color:var(--c-ink);
-  font-size:clamp(1.6rem,3vw,2.25rem);
-  font-weight:600;
-  letter-spacing:-.032em;
-  line-height:1.1;
-}
+.stacked-carousel-section{position:relative;z-index:1;isolation:isolate;width:100%;background:#FFFFFF;padding:clamp(3.5rem,7vh,5rem) var(--gutter) clamp(3rem,6vh,4.5rem);overflow:hidden}
+.stacked-carousel-section__head{width:100%;max-width:44rem;margin:0 auto clamp(1.5rem,3vh,2.25rem);text-align:center}
+.stacked-carousel-section__head .eyebrow{display:inline-block;margin-bottom:.55rem;color:var(--c-gold);font-size:.68rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase}
+.stacked-carousel-section__title{margin:0 auto;max-width:22ch;color:var(--c-ink);font-size:clamp(1.6rem,3vw,2.25rem);font-weight:600;letter-spacing:-.032em;line-height:1.1}
 .stacked-carousel-section__title em{font-style:normal;color:var(--c-gold)}
-.stacked-carousel-section__lead{
-  max-width:44ch;
-  margin:.75rem auto 0;
-  color:var(--c-muted);
-  font-size:clamp(.9rem,1vw,.98rem);
-  line-height:1.55;
-}
-.stacked-carousel{
-  position:relative;
-  width:100%;
-  max-width:min(72rem,90vw);
-  margin-inline:auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  user-select:none;
-  -webkit-user-select:none;
-  -webkit-tap-highlight-color:transparent;
-}
-.stacked-carousel__stage{
-  position:relative;
-  width:100%;
-  height:clamp(13rem,32vh,19rem);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:grab;
-  touch-action:pan-y;
-}
+.stacked-carousel-section__lead{max-width:44ch;margin:.75rem auto 0;color:var(--c-muted);font-size:clamp(.9rem,1vw,.98rem);line-height:1.55}
+.stacked-carousel{position:relative;width:100%;max-width:min(72rem,90vw);margin-inline:auto;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.stacked-carousel__stage{position:relative;width:100%;height:clamp(13rem,32vh,19rem);display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:pan-y}
 .stacked-carousel__stage:active{cursor:grabbing}
-.stacked-carousel__card{
-  position:absolute;
-  top:50%;left:50%;
-  width:clamp(8rem,16vh,12rem);
-  height:clamp(11.2rem,22.4vh,16.8rem);
-  border-radius:16px;
-  overflow:hidden;
-  background:#F5F5F5;
-  box-shadow:
-    0 1px 2px rgba(11,18,32,.04),
-    0 8px 24px -8px rgba(11,18,32,.12),
-    0 24px 48px -16px rgba(11,18,32,.16);
-  will-change:transform,opacity;
-  backface-visibility:hidden;
-  pointer-events:none;
-  transform-origin:center center;
-  transform:translate(-50%,-50%);
-}
-.stacked-carousel__card img{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;display:block;
-  -webkit-user-drag:none;user-select:none;
-  transition:transform .7s var(--e-apple);
-}
+.stacked-carousel__card{position:absolute;top:50%;left:50%;width:clamp(8rem,16vh,12rem);height:clamp(11.2rem,22.4vh,16.8rem);border-radius:16px;overflow:hidden;background:#F5F5F5;box-shadow:0 1px 2px rgba(11,18,32,.04),0 8px 24px -8px rgba(11,18,32,.12),0 24px 48px -16px rgba(11,18,32,.16);will-change:transform,opacity;backface-visibility:hidden;pointer-events:none;transform-origin:center center;transform:translate(-50%,-50%)}
+.stacked-carousel__card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none;transition:transform .7s var(--e-apple)}
 .stacked-carousel__card:hover img{transform:scale(1.05)}
 .stacked-carousel__shade{position:absolute;inset:0;background:#000;pointer-events:none;opacity:0;will-change:opacity}
 .stacked-carousel__gradient{position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.55) 78%,rgba(0,0,0,.85) 100%);pointer-events:none}
-.stacked-carousel__badge{
-  position:absolute;top:.65rem;right:.65rem;
-  padding:.24rem .6rem;border-radius:999px;
-  background:rgba(255,255,255,.96);color:#0B1220;
-  font-size:.54rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:2;
-}
+.stacked-carousel__badge{position:absolute;top:.65rem;right:.65rem;padding:.24rem .6rem;border-radius:999px;background:rgba(255,255,255,.96);color:#0B1220;font-size:.54rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:2}
 .stacked-carousel__body{position:absolute;bottom:.8rem;left:.8rem;right:.8rem;color:#fff;z-index:2;text-align:center}
-.stacked-carousel__title{
-  margin:0 0 .25rem;
-  font-size:clamp(.72rem,1.05vw,.88rem);
-  font-weight:700;
-  line-height:1.2;
-  letter-spacing:-.015em;
-  text-shadow:0 2px 12px rgba(0,0,0,.6);
-  will-change:opacity;
-}
-.stacked-carousel__desc{
-  margin:0;
-  font-size:.68rem;
-  line-height:1.45;
-  color:rgba(255,255,255,.82);
-  font-style:italic;
-  font-weight:500;
-  text-shadow:0 1px 8px rgba(0,0,0,.55);
-  will-change:opacity;
-}
-.stacked-carousel__hint{
-  display:flex;align-items:center;justify-content:center;gap:.5rem;
-  color:var(--c-muted-2);font-size:.62rem;font-weight:600;
-  letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;
-}
+.stacked-carousel__title{margin:0 0 .25rem;font-size:clamp(.72rem,1.05vw,.88rem);font-weight:700;line-height:1.2;letter-spacing:-.015em;text-shadow:0 2px 12px rgba(0,0,0,.6);will-change:opacity}
+.stacked-carousel__desc{margin:0;font-size:.68rem;line-height:1.45;color:rgba(255,255,255,.82);font-style:italic;font-weight:500;text-shadow:0 1px 8px rgba(0,0,0,.55);will-change:opacity}
+.stacked-carousel__hint{display:flex;align-items:center;justify-content:center;gap:.5rem;color:var(--c-muted-2);font-size:.62rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap}
 .stacked-carousel__hint svg{width:13px;height:13px;flex-shrink:0}
-.stacked-carousel__bottom{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:clamp(1rem,2.5vw,1.75rem);
-  margin-top:clamp(1.5rem,3vh,2rem);
-  flex-shrink:0;
-}
-.stacked-carousel__nav{
-  display:grid;place-items:center;
-  width:44px;height:44px;flex-shrink:0;border-radius:50%;
-  background:rgba(11,18,32,.92);color:#FAF7F0;
-  border:1px solid rgba(255,255,255,.12);
-  -webkit-backdrop-filter:blur(12px) saturate(180%);
-  backdrop-filter:blur(12px) saturate(180%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 8px 24px -8px rgba(0,0,0,.4);
-  cursor:pointer;
-  transition:background .25s var(--e-apple),color .25s var(--e-apple),border-color .25s var(--e-apple),transform .25s var(--e-apple);
-}
+.stacked-carousel__bottom{display:flex;align-items:center;justify-content:center;gap:clamp(1rem,2.5vw,1.75rem);margin-top:clamp(1.5rem,3vh,2rem);flex-shrink:0}
+.stacked-carousel__nav{display:grid;place-items:center;width:44px;height:44px;flex-shrink:0;border-radius:50%;background:rgba(11,18,32,.92);color:#FAF7F0;border:1px solid rgba(255,255,255,.12);-webkit-backdrop-filter:blur(12px) saturate(180%);backdrop-filter:blur(12px) saturate(180%);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 8px 24px -8px rgba(0,0,0,.4);cursor:pointer;transition:background .25s var(--e-apple),color .25s var(--e-apple),border-color .25s var(--e-apple),transform .25s var(--e-apple)}
 .stacked-carousel__nav:hover{background:rgba(212,165,68,.95);color:#0B1220;border-color:rgba(212,165,68,.55);transform:scale(1.06)}
 .stacked-carousel__nav:active{transform:scale(.92);transition-duration:.1s}
 .stacked-carousel__nav svg{width:17px;height:17px;display:block}
-
-/* Tablet */
 @media (min-width:640px){
   .stacked-carousel__stage{height:clamp(14rem,34vh,20rem)}
   .stacked-carousel__card{width:clamp(9rem,18vh,13rem);height:clamp(12.6rem,25.2vh,18.2rem)}
 }
-/* Desktop — carrusel +50% */
 @media (min-width:1024px){
   .stacked-carousel__stage{height:clamp(22.5rem,52.5vh,28.5rem)}
   .stacked-carousel__card{width:clamp(15rem,28.5vh,18rem);height:clamp(21rem,39.9vh,25.2rem)}
@@ -453,7 +585,6 @@ body.menu-open .mobile-nav{opacity:1;visibility:visible;transform:none;pointer-e
   .stacked-carousel__hint{font-size:.72rem}
   .stacked-carousel__hint svg{width:15px;height:15px}
 }
-/* Mobile */
 @media (max-width:640px){
   .stacked-carousel-section{padding:2.75rem 1rem 2.5rem}
   .stacked-carousel-section__head{margin-bottom:1.25rem}
@@ -481,9 +612,6 @@ body.menu-open .mobile-nav{opacity:1;visibility:visible;transform:none;pointer-e
   .stacked-carousel__hint{font-size:.46rem;letter-spacing:.08em}
 }
 
-/* ============================================================
-   FAQ — Fondo blanco para continuidad visual con "Sobre nosotros"
-   ============================================================ */
 .faq{background:#FFFFFF;content-visibility:auto;contain-intrinsic-size:auto 700px;padding-block:clamp(5.5rem,10vh,8rem)}
 .faq__grid{display:grid;grid-template-columns:minmax(0,20rem) minmax(0,1fr);gap:clamp(2.5rem,6vw,6rem);align-items:start}
 .faq__head{position:sticky;top:7rem;align-self:start}
@@ -694,8 +822,22 @@ body.is-scrolled .header-inner{background:rgba(11,18,32,.72) !important;border-c
 .header-inner .brand .brand__mark{width:34px !important;height:34px !important;flex-shrink:0 !important;border-radius:10px !important}
 .header-inner .brand .brand__name small{color:rgba(255,255,255,.62) !important}
 .header-inner .main-nav{justify-self:center !important;display:flex !important;align-items:center !important;gap:2px !important;padding:0 !important;border:0 !important;border-radius:0 !important;background:transparent !important;box-shadow:none !important;-webkit-backdrop-filter:none !important;backdrop-filter:none !important;height:auto !important}
-.header-inner .main-nav a{padding:8px 14px !important;border-radius:999px !important;color:rgba(255,255,255,.92) !important;font-size:14px !important;font-weight:700 !important;line-height:1 !important;text-shadow:0 1px 10px rgba(0,0,0,.45);transition:background .25s cubic-bezier(.25,.1,.25,1) !important}
-.header-inner .main-nav a:hover{background:rgba(255,255,255,.12) !important}
+.header-inner .main-nav > a,
+.header-inner .main-nav .nav-item > a{padding:8px 14px !important;border-radius:999px !important;color:rgba(255,255,255,.92) !important;font-size:14px !important;font-weight:700 !important;line-height:1 !important;text-shadow:0 1px 10px rgba(0,0,0,.45);transition:background .25s cubic-bezier(.25,.1,.25,1) !important}
+.header-inner .main-nav > a:hover,
+.header-inner .main-nav .nav-item > a:hover{background:rgba(255,255,255,.12) !important}
+.header-inner .main-nav .nav-dropdown{background:rgba(20,26,42,.96) !important;border-color:rgba(255,255,255,.08) !important;box-shadow:0 24px 48px -18px rgba(0,0,0,.6),0 8px 20px -10px rgba(0,0,0,.4) !important}
+.header-inner .main-nav .nav-dropdown a{
+  padding:.72rem .9rem !important;
+  color:rgba(255,255,255,.82) !important;
+  font-size:.88rem !important;
+  font-weight:500 !important;
+  line-height:1.3 !important;
+  text-shadow:none !important;
+  border-radius:12px !important;
+}
+.header-inner .main-nav .nav-dropdown a:hover{background:rgba(212,165,68,.18) !important;color:#D4A544 !important}
+.header-inner .main-nav .nav-dropdown .nav-dropdown__sep{background:rgba(255,255,255,.08) !important}
 .header-actions{justify-self:end !important;display:flex !important;align-items:center !important;gap:8px !important}
 .header-inner .header-cta{display:inline-flex !important;align-items:center !important;justify-content:center !important;gap:6px !important;padding:10px 20px !important;border-radius:999px !important;font-size:14px !important;font-weight:600 !important;line-height:1 !important;white-space:nowrap !important;background:rgba(255,255,255,.12) !important;background-image:none !important;color:#fff !important;border:1px solid rgba(255,255,255,.18) !important;box-shadow:none !important;text-shadow:none !important;height:auto !important;min-height:0 !important;max-height:none !important;aspect-ratio:auto !important;width:auto !important;transform:none !important;-webkit-backdrop-filter:blur(12px) !important;backdrop-filter:blur(12px) !important;transition:background .25s cubic-bezier(.25,.1,.25,1),border-color .25s cubic-bezier(.25,.1,.25,1) !important}
 .header-inner .header-cta:hover{background:rgba(212,165,68,.28) !important;border-color:rgba(212,165,68,.5) !important;transform:none !important;box-shadow:none !important;filter:none !important}
@@ -705,8 +847,9 @@ body.is-scrolled .header-inner{background:rgba(11,18,32,.72) !important;border-c
 .header-inner .menu-toggle:hover{background:rgba(255,255,255,.16) !important;transform:scale(1.05) !important}
 .header-inner .menu-toggle:active{transform:scale(.94) !important}
 .mobile-nav{top:calc(100% + 10px) !important;left:var(--gutter) !important;right:var(--gutter) !important;max-width:1400px !important;margin-inline:auto !important;padding:8px !important;border-radius:20px !important;border:1px solid rgba(11,18,32,.08) !important;background:rgba(250,247,240,.98) !important;-webkit-backdrop-filter:blur(24px) !important;backdrop-filter:blur(24px) !important;box-shadow:0 20px 40px -16px rgba(0,0,0,.3) !important;pointer-events:auto !important;z-index:10000 !important}
-.mobile-nav a{color:var(--c-ink) !important;text-shadow:none !important}
-.mobile-nav .mobile-nav__cta{background:rgba(11,18,32,.92) !important;color:#fff !important;border:1px solid rgba(11,18,32,.2) !important;border-radius:999px !important;padding:12px 20px !important;font-weight:600 !important}
+.mobile-nav a,
+.mobile-nav__group > summary{color:var(--c-ink) !important;text-shadow:none !important}
+.mobile-nav .mobile-nav__cta{background:rgba(11,18,32,.92) !important;color:#fff !important;border:1px solid rgba(11,18,32,.2) !important;border-radius:999px !important;padding:12px 20px !important;font-weight:600 !important;margin-top:.35rem !important}
 
 .scrolly__sticky::before{content:"" !important;position:absolute !important;inset:0 !important;z-index:-1 !important;pointer-events:none !important;background:radial-gradient(ellipse 80% 60% at 50% 48%, rgba(5,6,9,.32) 0%, rgba(5,6,9,.14) 55%, rgba(5,6,9,0) 85%),linear-gradient(180deg, rgba(5,6,9,.34) 0%, rgba(5,6,9,.10) 20%, rgba(5,6,9,.08) 60%, rgba(5,6,9,.42) 100%) !important}
 @media (max-width:768px){
@@ -797,6 +940,7 @@ window.SITE_CONFIG = {
 <symbol id="i-arrow-up" viewBox="0 0 16 16" fill="none"><path d="M8 14V3M3 8l5-5 5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-arrow-down" viewBox="0 0 16 16" fill="none"><path d="M8 2v11M3 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-menu" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-fb" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3 0-1.3-.1-2.45-.1-2.4 0-4.05 1.5-4.05 4.2v2.2H7.5V13h2.7v8h3.3z"/></symbol>
 <symbol id="i-ig" viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/></symbol>
 <symbol id="i-tt" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3h-2.6v11.7c0 1.5-1.2 2.7-2.7 2.7s-2.7-1.2-2.7-2.7 1.2-2.7 2.7-2.7c.3 0 .6 0 .8.1V9.3c-.3 0-.5-.1-.8-.1-3.2 0-5.8 2.6-5.8 5.8S7.9 20.8 11 20.8s5.8-2.6 5.8-5.8V8.6c1 .8 2.4 1.3 3.8 1.3V7.3c-1.9 0-3.5-1.5-3.6-3.4-.1-.3-.3-.6-.5-.9z"/></symbol>
@@ -821,13 +965,77 @@ window.SITE_CONFIG = {
   <span class="brand__mark" aria-hidden="true"><img src="https://organicbionatural.com/wp-content/uploads/2026/10/i1.jpg" alt="" data-cfg="logo" data-cfg-alt></span>
   <span class="brand__name"><span data-cfg="brandName">Roldán Abogados</span> <small data-cfg="brandTagline">Bufete Jurídico</small></span>
 </a>
-<nav class="main-nav" aria-label="Navegación principal"><a href="#areas">Áreas</a><a href="#nosotros">Nosotros</a><a href="#faq">Preguntas</a><a href="#ubicacion">Ubicación</a></nav>
+
+<nav class="main-nav" aria-label="Navegación principal">
+  <!-- ÁREAS con dropdown -->
+  <div class="nav-item">
+    <a href="#areas">Áreas <svg class="nav-chevron" aria-hidden="true"><use href="#i-chevron"/></svg></a>
+    <div class="nav-dropdown" role="menu">
+      <a href="#areas" role="menuitem"><span class="nav-dot"></span>Derecho Civil</a>
+      <a href="#areas" role="menuitem"><span class="nav-dot"></span>Derecho Penal</a>
+      <a href="#areas" role="menuitem"><span class="nav-dot"></span>Derecho Laboral</a>
+      <a href="#areas" role="menuitem"><span class="nav-dot"></span>Derecho de Familia</a>
+      <a href="#areas" role="menuitem"><span class="nav-dot"></span>Derecho Corporativo</a>
+    </div>
+  </div>
+
+  <!-- SERVICIOS con dropdown -->
+  <div class="nav-item">
+    <a href="#servicios">Servicios <svg class="nav-chevron" aria-hidden="true"><use href="#i-chevron"/></svg></a>
+    <div class="nav-dropdown" role="menu">
+      <a href="#servicios" role="menuitem"><span class="nav-dot"></span>Demandas</a>
+      <a href="#servicios" role="menuitem"><span class="nav-dot"></span>Tutelas</a>
+      <a href="#servicios" role="menuitem"><span class="nav-dot"></span>Liquidaciones</a>
+      <a href="#servicios" role="menuitem"><span class="nav-dot"></span>Divorcios</a>
+      <a href="#servicios" role="menuitem"><span class="nav-dot"></span>Constitución de sociedades</a>
+      <a href="#servicios" role="menuitem"><span class="nav-dot"></span>Reclamaciones EPS</a>
+      <a href="#servicios" role="menuitem"><span class="nav-dot"></span>Cobro jurídico</a>
+      <a href="#servicios" role="menuitem"><span class="nav-dot"></span>Recursos y apelaciones</a>
+    </div>
+  </div>
+
+  <a href="#nosotros">Nosotros</a>
+  <a href="#faq">Preguntas</a>
+  <a href="#ubicacion">Ubicación</a>
+</nav>
+
 <div class="header-actions">
 <a href="#consulta" class="header-cta">Consulta gratis</a>
 <button class="menu-toggle" type="button" id="menuToggle" aria-label="Abrir menú" aria-controls="mobileNav" aria-expanded="false"><svg aria-hidden="true" width="16" height="16"><use href="#i-menu"/></svg></button>
 </div>
 </div>
-<nav class="mobile-nav" id="mobileNav" aria-label="Menú móvil"><a href="#areas">Áreas</a><a href="#nosotros">Nosotros</a><a href="#faq">Preguntas</a><a href="#ubicacion">Ubicación</a><a href="#consulta" class="mobile-nav__cta">Consulta gratis</a></nav>
+
+<nav class="mobile-nav" id="mobileNav" aria-label="Menú móvil">
+  <details class="mobile-nav__group">
+    <summary>Áreas <svg class="nav-chevron" aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+    <div class="mobile-nav__sub">
+      <a href="#areas">Derecho Civil</a>
+      <a href="#areas">Derecho Penal</a>
+      <a href="#areas">Derecho Laboral</a>
+      <a href="#areas">Derecho de Familia</a>
+      <a href="#areas">Derecho Corporativo</a>
+    </div>
+  </details>
+
+  <details class="mobile-nav__group">
+    <summary>Servicios <svg class="nav-chevron" aria-hidden="true"><use href="#i-chevron"/></svg></summary>
+    <div class="mobile-nav__sub">
+      <a href="#servicios">Demandas</a>
+      <a href="#servicios">Tutelas</a>
+      <a href="#servicios">Liquidaciones</a>
+      <a href="#servicios">Divorcios</a>
+      <a href="#servicios">Constitución de sociedades</a>
+      <a href="#servicios">Reclamaciones EPS</a>
+      <a href="#servicios">Cobro jurídico</a>
+      <a href="#servicios">Recursos y apelaciones</a>
+    </div>
+  </details>
+
+  <a href="#nosotros">Nosotros</a>
+  <a href="#faq">Preguntas</a>
+  <a href="#ubicacion">Ubicación</a>
+  <a href="#consulta" class="mobile-nav__cta">Consulta gratis</a>
+</nav>
 </header>
 
 <main id="contenido">
@@ -946,6 +1154,55 @@ window.SITE_CONFIG = {
       <h3>Algo salió mal</h3>
       <p>Intenta de nuevo o escríbenos directamente:</p>
       <a href="#" id="btnWhatsappError" target="_blank" rel="noopener" class="btn-whatsapp" data-cfg="wa">Escribir por WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<section class="svc" id="servicios" aria-labelledby="svc-title">
+  <header class="svc-head">
+    <span class="svc-eyebrow">Servicios Legales</span>
+    <h2 class="svc-title" id="svc-title">
+      Lo que resolvemos <em>por ti.</em>
+    </h2>
+    <p class="svc-lead">
+      Acciones, trámites y gestiones que un abogado puede adelantar en tu nombre. Elige lo que necesitas y conoce cómo lo hacemos.
+    </p>
+  </header>
+
+  <div class="svc-carousel" id="svcCarousel">
+    <aside class="svc-panel">
+      <div class="svc-chips" id="svcChips" role="tablist" aria-label="Servicios legales"></div>
+
+      <!-- ✨ CAMBIO 1: Flechas juntas abajo -->
+      <div class="svc-nav-arrows">
+        <button class="svc-nav-arrow" type="button" id="svcArrowUp" aria-label="Servicio anterior">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="svc-nav-arrow" type="button" id="svcArrowDown" aria-label="Servicio siguiente">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <div class="svc-stage">
+      <div class="svc-frame" id="svcFrame"></div>
+
+      <div class="svc-controls" aria-hidden="false">
+        <button type="button" id="svcPrev" aria-label="Servicio anterior">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button type="button" id="svcNext" aria-label="Servicio siguiente">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -1110,7 +1367,7 @@ window.SITE_CONFIG = {
   <p class="footer__about">Bufete de abogados con sede en Bogotá. Asesoría legal integral para personas y empresas en todo el territorio nacional.</p>
 </div>
 <div class="footer__col"><h4>Áreas</h4><ul><li><a href="#areas">Derecho Civil en Bogotá</a></li><li><a href="#areas">Derecho Penal en Bogotá</a></li><li><a href="#areas">Derecho Laboral en Bogotá</a></li><li><a href="#areas">Derecho de Familia en Bogotá</a></li></ul></div>
-<div class="footer__col"><h4>Bufete</h4><ul><li><a href="#nosotros">Sobre nosotros</a></li><li><a href="#resultados">Resultados</a></li><li><a href="#faq">Preguntas frecuentes</a></li><li><a href="#ubicacion">Ubicación</a></li></ul></div>
+<div class="footer__col"><h4>Servicios</h4><ul><li><a href="#servicios">Demandas</a></li><li><a href="#servicios">Tutelas</a></li><li><a href="#servicios">Liquidaciones</a></li><li><a href="#servicios">Divorcios</a></li><li><a href="#servicios">Cobro jurídico</a></li></ul></div>
 <div class="footer__col"><h4>Contacto</h4><ul><li><a href="mailto:roldan@abogados.com" data-cfg="email">roldan@abogados.com</a></li><li><a href="tel:+573058284047" data-cfg="phone">+57 305 828 4047</a></li><li><a href="#" data-cfg="wa" target="_blank" rel="noopener">WhatsApp</a></li></ul></div>
 </div>
 <div class="footer__bottom"><span>© <span id="year"></span> <span data-cfg="brandName">Roldán Abogados</span>. Todos los derechos reservados.</span><a href="#inicio" class="back-top">Volver arriba <svg aria-hidden="true"><use href="#i-arrow-up"/></svg></a></div>
@@ -1135,7 +1392,6 @@ const yr=document.getElementById("year");yr&&(yr.textContent=(new Date).getFullY
 const mb=document.getElementById("menuToggle"),mn=document.getElementById("mobileNav");
 if(mb&&mn){const set=o=>{document.body.classList.toggle("menu-open",o);mb.setAttribute("aria-expanded",String(o))};
 mb.addEventListener("click",()=>set(!document.body.classList.contains("menu-open")));
-mn.addEventListener("click",ev=>{ev.target.closest("a")&&set(!1)});
 document.addEventListener("keydown",ev=>{"Escape"===ev.key&&set(!1)});
 window.addEventListener("resize",()=>{innerWidth>960&&set(!1)},{passive:!0})}
 let sf=!1;function hs(){document.body.classList.toggle("is-scrolled",scrollY>80);sf=!1}
@@ -1170,6 +1426,8 @@ document.addEventListener("click",function(ev){
   document.body.classList.remove("menu-open");
   var mbt = document.getElementById("menuToggle");
   if(mbt) mbt.setAttribute("aria-expanded", "false");
+  // cerrar los details del mobile-nav al navegar
+  document.querySelectorAll("#mobileNav details[open]").forEach(function(d){ d.removeAttribute("open"); });
 }, false);
 
 const mq=document.getElementById("marqueeTrack");
@@ -1711,6 +1969,310 @@ y&&y.addEventListener("click", async function(){
   });
 
   requestAnimationFrame(function(){ paint(); });
+})();
+</script>
+
+<script>
+/* ============================================================
+   SERVICIOS · ROLDÁN ABOGADOS — Lógica del carrusel
+   ============================================================ */
+(function () {
+  "use strict";
+
+  const SERVICES = [
+    {
+      id: "demandas",
+      label: "Demandas",
+      tagline: "Procesos judiciales",
+      description: "Radicamos y llevamos demandas civiles, laborales, penales y administrativas ante los jueces competentes, de principio a fin.",
+      image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=900&h=1200&fit=crop&q=80",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 14h6M9 17h4"/><circle cx="16" cy="18" r="2.4"/><path d="M16 16.4v3.2M14.8 18h2.4"/></svg>'
+    },
+    {
+      id: "tutelas",
+      label: "Tutelas",
+      tagline: "Derechos fundamentales",
+      description: "Acciones de tutela para proteger tu salud, mínimo vital, petición o debido proceso. Respuesta en menos de 48 horas hábiles.",
+      image: "https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?w=900&h=1200&fit=crop&q=80",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-3 7-9V6l-7-3-7 3v6c0 6 7 9 7 9z"/><path d="M13 8l-1.6 4h3.2l-1.6 4"/></svg>'
+    },
+    {
+      id: "liquidaciones",
+      label: "Liquidaciones",
+      tagline: "Laborales y prestaciones",
+      description: "Calculamos y reclamamos prestaciones sociales, cesantías, indemnizaciones, horas extras y liquidaciones por despido injustificado.",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&h=1200&fit=crop&q=80",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><rect x="7" y="6" width="10" height="3" rx="1"/><circle cx="8" cy="12.5" r=".7" fill="currentColor"/><circle cx="12" cy="12.5" r=".7" fill="currentColor"/><circle cx="16" cy="12.5" r=".7" fill="currentColor"/><circle cx="8" cy="16.5" r=".7" fill="currentColor"/><circle cx="12" cy="16.5" r=".7" fill="currentColor"/><circle cx="16" cy="16.5" r=".7" fill="currentColor"/></svg>'
+    },
+    {
+      id: "divorcios",
+      label: "Divorcios",
+      tagline: "Separaciones y acuerdos",
+      description: "Divorcios de mutuo acuerdo o contenciosos, liquidación de sociedad conyugal, custodia, cuota alimentaria y uniones maritales.",
+      image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=900&h=1200&fit=crop&q=80",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="13" r="5"/><circle cx="15" cy="13" r="5"/></svg>'
+    },
+    {
+      id: "sociedades",
+      label: "Constitución de sociedades",
+      tagline: "Creación de empresas",
+      description: "Constituimos tu SAS, LTDA o S.A., redactamos estatutos, contratos comerciales y te dejamos la empresa lista para operar.",
+      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&h=1200&fit=crop&q=80",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M9 8h.01M15 8h.01M9 12h.01M15 12h.01M9 16h6"/></svg>'
+    },
+    {
+      id: "eps",
+      label: "Reclamaciones EPS",
+      tagline: "Salud y tratamientos",
+      description: "Reclamamos ante EPS y secretarías de salud por medicamentos, citas, tratamientos, cirugías e incapacidades no reconocidas.",
+      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900&h=1200&fit=crop&q=80",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-10a4.5 4.5 0 0 1 7-3.7 4.5 4.5 0 0 1 7 3.7c0 5.5-7 10-7 10z"/><path d="M7 12h3l1.5-2.5 2 5L15 12h2"/></svg>'
+    },
+    {
+      id: "cobro",
+      label: "Cobro jurídico",
+      tagline: "Recupera tu dinero",
+      description: "Cartas de cobro persuasivo, conciliaciones y procesos ejecutivos para recuperar cartera morosa de personas o empresas.",
+      image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=900&h=1200&fit=crop&q=80",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.2"/><path d="M6 9.5v5M18 9.5v5"/></svg>'
+    },
+    {
+      id: "recursos",
+      label: "Recursos y apelaciones",
+      tagline: "Segunda instancia",
+      description: "Impugnamos sentencias y decisiones adversas ante el superior jerárquico, el Tribunal o las altas cortes con argumentación sólida.",
+      image: "https://images.unsplash.com/photo-1436450412740-6b988f486c6b?w=900&h=1200&fit=crop&q=80",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5"/><path d="M5 12l7-7 7 7"/><path d="M5 17l7-7 7 7"/></svg>'
+    }
+  ];
+
+  const AUTO_MS = 3000;
+  const ITEM_HEIGHT = 68;
+  const MOBILE_BP = 860;
+
+  const chipsWrap = document.getElementById("svcChips");
+  const frame     = document.getElementById("svcFrame");
+  const prevBtn   = document.getElementById("svcPrev");
+  const nextBtn   = document.getElementById("svcNext");
+  const arrowUp   = document.getElementById("svcArrowUp");
+  const arrowDown = document.getElementById("svcArrowDown");
+
+  if (!chipsWrap || !frame) return;
+
+  const chipEls = [];
+  const cardEls = [];
+
+  SERVICES.forEach((svc, i) => {
+    const wrap = document.createElement("div");
+    wrap.className = "svc-chip-wrap";
+    wrap.dataset.index = String(i);
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "svc-chip";
+    btn.setAttribute("role", "tab");
+    btn.setAttribute("aria-label", svc.label);
+    btn.setAttribute("aria-selected", "false");
+    btn.innerHTML =
+      '<span class="svc-chip__icon" aria-hidden="true">' + svc.icon + "</span>" +
+      '<span class="svc-chip__label">' + svc.label + "</span>";
+
+    btn.addEventListener("click", () => { userInteracted(); goTo(i); });
+    btn.addEventListener("mouseenter", () => setIsPaused(true));
+    btn.addEventListener("mouseleave", () => setIsPaused(false));
+    btn.addEventListener("focus", () => setIsPaused(true));
+    btn.addEventListener("blur",  () => setIsPaused(false));
+
+    wrap.appendChild(btn);
+    chipsWrap.appendChild(wrap);
+    chipEls.push(wrap);
+  });
+
+  SERVICES.forEach((svc, i) => {
+    const card = document.createElement("div");
+    card.className = "svc-card";
+    card.dataset.index = String(i);
+    card.setAttribute("role", "group");
+    card.setAttribute("aria-roledescription", "slide");
+    card.setAttribute("aria-label", (i + 1) + " de " + SERVICES.length + ": " + svc.label);
+
+    card.innerHTML =
+      '<img class="svc-card__img" src="' + svc.image + '" alt="' + svc.label + '" loading="' + (i < 3 ? "eager" : "lazy") + '" decoding="async" draggable="false">' +
+      '<div class="svc-card__live" aria-hidden="true"><span class="svc-card__dot"></span> Servicio Activo</div>' +
+      '<div class="svc-card__overlay">' +
+        '<span class="svc-card__tag"><b>' + String(i + 1).padStart(2, "0") + '</b> · ' + svc.tagline + '</span>' +
+        '<h3 class="svc-card__title">' + svc.label + '</h3>' +
+        '<p class="svc-card__desc">' + svc.description + '</p>' +
+      '</div>';
+
+    frame.appendChild(card);
+    cardEls.push(card);
+  });
+
+  let current = 0;
+  let isPaused = false;
+  let autoplayId = null;
+  let autoplayKilled = false;
+  const mq = window.matchMedia("(max-width: " + MOBILE_BP + "px)");
+
+  function normalize(i) {
+    const n = SERVICES.length;
+    return ((i % n) + n) % n;
+  }
+  function shortestDelta(i, currentIdx) {
+    const n = SERVICES.length;
+    let d = i - currentIdx;
+    if (d >  n / 2) d -= n;
+    if (d < -n / 2) d += n;
+    return d;
+  }
+
+  function render() {
+    const isMobile = mq.matches;
+
+    chipEls.forEach((wrap, i) => {
+      const d = shortestDelta(i, current);
+      const active = i === current;
+      wrap.classList.toggle("is-active", active);
+      wrap.querySelector(".svc-chip").setAttribute("aria-selected", active ? "true" : "false");
+      if (isMobile) {
+        wrap.style.transform = "";
+        wrap.style.opacity = "";
+        wrap.style.zIndex = "";
+      } else {
+        const y = d * ITEM_HEIGHT;
+        const op = Math.max(0, 1 - Math.abs(d) * 0.24);
+        wrap.style.transform = "translate3d(0," + y + "px,0)";
+        wrap.style.opacity = String(op);
+        wrap.style.zIndex = String(100 - Math.abs(d));
+      }
+    });
+
+    cardEls.forEach((card, i) => {
+      const d = shortestDelta(i, current);
+      const active = d === 0;
+      const isPrev = d === -1;
+      const isNext = d === 1;
+      card.classList.toggle("is-active", active);
+
+      let x = 0, scale = 0.65, opacity = 0, rotate = 0, z = 0;
+      if (active)      { x = 0;   scale = 1;    opacity = 1;    rotate = 0;  z = 30; }
+      else if (isPrev) { x = -95; scale = 0.86; opacity = 0.42; rotate = -3; z = 20; }
+      else if (isNext) { x = 95;  scale = 0.86; opacity = 0.42; rotate = 3;  z = 20; }
+      else             { x = 0;   scale = 0.65; opacity = 0;    rotate = 0;  z = 0;  }
+
+      card.style.transform = "translate3d(" + x + "%,0,0) scale(" + scale + ") rotate(" + rotate + "deg)";
+      card.style.opacity = String(opacity);
+      card.style.zIndex = String(z);
+      card.style.pointerEvents = active ? "auto" : "none";
+    });
+
+    if (isMobile) scrollActiveChipIntoView();
+  }
+
+  function scrollActiveChipIntoView() {
+    const activeWrap = chipEls[current];
+    if (!activeWrap) return;
+    const containerRect = chipsWrap.getBoundingClientRect();
+    const activeRect = activeWrap.getBoundingClientRect();
+    const containerCenter = containerRect.width / 2;
+    const activeCenter = (activeRect.left - containerRect.left) + activeRect.width / 2;
+    const delta = activeCenter - containerCenter;
+    if (Math.abs(delta) > 4) chipsWrap.scrollBy({ left: delta, behavior: "smooth" });
+  }
+
+  function goTo(target) { current = normalize(target); render(); }
+  function step(dir)    { current = normalize(current + dir); render(); }
+
+  function setIsPaused(v) {
+    isPaused = v;
+    if (isPaused) stopAutoplay();
+    else if (!autoplayKilled) startAutoplay();
+  }
+  function startAutoplay() {
+    if (autoplayKilled) return;
+    stopAutoplay();
+    autoplayId = setInterval(() => { if (!isPaused) step(1); }, AUTO_MS);
+  }
+  function stopAutoplay() {
+    if (autoplayId !== null) { clearInterval(autoplayId); autoplayId = null; }
+  }
+  function userInteracted() {
+    autoplayKilled = true;
+    stopAutoplay();
+  }
+
+  if (prevBtn) prevBtn.addEventListener("click", () => { userInteracted(); step(-1); });
+  if (nextBtn) nextBtn.addEventListener("click", () => { userInteracted(); step(1); });
+
+  if (arrowUp)   arrowUp.addEventListener("click",   () => { userInteracted(); step(-1); });
+  if (arrowDown) arrowDown.addEventListener("click", () => { userInteracted(); step(1);  });
+  if (arrowUp)   arrowUp.addEventListener("mouseenter",   () => setIsPaused(true));
+  if (arrowUp)   arrowUp.addEventListener("mouseleave",   () => setIsPaused(false));
+  if (arrowDown) arrowDown.addEventListener("mouseenter", () => setIsPaused(true));
+  if (arrowDown) arrowDown.addEventListener("mouseleave", () => setIsPaused(false));
+
+  document.addEventListener("keydown", (e) => {
+    if (!document.getElementById("svcCarousel")) return;
+    const tag = (e.target && e.target.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+    if (e.key === "ArrowLeft")  { userInteracted(); step(-1); }
+    if (e.key === "ArrowRight") { userInteracted(); step(1); }
+  });
+
+  (function attachSwipe() {
+    const stage = document.querySelector(".svc-stage");
+    if (!stage) return;
+    let startX = null, startY = null, moved = false;
+    stage.addEventListener("touchstart", (e) => {
+      const t = e.touches[0];
+      startX = t.clientX; startY = t.clientY; moved = false;
+    }, { passive: true });
+    stage.addEventListener("touchmove", (e) => {
+      if (startX === null) return;
+      const t = e.touches[0];
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      if (!moved && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) moved = true;
+    }, { passive: true });
+    stage.addEventListener("touchend", (e) => {
+      if (startX === null || !moved) { startX = null; return; }
+      const t = e.changedTouches[0];
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      startX = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+        userInteracted();
+        step(dx < 0 ? 1 : -1);
+      }
+    });
+  })();
+
+  function onBreakpoint() {
+    chipEls.forEach((w) => { w.style.transform = ""; w.style.opacity = ""; w.style.zIndex = ""; });
+    render();
+  }
+  if (typeof mq.addEventListener === "function") mq.addEventListener("change", onBreakpoint);
+  else if (typeof mq.addListener === "function") mq.addListener(onBreakpoint);
+
+  render();
+  startAutoplay();
+
+  if ("IntersectionObserver" in window) {
+    const carousel = document.getElementById("svcCarousel");
+    if (carousel) {
+      let wasVisible = true;
+      new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const visible = entry.isIntersecting;
+          if (visible === wasVisible) return;
+          wasVisible = visible;
+          if (visible) startAutoplay();
+          else stopAutoplay();
+        });
+      }, { rootMargin: "0px", threshold: 0.05 }).observe(carousel);
+    }
+  }
 })();
 </script>
 </body>
