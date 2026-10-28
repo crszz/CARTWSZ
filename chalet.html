@@ -994,6 +994,8 @@ p { line-height: 1.6; }
 .location__block a:hover { color: var(--c-brand-ink) !important; }
 .location__map { position: relative !important; min-width: 0; min-height: 0; aspect-ratio: 4 / 3 !important; overflow: hidden !important; border: 1px solid rgba(10, 28, 22, .08) !important; border-radius: clamp(1.1rem, 2vw, 1.65rem) !important; background: var(--c-paper-2) !important; box-shadow: 0 18px 42px -30px rgba(10, 28, 22, .28) !important; }
 .location__map svg { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; opacity: .85 !important; }
+.location__map iframe { position:absolute !important; inset:0 !important; display:block !important; width:100% !important; height:100% !important; border:0 !important; }
+.location__map.reveal { opacity:1 !important; visibility:visible !important; transform:none !important; }
 .location__pin { width: 18px !important; height: 18px !important; }
 .social { display: flex !important; flex-wrap: wrap; gap: .5rem !important; margin-top: .85rem !important; }
 .social a { width: 40px !important; height: 40px !important; background: rgba(255, 255, 255, .62) !important; border: 1px solid var(--hair) !important; box-shadow: none !important; }
@@ -1117,25 +1119,8 @@ p { line-height: 1.6; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
-@media (prefers-reduced-motion: reduce) {
-  /* Se conserva el desplazamiento ligado al video; solo se reducen animaciones decorativas. */
-  .focus-block { height: auto !important; }
-  .focus-block__pin { position: static !important; height: auto !important; min-height: 0 !important; padding: var(--s-section) var(--gutter) !important; }
-  .focus-block__grid { display: block !important; height: auto !important; }
-  .focus-block__visual { position: static !important; width: 100% !important; max-width: 100% !important; height: auto !important; max-height: none !important; aspect-ratio: auto !important; overflow: visible !important; margin-bottom: 1.5rem; }
-  .focus-block__card, .focus-block__card.is-active { position: relative !important; display: flex !important; opacity: 1 !important; visibility: visible !important; transform: none !important; aspect-ratio: 16 / 9; margin-bottom: 1rem; }
-  .focus-block__icon { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; transform: none !important; }
-  .focus-block__text { position: static !important; min-height: 0 !important; max-width: 100% !important; }
-  .focus-block__copy, .focus-block__copy.is-active { position: static !important; display: flex !important; opacity: 1 !important; visibility: visible !important; transform: none !important; margin-bottom: 2rem; }
-  .results-portal { height: auto !important; }
-  .results-portal__sticky { position: static !important; height: auto !important; min-height: 0 !important; padding-block: var(--s-section); overflow: visible !important; }
-  .results-portal__content { position: static !important; inset: auto !important; }
-  .results-portal__panel { display: none !important; }
-  .results-portal__meta { display: none !important; }
-  .results-portal__title { position: static !important; display: block !important; transform: none !important; opacity: 1 !important; letter-spacing: -.04em !important; padding-inline: var(--gutter); text-align: center; }
-  .results-portal__stats { position: static !important; opacity: 1 !important; transform: none !important; padding-block: var(--s-section) 0; }
-  .results-portal__stats .stat::before { width: 40% !important; }
-}
+/* Se evita que prefers-reduced-motion desmonte las secciones con scroll. Las transiciones
+   decorativas siguen reduciéndose mediante la regla global anterior. */
 </style>
 <style id="navbar-transparency">
 body:not(.nav-solid) .site-header .header-inner {
@@ -2084,8 +2069,13 @@ body.nav-solid .site-header:not([data-theme="dark"]) .header-inner .header-cta .
 </div></div>
 </div>
 <div class="location__map reveal">
-<svg viewBox="0 0 400 300" role="img" aria-label="Mapa esquemático"><rect width="400" height="300" fill="#E5E0D5"/><g fill="#F2EFE9" stroke="#D8CFB9"><rect x="20" y="20" width="80" height="60"/><rect x="120" y="20" width="80" height="60"/><rect x="220" y="20" width="80" height="60"/><rect x="20" y="100" width="80" height="80"/><rect x="120" y="100" width="80" height="80"/><rect x="220" y="100" width="80" height="80"/><rect x="20" y="200" width="80" height="80"/><rect x="120" y="200" width="80" height="80"/><rect x="220" y="200" width="80" height="80"/></g><g stroke="#D8CFB9" stroke-width="6"><line x1="0" y1="90" x2="400" y2="90"/><line x1="0" y1="190" x2="400" y2="190"/><line x1="110" y1="0" x2="110" y2="300"/><line x1="210" y1="0" x2="210" y2="300"/><line x1="310" y1="0" x2="310" y2="300"/></g></svg>
-<span class="location__pin"></span>
+  <iframe
+    src="https://maps.google.com/maps?q=Calle%2090%20%2311-20%2C%20Chic%C3%B3%2C%20Bogot%C3%A1%2C%20Colombia&output=embed"
+    title="Mapa de ubicación de Chalet Suizo en Bogotá"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    allowfullscreen>
+  </iframe>
 </div>
 </div>
 </div>
@@ -2177,9 +2167,6 @@ if(rv.length&&"IntersectionObserver"in window){const k=new IntersectionObserver(
 
 const c=t(".scrolly"),l=document.getElementById("scrollyVideo"),d=e(".scrolly__scene");
 if(c&&l&&d.length){
-  if(false){
-    d.forEach(function(el){el.style.opacity="1";el.style.visibility="visible";el.style.transform="none";});
-  } else {
     let q=0,S=!1,T=0,B=-1,F=!1,pending=!1,target=0;
     function Y(){q=Number.isFinite(l.duration)?l.duration:0;S=q>0&&l.readyState>=1}
     l.addEventListener("loadedmetadata",function(){Y();try{l.pause(),l.currentTime=0,B=0}catch(x){}},{once:!0});
@@ -2229,17 +2216,12 @@ if(c&&l&&d.length){
     addEventListener("scroll",N,{passive:!0});addEventListener("resize",N,{passive:!0});
     j();T=0;z();
     d[0].style.opacity="1";d[0].style.visibility="visible";d[0].style.transform="translate3d(0,0,0)";
-  }
 }
 
 const u=t("[data-focus-block]");
 if(u){
   const G=e("[data-card]",u),K=e("[data-copy]",u);
-  if(matchMedia("(prefers-reduced-motion: reduce)").matches){
-    G.forEach(function(x){x.classList.add("is-active");});
-    K.forEach(function(x){x.classList.add("is-active");x.setAttribute("aria-hidden","false");});
-  } else {
-    let Z=!1,Q=0,J=1,X=!1,lastCard=-1;
+  let Z=!1,Q=0,J=1,X=!1,lastCard=-1;
     function $(){J=Math.max(1,u.offsetHeight-innerHeight)}
     function tt(i){if(i===Q&&G.some(x=>x.classList.contains("is-active")))return;Q=i;G.forEach((x,k)=>x.classList.toggle("is-active",k===i));K.forEach((x,k)=>{x.classList.toggle("is-active",k===i);x.setAttribute("aria-hidden",k===i?"false":"true")});}
     function et(){if(Z){const r=u.getBoundingClientRect();const p=n(-r.top/J,0,1);const idx=Math.min(G.length-1, Math.floor(p*G.length));if(idx!==lastCard){lastCard=idx;tt(idx)}}X=!1;}
@@ -2248,7 +2230,6 @@ if(u){
     addEventListener("scroll",nt,{passive:!0});
     addEventListener("resize",()=>{$();nt()},{passive:!0});
     $();tt(0);
-  }
 }
 
 (function(){
@@ -2263,7 +2244,6 @@ if(u){
   const bg=section.querySelector('.results-portal__bg');
   const stats=section.querySelector('.results-portal__stats');
   const statEls=section.querySelectorAll('.stat');
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let statsDone=false;
   function triggerCounts(){
     if(statsDone) return;statsDone=true;
@@ -2274,17 +2254,6 @@ if(u){
       function frame(now){const p=Math.min(1,(now-t0)/1200);const e=1-Math.pow(1-p,3);target.textContent=Math.round(num*e).toLocaleString('es-CO');if(p<1) requestAnimationFrame(frame);}
       requestAnimationFrame(frame);
     });
-  }
-  if(reduced){
-    statEls.forEach(function(el){
-      const num=Number(el.dataset.count||0);
-      const target=el.querySelector('[data-count-target]');
-      if(target) target.textContent=num.toLocaleString('es-CO');
-      el.classList.add('is-visible');
-    });
-    stats.style.opacity='1';
-    stats.style.transform='none';
-    return;
   }
   let ticking=false;
   function update(){
@@ -2699,7 +2668,7 @@ if(u){
   }else{anims.forEach(function(a){a.classList.add('is-in')});}
 
   /* Scroll 3D (equivale a useScroll + useTransform) */
-  var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,tick=false;
+  var tick=false;
   var cols=[].slice.call(gal.querySelectorAll('[data-y]')).map(function(el){
     var r=el.getAttribute('data-y').split(',');
     return {el:el,a:parseFloat(r[0]),b:parseFloat(r[1])};
@@ -2708,7 +2677,7 @@ if(u){
   function update(){
     tick=false;
     var r=root.getBoundingClientRect(),vh=window.innerHeight;
-    var p=reduced?1:Math.min(1,Math.max(0,(vh-r.top)/(r.height+vh)));
+    var p=Math.min(1,Math.max(0,(vh-r.top)/(r.height+vh)));
     gal.style.transform='rotateX('+map(p,0,.5,75,0).toFixed(2)+'deg) scale('+map(p,.5,.9,1.2,1).toFixed(4)+')';
     cols.forEach(function(c){c.el.style.transform='translate3d(0,'+map(p,.5,1,c.a,c.b).toFixed(3)+'%,0)';});
   }
