@@ -1767,6 +1767,151 @@ body.nav-solid .site-header:not([data-theme="dark"]) .header-inner .header-cta .
   .exp__gallery{transform:none}
 }
 </style>
+
+<style id="scroll-video-mobile-repair">
+/* Capas explícitas: evita que Safari/iOS pinte el vídeo detrás del fondo del sticky. */
+#pineda-app .scrolly__sticky { isolation:isolate !important; }
+#pineda-app .scrolly__media { z-index:0 !important; }
+#pineda-app .scrolly__video {
+  z-index:0 !important;
+  display:block;
+  visibility:visible;
+  opacity:1 !important;
+  filter:none !important;
+  mix-blend-mode:normal !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  -webkit-transform:translate3d(0,0,0);
+  transform:translate3d(0,0,0) scale(1.015);
+}
+#pineda-app .scrolly__content { position:relative !important; z-index:2 !important; }
+
+/* En móvil se mantiene el hero fijado y el vídeo avanza con el scroll. */
+@media (max-width:768px) and (prefers-reduced-motion:no-preference) {
+  #pineda-app .scrolly {
+    height:var(--story-height) !important;
+    min-height:0 !important;
+    background:#050609 !important;
+  }
+  #pineda-app .scrolly__sticky {
+    position:sticky !important;
+    top:0 !important;
+    width:100% !important;
+    height:100vh !important;
+    height:100svh !important;
+    height:100dvh !important;
+    min-height:0 !important;
+    overflow:hidden !important;
+  }
+  #pineda-app .scrolly__media {
+    display:block !important;
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    z-index:0 !important;
+  }
+  #pineda-app .scrolly__video {
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    min-width:0 !important;
+    min-height:0 !important;
+    max-width:none !important;
+    object-fit:cover !important;
+    object-position:center center !important;
+  }
+  /* No se añade una capa oscura encima del vídeo. */
+  #pineda-app .scrolly__sticky::after {
+    content:none !important;
+    display:none !important;
+    background:none !important;
+  }
+  #pineda-app .scrolly__content {
+    position:relative !important;
+    width:100% !important;
+    height:100% !important;
+    z-index:2 !important;
+  }
+  #pineda-app .scrolly__scene {
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    min-height:0 !important;
+    padding:clamp(5rem,11svh,7rem) clamp(1.25rem,5.5vw,2rem) 4rem !important;
+  }
+  /* Contraste para el vídeo claro de nieve: texto oscuro, sin filtro en la imagen. */
+  #pineda-app .scrolly__splash-name,
+  #pineda-app .scrolly__title,
+  #pineda-app .scrolly__copy,
+  #pineda-app .scrolly__lead,
+  #pineda-app .scrolly__kicker {
+    color:#0A1C16 !important;
+    text-shadow:none !important;
+  }
+  #pineda-app .scrolly__title {
+    max-width:12ch !important;
+    font-size:clamp(2rem,8.2vw,2.9rem) !important;
+    line-height:1 !important;
+    letter-spacing:-.045em !important;
+  }
+  #pineda-app .scrolly__splash-name {
+    font-size:clamp(2rem,8.2vw,2.9rem) !important;
+    line-height:1.02 !important;
+  }
+  #pineda-app .scrolly__copy { width:min(100%,28rem) !important; }
+  #pineda-app .scrolly__lead { font-size:clamp(.95rem,3.8vw,1.05rem) !important; line-height:1.5 !important; }
+  #pineda-app .scrolly__scene[data-scene="0"] {
+    align-items:center !important;
+    justify-content:center !important;
+    text-align:center !important;
+  }
+}
+
+/* Fallback accesible: si el móvil solicita menos movimiento, mostrar el vídeo estático
+   en lugar de dejar una portada vacía; el resto de escenas no se apilan. */
+@media (max-width:768px) and (prefers-reduced-motion:reduce) {
+  #pineda-app .scrolly {
+    height:auto !important;
+    background:#050609 !important;
+  }
+  #pineda-app .scrolly__sticky {
+    position:relative !important;
+    top:auto !important;
+    height:100vh !important;
+    height:100svh !important;
+    height:100dvh !important;
+    min-height:0 !important;
+    overflow:hidden !important;
+  }
+  #pineda-app .scrolly__media {
+    display:block !important;
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    z-index:0 !important;
+  }
+  #pineda-app .scrolly__video { position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; }
+  #pineda-app .scrolly__sticky::after { content:none !important; display:none !important; }
+  #pineda-app .scrolly__content { position:absolute !important; inset:0 !important; height:100% !important; z-index:2 !important; }
+  #pineda-app .scrolly__scene { display:none !important; }
+  #pineda-app .scrolly__scene[data-scene="0"] {
+    display:flex !important;
+    position:absolute !important;
+    inset:0 !important;
+    min-height:0 !important;
+    align-items:center !important;
+    justify-content:center !important;
+    text-align:center !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    transform:none !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="pineda-app">
@@ -1847,7 +1992,7 @@ body.nav-solid .site-header:not([data-theme="dark"]) .header-inner .header-cta .
 <section class="scrolly" id="inicio" aria-label="Presentación">
 <div class="scrolly__sticky">
 <div class="scrolly__media" aria-hidden="true">
-  <video id="scrollyVideo" class="scrolly__video" muted playsinline preload="metadata">
+  <video id="scrollyVideo" class="scrolly__video" muted playsinline webkit-playsinline preload="auto">
     <source src="https://organicbionatural.com/wp-content/uploads/2026/10/scroll1.mp4" type="video/mp4">
   </video>
 </div>
@@ -2183,7 +2328,7 @@ if(c&&l&&d.length){
   } else {
     let q=0,S=!1,T=0,B=-1,F=!1,pending=!1,target=0;
     function Y(){q=Number.isFinite(l.duration)?l.duration:0;S=q>0&&l.readyState>=1}
-    l.addEventListener("loadedmetadata",function(){Y();try{l.pause(),l.currentTime=0,B=0}catch(x){}},{once:!0});
+    l.addEventListener("loadedmetadata",function(){Y();try{l.pause();l.currentTime=Math.min(.05,Math.max(.001,q-.05));B=0}catch(x){}},{once:!0});
     l.addEventListener("durationchange",Y);l.addEventListener("loadeddata",Y);l.addEventListener("canplay",Y);
     try{l.load()}catch(x){}
     function j(){const r=c.getBoundingClientRect(),m=Math.max(1,c.offsetHeight-innerHeight);T=n(-r.top/m,0,1)}
