@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Chalet Suizo</title>
 <meta name="theme-color" content="#0A1C16">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *,::after,::before{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
@@ -72,6 +76,152 @@ video{display:block;max-width:100%}
   will-change:clip-path;
 }
 
+/* ============================================================
+   FUNGY · ARTISTAS  (añadido debajo del scroll video)
+   ============================================================ */
+.artists-section{
+  --gutter:clamp(1rem,4vw,3rem);
+  --font-display:'Archivo Black',Impact,'Arial Black',sans-serif;
+  --font-mono:'Space Mono','Courier New',monospace;
+  --ink:#F2F2F2;
+  --ink-soft:rgba(242,242,242,.62);
+  --lime:#DFFF00;
+  --fs-mono:clamp(.72rem,.9vw,.85rem);
+
+  position:relative;
+  width:100%;
+  background:#0A0A0A;
+  color:var(--ink);
+  padding:clamp(4rem,10vw,8rem) 0;
+  overflow:hidden;
+  font-family:var(--font-mono);
+  line-height:1.5;
+}
+
+.artists-stage{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:100%;
+  padding:0 var(--gutter);
+  gap:clamp(1.5rem,4vh,2.5rem);
+}
+
+.stage__head{
+  width:100%;
+  max-width:62rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:clamp(.55rem,1.6vh,1rem);
+}
+
+.stage__kicker{
+  margin:0;
+  font-family:var(--font-mono);
+  font-weight:700;
+  font-size:var(--fs-mono);
+  letter-spacing:.26em;
+  text-transform:uppercase;
+  color:var(--lime);
+}
+
+.stage__title{
+  margin:0;
+  font-family:var(--font-display);
+  font-size:clamp(1.65rem,4.3vw,3.9rem);
+  line-height:.94;
+  letter-spacing:-.045em;
+  text-transform:uppercase;
+  color:var(--ink);
+  max-width:24ch;
+  text-wrap:balance;
+}
+
+.stage__title em{
+  font-style:normal;
+  color:var(--lime);
+}
+
+.stage__lead{
+  margin:0;
+  font-family:var(--font-mono);
+  font-size:clamp(.78rem,1.1vw,1rem);
+  line-height:1.55;
+  color:var(--ink-soft);
+  max-width:46ch;
+}
+
+.stage__bands{
+  width:calc(100% + var(--gutter) * 2);
+  margin-inline:calc(var(--gutter) * -1);
+  display:flex;
+  flex-direction:column;
+  gap:clamp(.25rem,1.2vh,.9rem);
+  height:clamp(420px,55vh,650px);
+}
+
+.tg-group{
+  position:relative;
+  flex:1 1 0;
+  min-height:0;
+}
+
+.artists-section .tg{
+  display:block;
+  position:absolute;
+  inset:0;
+  height:auto;
+  overflow:hidden;
+  container-type:size;
+  opacity:0;
+  transition:opacity .6s ease;
+}
+
+.tg.is-ready{opacity:1}
+
+.artists-section.is-paused .tg__tile{
+  animation-play-state:paused !important;
+}
+
+.tg__band{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
+}
+
+.tg__tile{
+  position:absolute;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+
+/* Lista accesible (solo lector de pantalla) */
+.artists-fallback{
+  position:absolute;
+  width:1px;
+  height:1px;
+  margin:-1px;
+  padding:0;
+  overflow:hidden;
+  clip:rect(0 0 0 0);
+  white-space:nowrap;
+  border:0;
+}
+
+@media (max-width:768px){
+  .artists-section{--gutter:1.15rem}
+  .stage__kicker{letter-spacing:.2em}
+  .stage__title{font-size:clamp(1.55rem,7.4vw,2.4rem);max-width:17ch}
+  .stage__bands{height:clamp(360px,55vh,500px)}
+}
+@media (max-height:640px){
+  .stage__lead{display:none}
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{
     scroll-behavior:auto!important;
@@ -105,6 +255,34 @@ video{display:block;max-width:100%}
   </div>
 </section>
 
+<!-- ============================================================
+     ARTISTAS (sección añadida debajo del scroll video)
+     ============================================================ -->
+<section class="artists-section" id="artistas" aria-labelledby="artistas-title">
+  <div class="artists-stage">
+
+    <div class="stage__head">
+      <p class="stage__kicker">[01] // Line-up</p>
+      <h2 class="stage__title" id="artistas-title">Los mejores artistas <em>psicodélicos</em> del underground</h2>
+      <p class="stage__lead">Sonidos que se abren como el ojo. Catorce mentes, una sola noche, cero filtro.</p>
+    </div>
+
+    <div class="stage__bands" aria-hidden="true">
+      <div class="tg-group"><div class="tg" data-tg="0" data-speed="3.6" data-dir="normal"></div></div>
+      <div class="tg-group"><div class="tg" data-tg="1" data-speed="4.2" data-dir="reverse"></div></div>
+      <div class="tg-group"><div class="tg" data-tg="2" data-speed="3.6" data-dir="normal"></div></div>
+    </div>
+
+    <ol class="artists-fallback" aria-label="Line-up">
+      <li>ACIDO PANTERA</li><li>JØTATE</li><li>CAMI VÁSQUEZ</li><li>RENGO</li><li>MET4NOIA</li>
+      <li>VALERIO</li><li>DOLLHOUSE</li><li>NIHL</li><li>SANTI 999</li><li>LAV</li>
+      <li>ANGIE MOLANO</li><li>CERØ</li><li>TISAN</li><li>MEL</li>
+      <li>+ MÁS INVITADOS POR ANUNCIAR*</li>
+    </ol>
+
+  </div>
+</section>
+
 <script>
 (function(){
   'use strict';
@@ -132,18 +310,17 @@ video{display:block;max-width:100%}
   function z(){
     if(!circle) return;
 
-    /* startP = 0.95 → el círculo espera hasta el final real del scroll.
-       El scroll termina en T=1.0 → aquí el círculo ya cubre toda la página.
-       (Antes empezaba en 0.90 → se adelantaba ~5 "frames" del scroll antes de tiempo). */
+    /* El círculo arranca SOLO al final del scroll (T=0.95) — espera ~5 "frames"
+       antes de salir, para no adelantarse al final del video.
+       Termina en T=1.00 cuando el scroll se acaba. */
     var startP = 0.95;
     var endP   = 1.00;
 
     var p = n((T - startP) / (endP - startP), 0, 1);
 
-    /* Ease-in-out cúbica: entra sutil y aterriza suave, sin saltos bruscos */
+    /* Ease-in-out cúbica: entra sutil, aterriza suave */
     var e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2;
 
-    /* 71% ya toca la esquina; 110% da margen seguro para cualquier viewport */
     var radius = (e * 110).toFixed(2);
     var cp = 'circle(' + radius + '% at 50% 50%)';
     circle.style.clipPath = cp;
@@ -160,6 +337,230 @@ video{display:block;max-width:100%}
   addEventListener('resize', N, {passive:true});
 
   j(); T=0; z();
+})();
+</script>
+
+<!-- ============================================================
+     ARTISTAS JS · bandas curvas (port a JS puro del "Tilted Grid Hero")
+     ============================================================ -->
+<script>
+(function(){
+  'use strict';
+
+  /* Artistas por grupo (cada grupo = una banda curva) */
+  var GROUPS = [
+    ['ACIDO PANTERA', 'JØTATE', 'CAMI VÁSQUEZ', 'RENGO', 'MET4NOIA'],
+    ['VALERIO', 'DOLLHOUSE', 'NIHL', 'SANTI 999', 'LAV'],
+    ['ANGIE MOLANO', 'CERØ', 'TISAN', 'MEL', '+ MÁS INVITADOS POR ANUNCIAR*']
+  ];
+  var FIRST_NUM = [1, 6, 11];
+
+  /* Constantes de la geometría del cilindro */
+  var SLICES = 12;
+  var CAMERA = 1.6;
+  var MAX_WIDTH = 55;
+  var ASPECT = 1.6;
+  var GAP = 7;
+  var AXIS = 50;
+  var bandCount = 0;
+
+  function arc(b){ return (CAMERA - 1 + Math.cos(b)) / (2 * CAMERA * Math.sin(b)); }
+
+  function measure(width, height, tile, aspect, gap, bend) {
+    var h = Math.min((tile / 100) * height, ((MAX_WIDTH / 100) * width) / aspect);
+    var radius = width * arc(bend);
+    if (!(h > 0) || !(radius > 0)) return { columns: 2, sweep: 0, unit: 0, limit: 0 };
+    var deg = function (x) { return (x * 180) / Math.PI; };
+    var unit = deg(h / radius);
+    var pitch = (aspect + gap / 100) * unit;
+    var limit = deg(bend) + (aspect * unit) / 2;
+    var columns = Math.min(60, Math.max(2, Math.ceil((2 * limit) / pitch)));
+    var rd = function (x) { return +x.toFixed(4); };
+    var sweep = rd((columns * pitch) / 2);
+    return { columns: columns, sweep: sweep, unit: rd(unit), limit: rd(Math.min(sweep, limit)) };
+  }
+
+  function createBand(root, urls, opt) {
+    var n = urls.length;
+    var uid = 'tgo' + (++bandCount);
+    var styleEl = document.createElement('style');
+    var band = document.createElement('div');
+    band.className = 'tg__band';
+    root.appendChild(styleEl);
+    root.appendChild(band);
+    var lastKey = '', raf = 0;
+
+    function build() {
+      var w = root.clientWidth, h = root.clientHeight;
+      if (!w || !h) return;
+      var small = w < 640;
+      var tile = small ? opt.tileSm : opt.tile;
+      var bend = (Math.min(85, Math.max(5, small ? opt.curveSm : opt.curve)) * Math.PI) / 180;
+      var m = measure(w, h, tile, ASPECT, GAP, bend);
+      var key = [m.columns, m.sweep, m.unit, tile, bend].join('|');
+      if (key === lastKey) return;
+      lastKey = key;
+
+      var cols = m.columns, sweep = m.sweep, unit = m.unit, limit = m.limit;
+      var cap = +(MAX_WIDTH / ASPECT).toFixed(4);
+      var u = function (k) { return 'calc(' + (+k.toFixed(4)) + ' * min(' + tile + 'cqh, ' + cap + 'cqw))'; };
+      var r = 100 * arc(bend);
+      var radius = (+r.toFixed(3)) + 'cqw';
+      var turn = function (d) { return 'translateZ(' + radius + ') rotateY(' + (+d.toFixed(4)) + 'deg) translateZ(-' + radius + ')'; };
+      var hide = +(((sweep - limit) / (2 * (sweep || 1))) * 100).toFixed(4);
+
+      styleEl.textContent =
+        '@keyframes ' + uid + '{from{transform:' + turn(-sweep) + '}to{transform:' + turn(sweep) + '}' +
+        '0%,' + hide + '%,' + (100 - hide) + '%,100%{visibility:hidden}' +
+        (hide + 0.001) + '%,' + (100 - hide - 0.001) + '%{visibility:visible}}';
+
+      band.style.perspective = (+(r * CAMERA).toFixed(3)) + 'cqw';
+      band.style.perspectiveOrigin = '50% ' + AXIS + '%';
+
+      var share = ASPECT / SLICES;
+      var duration = cols * opt.speed;
+      var sliceBase =
+        'position:absolute;top:0;height:' + u(1) + ';left:' + u((ASPECT - share) / 2) +
+        ';background-image:var(--img);background-repeat:no-repeat;background-size:' + u(ASPECT) + ' ' + u(1) +
+        ';backface-visibility:hidden;';
+
+      var frag = document.createDocumentFragment();
+      for (var t = 0; t < cols; t++) {
+        (function (t) {
+          var first = cols - 1 - t;
+          var tileEl = document.createElement('div');
+          tileEl.className = 'tg__tile';
+          tileEl.style.cssText =
+            'left:calc(50% - ' + u(ASPECT / 2) + ');top:calc(' + AXIS + '% - ' + u(0.5) + ');width:' + u(ASPECT) + ';height:' + u(1) +
+            ';animation:' + uid + ' ' + duration + 's linear ' + (-t * opt.speed) + 's infinite ' + opt.dir;
+          tileEl.style.setProperty('--dur', duration + 's');
+          tileEl.style.setProperty('--img', 'url("' + urls[first % n] + '")');
+          for (var k = 0; k < SLICES; k++) {
+            var s = document.createElement('div');
+            s.style.cssText = sliceBase +
+              'width:' + (k === SLICES - 1 ? u(share) : 'calc(' + u(share) + ' + 1px)') +
+              ';background-position:' + u(-k * share) + ' 0' +
+              ';transform:' + turn((ASPECT / 2 - (k + 0.5) * share) * unit);
+            tileEl.appendChild(s);
+          }
+          tileEl.addEventListener('animationiteration', function (e) {
+            if (e.target !== tileEl) return;
+            var lap = Math.round(e.elapsedTime / duration);
+            tileEl.style.setProperty('--img', 'url("' + urls[(lap * cols + first) % n] + '")');
+          });
+          frag.appendChild(tileEl);
+        })(t);
+      }
+      band.textContent = '';
+      band.appendChild(frag);
+      root.classList.add('is-ready');
+    }
+
+    function schedule() {
+      if (raf) return;
+      raf = requestAnimationFrame(function () { raf = 0; build(); });
+    }
+    if ('ResizeObserver' in window) new ResizeObserver(schedule).observe(root);
+    else window.addEventListener('resize', schedule, { passive: true });
+    build();
+  }
+
+  /* Paleta de las cards */
+  var PALETTE = [
+    { bg: '#DFFF00', fg: '#0A0A0A', bd: '#0A0A0A' },
+    { bg: '#F2F2F2', fg: '#0A0A0A', bd: '#0A0A0A' },
+    { bg: '#FF3B30', fg: '#0A0A0A', bd: '#0A0A0A' },
+    { bg: '#141414', fg: '#F2F2F2', bd: '#DFFF00' }
+  ];
+
+  function wrapLines(g, text, maxW) {
+    var words = text.split(' '), lines = [], cur = '', i, test;
+    for (i = 0; i < words.length; i++) {
+      test = cur ? cur + ' ' + words[i] : words[i];
+      if (g.measureText(test).width <= maxW || !cur) cur = test;
+      else { lines.push(cur); cur = words[i]; }
+    }
+    if (cur) lines.push(cur);
+    return lines;
+  }
+
+  function drawCard(text, label, pal) {
+    var W = 960, H = 600, P = 64;
+    var c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    var g = c.getContext('2d');
+    g.fillStyle = pal.bg; g.fillRect(0, 0, W, H);
+    g.strokeStyle = pal.bd; g.lineWidth = 18; g.strokeRect(9, 9, W - 18, H - 18);
+    g.fillStyle = pal.fg; g.textBaseline = 'alphabetic';
+
+    g.font = '700 38px "Space Mono","Courier New",monospace';
+    g.textAlign = 'left';  g.fillText(label, P, P + 30);
+    g.textAlign = 'right'; g.fillText('✱', W - P, P + 30);
+    g.font = '700 26px "Space Mono","Courier New",monospace';
+    g.textAlign = 'left';  g.fillText('FUNGY · NOV 20', P, H - P + 8);
+    g.textAlign = 'right'; g.fillText('ANTISISTEMA', W - P, H - P + 8);
+    g.textAlign = 'left';
+
+    var maxW = W - 2 * P, size, lines = [text], ok = false;
+    if ('letterSpacing' in g) g.letterSpacing = '-3px';
+    for (size = 210; size >= 54; size -= 6) {
+      g.font = size + 'px "Archivo Black",Impact,"Arial Black",sans-serif';
+      lines = wrapLines(g, text, maxW);
+      ok = lines.length <= 3 && lines.length * size * 0.96 <= 330;
+      for (var i = 0; ok && i < lines.length; i++) if (g.measureText(lines[i]).width > maxW) ok = false;
+      if (ok) break;
+    }
+    var blockH = lines.length * size * 0.96;
+    var top = 118 + (384 - blockH) / 2;
+    for (var j = 0; j < lines.length; j++) g.fillText(lines[j], P, top + size * 0.82 + j * size * 0.96);
+
+    return new Promise(function (res) {
+      if (c.toBlob) c.toBlob(function (b) { res(b ? URL.createObjectURL(b) : c.toDataURL('image/png')); }, 'image/png');
+      else res(c.toDataURL('image/png'));
+    });
+  }
+
+  function fontsReady() {
+    var ps = [];
+    if (document.fonts && document.fonts.load) {
+      ps.push(document.fonts.load('400 80px "Archivo Black"'));
+      ps.push(document.fonts.load('700 30px "Space Mono"'));
+    }
+    return Promise.race([Promise.all(ps), new Promise(function (r) { setTimeout(r, 3000); })]);
+  }
+
+  var rows = document.querySelectorAll('[data-tg]');
+  if (rows.length) {
+    fontsReady().then(function () {
+      return Promise.all(GROUPS.map(function (names, g) {
+        return Promise.all(names.map(function (nm, i) {
+          var more = nm.charAt(0) === '+';
+          var num = more ? '+' : (FIRST_NUM[g] + i < 10 ? '0' : '') + (FIRST_NUM[g] + i);
+          return drawCard(nm, num, more ? PALETTE[0] : PALETTE[(i + g) % 4]);
+        }));
+      }));
+    }).then(function (all) {
+      Array.prototype.forEach.call(rows, function (el) {
+        var g = +el.getAttribute('data-tg');
+        var reverse = el.getAttribute('data-dir') === 'reverse';
+        var urls = all[g].slice();
+        if (reverse) urls.reverse();
+        createBand(el, urls, {
+          speed: +el.getAttribute('data-speed') || 3.6,
+          dir: reverse ? 'reverse' : 'normal',
+          tile: 74, tileSm: 74, curve: 70, curveSm: 50
+        });
+      });
+    });
+  }
+
+  /* Pausa las animaciones cuando la sección no está en pantalla (perf) */
+  var section = document.getElementById('artistas');
+  if (section && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries[0].target.classList.toggle('is-paused', !entries[0].isIntersecting);
+    }, { rootMargin: '120px 0px' }).observe(section);
+  }
 })();
 </script>
 </body>
