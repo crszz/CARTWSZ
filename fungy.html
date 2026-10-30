@@ -2,7 +2,6 @@
 <html lang="es-CO">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <title>FUNGY · NOV 20 · Antisistema Bogotá</title>
 <meta name="description" content="FUNGY — El reino abre sus puertas. Sonidos de Bogotá Underground con máximos exponentes de cada subgénero. NOV 20 en Antisistema, Bogotá.">
@@ -95,12 +94,10 @@
   --maxw:1200px;
 
   --hold: 90vh;
-  --story-height: calc(400vh + var(--hold));
+  --story-height: calc(500vh + var(--hold));
 }
 
-@media (min-width: 768px) {
-  :root { --story-height: calc(500vh + var(--hold)); }
-}
+
 
 /* RESET */
 *,*::before,*::after{box-sizing:border-box}
@@ -584,12 +581,8 @@ section{
 }
 .tg__tile{position:absolute;transform-style:preserve-3d;will-change:transform}
 
-@media (max-width:768px){
-  .artists-stage{padding-bottom:5.2rem;gap:.8rem}
-  .stage__kicker{letter-spacing:.2em}
-  .stage__title{font-size:clamp(1.55rem,7.4vw,2.4rem);max-width:17ch}
-}
-@media (max-height:640px){ .stage__lead{display:none} }
+
+
 
 /* Lista accesible (lector de pantalla) */
 .artists-fallback{
@@ -615,8 +608,8 @@ html:not(.js) .artists-stage{display:none}
 /* =====================================================================
    GALERÍA 3D · parallax que se "despliega" con el scroll
 ===================================================================== */
-.gx{position:relative;height:380vh;padding:0;background:#050505;border-bottom:3px solid var(--ink)}
-@media (min-width:768px){.gx{height:520vh}}
+.gx{position:relative;height:520vh;padding:0;background:#050505;border-bottom:3px solid var(--ink)}
+
 html:not(.js) .gx{display:none}
 .gx__sticky{
   position:sticky;top:0;width:100%;
@@ -636,21 +629,21 @@ html:not(.js) .gx{display:none}
 .gx__shade--y{box-shadow:inset 0 100px 150px -50px #000,inset 0 -100px 150px -50px #000}
 .gx__shade--x{box-shadow:inset 150px 0 150px -50px #000,inset -150px 0 150px -50px #000}
 .gx__grid{
-  display:flex;gap:1rem;justify-content:center;align-items:center;
+  display:flex;gap:1.5rem;justify-content:center;align-items:center;
   width:120vw;height:150vh;transform-style:preserve-3d;transform-origin:center;
   will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden;
   transform:translateZ(-800px) rotateX(25deg) rotateY(-45deg) rotateZ(15deg);
 }
-.gx__col{display:flex;flex-direction:column;gap:1rem;width:22vw;min-width:200px;flex:none;pointer-events:auto;will-change:transform}
+.gx__col{display:flex;flex-direction:column;gap:1.5rem;width:22vw;min-width:200px;flex:none;pointer-events:auto;will-change:transform}
 .gx__card{
-  width:100%;height:220px;flex:none;background:#111;overflow:hidden;
+  width:100%;height:400px;flex:none;background:#111;overflow:hidden;
   transition:transform .3s ease;cursor:pointer;
 }
 .gx__card:hover{transform:scale(1.02)}
 .gx__card img{width:100%;height:100%;object-fit:cover;opacity:.8;transition:opacity .3s ease}
 .gx__card:hover img{opacity:1}
-@media (min-width:640px){.gx__card{height:300px}.gx__grid,.gx__col{gap:1.5rem}}
-@media (min-width:768px){.gx__card{height:400px}}
+
+
 
 .gx__title{
   position:absolute;inset:0;z-index:30;pointer-events:none;
@@ -817,35 +810,9 @@ html:not(.js) .gx{display:none}
 }
 .sticky-cta.is-hidden{transform:translateY(100%);}
 
-/* RESPONSIVE */
-@media (max-width:768px){
-  :root{--pad-section:clamp(3rem,9vw,4.5rem);--gutter:1.15rem;--edge:1.25rem}
-  .header-inner{padding:.6rem var(--gutter);gap:.5rem;}
-  .nav{display:none;}
-  .header-cta{display:inline-flex;padding:.5rem .8rem;font-size:0.75rem;}
-  .artist-row{grid-template-columns:2.4rem 1fr;padding:.85rem .9rem}
-  .loc{grid-template-columns:1fr}
-  .loc__map{min-height:320px}
-  .boleta__panel{width:56%}
-  .ticket{box-shadow:6px 6px 0 var(--lime)}
-  .sticky-cta{display:flex}
-  .final .btn--huge{padding:1.2rem 1.4rem}
-  .scrolly__scene{padding:5.5rem var(--edge) 4rem}
-  .scene-big{font-size:clamp(2.1rem,10.5vw,3.6rem)}
-  .scene-cta-title{font-size:clamp(2.8rem,15vw,5rem)}
-}
-@media (max-width:480px){
-  .header-inner{padding:.5rem .9rem}
-  .brand{font-size:1.2rem}
-  .section-title{font-size:clamp(1.8rem,8vw,2.6rem);gap:.5rem}
-  .section-num{font-size:.62rem;padding-top:.35em}
-  .artist-name{font-size:clamp(1.35rem,7vw,2.2rem)}
-  .loc__venue{font-size:clamp(2.2rem,11vw,3.4rem)}
-  .ticket__row--total .ticket__v{font-size:clamp(1.7rem,8vw,2.6rem)}
-  .final__title{font-size:clamp(2.6rem,16vw,5rem)}
-  .restriction{font-size:.92rem;gap:.8rem}
-  .restriction__x{font-size:1.2em}
-}
+/* DESKTOP ONLY · composición única */
+
+
 
 /* Reduced motion fallback */
 @media (prefers-reduced-motion:reduce){
@@ -1234,7 +1201,7 @@ html:not(.js) .gx{display:none}
   (function () {
     var g = document.querySelector('.grain');
     if (!g) return;
-    if (window.innerWidth <= 768 || reduceMotion) { g.parentNode.removeChild(g); return; }
+    if (reduceMotion) { g.parentNode.removeChild(g); return; }
     var c = document.createElement('canvas');
     c.width = c.height = 128;
     var x = c.getContext('2d'), d = x.createImageData(128, 128), i, v;
@@ -1282,7 +1249,7 @@ html:not(.js) .gx{display:none}
     geo.max = Math.max(1, scrolly.offsetHeight - geo.vh);
     geo.hold = holdEl ? Math.min(holdEl.offsetHeight, geo.max - 1) : 0;
     geo.hb = siteHeader ? siteHeader.offsetHeight : 70;
-    geo.side = Math.min(150, Math.max(54, window.innerWidth * 0.14));
+    geo.side = 150;
     geo.below = Math.min(110, Math.max(54, geo.vh * 0.12));
     if (finalSection) geo.finalTop = finalSection.getBoundingClientRect().top + y;
   }
@@ -1515,7 +1482,7 @@ html:not(.js) .gx{display:none}
       'https://organicbionatural.com/wp-content/uploads/2026/10/WhatsApp-Image-2026-10-29-at-19.01.24.jpeg'
     ];
     var OFFSETS = [0, 2, 4, 3];   // cada columna arranca en una foto distinta
-    var PER_COL = (window.matchMedia && window.matchMedia('(max-width:768px)').matches) ? 8 : 10;   // menos peso en móvil
+    var PER_COL = 10;   // cantidad fija de tarjetas para la composición de escritorio
 
     var cols = Array.prototype.slice.call(grid.querySelectorAll('.gx__col'));
     cols.forEach(function (col, k) {
@@ -1604,7 +1571,7 @@ html:not(.js) .gx{display:none}
   ===================================================================== */
   var SLICES = 12;          // tiras por card
   var CAMERA = 1.6;         // distancia de cámara / radio del cilindro
-  var MAX_WIDTH = 55;       // una card nunca pasa de este % del ancho (en móvil)
+  var MAX_WIDTH = 55;       // ancho máximo relativo de cada card
   var ASPECT = 1.6;         // ancho / alto de la card (960x600)
   var GAP = 7;              // separación entre cards (% de su alto)
   var AXIS = 50;            // centro vertical de la banda (%)
@@ -1639,9 +1606,8 @@ html:not(.js) .gx{display:none}
     function build() {
       var w = root.clientWidth, h = root.clientHeight;
       if (!w || !h) return;
-      var small = w < 640;
-      var tile = small ? opt.tileSm : opt.tile;
-      var bend = (Math.min(85, Math.max(5, small ? opt.curveSm : opt.curve)) * Math.PI) / 180;
+      var tile = opt.tile;
+      var bend = (Math.min(85, Math.max(5, opt.curve)) * Math.PI) / 180;
       var m = measure(w, h, tile, ASPECT, GAP, bend);
       var key = [m.columns, m.sweep, m.unit, tile, bend].join('|');
       if (key === lastKey) return;
@@ -1795,7 +1761,7 @@ html:not(.js) .gx{display:none}
         createBand(el, urls, {
           speed: +el.getAttribute('data-speed') || 3.6,
           dir: reverse ? 'reverse' : 'normal',
-          tile: 74, tileSm: 74, curve: 70, curveSm: 50
+          tile: 74, curve: 70
         });
       });
       remeasure();   // la altura de la página no cambia, pero re-medimos por seguridad
