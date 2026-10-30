@@ -1,162 +1,938 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-CO">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Scroll Canvas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FUNGY · NOV 20 · Antisistema Bogotá</title>
+<meta name="description" content="FUNGY — El reino abre sus puertas. Sonidos de Bogotá Underground con máximos exponentes de cada subgénero. NOV 20 en Antisistema, Bogotá.">
+<meta name="theme-color" content="#0A0A0A">
+<meta property="og:type" content="event">
+<meta property="og:title" content="FUNGY · NOV 20 · Antisistema Bogotá">
+<meta property="og:description" content="El reino Fungy abre sus puertas. NOV 20 en Antisistema.">
+<meta property="og:locale" content="es_CO">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8D%84%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { background: #111; }
-  body { height: 400vh; overflow-x: hidden; }
+:root{
+  --bg:#0A0A0A;
+  --ink:#F2F2F2;
+  --ink-soft:rgba(242,242,242,.62);
+  --lime:#DFFF00;
+  --red:#FF3B30;
+  --shadow-hard:6px 6px 0 var(--ink);
+  --shadow-hard-lime:6px 6px 0 var(--lime);
+  --font-display:'Archivo Black',Impact,'Arial Black',sans-serif;
+  --font-mono:'Space Mono','Courier New',monospace;
+  --fs-h2:clamp(2.25rem,6vw,5rem);
+  --fs-body:clamp(.9rem,1vw,1.05rem);
+  --fs-mono:clamp(.72rem,.9vw,.85rem);
+  --fs-btn:clamp(.82rem,1vw,.95rem);
+  --gutter:clamp(1rem,4vw,3rem);
+  --edge:clamp(1.25rem,7vw,7rem);
+  --pad-section:clamp(4rem,10vw,8rem);
+  --maxw:1200px;
+  --story-height:420vh;
+}
+@media (min-width:768px){:root{--story-height:520vh}}
 
-  #canvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh;
-    z-index: 0;
-    display: block;
-  }
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--bg)}
+body{
+  margin:0;padding:0;width:100%;max-width:100%;overflow-x:hidden;
+  background:var(--bg);color:var(--ink);
+  font-family:var(--font-mono);font-size:var(--fs-body);line-height:1.5;
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;
+}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+ul,ol{margin:0;padding:0;list-style:none}
+h1,h2,h3,p{margin:0}
+::selection{background:var(--lime);color:var(--bg)}
+:focus-visible{outline:3px solid var(--lime);outline-offset:3px}
+.skip-link{position:fixed;top:-100px;left:1rem;z-index:10001;padding:.7rem 1.1rem;background:var(--lime);color:var(--bg);font-weight:700}
+.skip-link:focus{top:1rem}
 
-  .hint {
-    position: fixed;
-    bottom: 30px; left: 50%;
-    transform: translateX(-50%);
-    color: #fff;
-    font-family: system-ui, sans-serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    opacity: 0.6;
-    z-index: 20;
-    pointer-events: none;
-  }
+/* HEADER */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:900;background:transparent;transition:background .25s ease,box-shadow .25s ease}
+.site-header .brand,.site-header .nav a{text-shadow:0 2px 14px rgba(0,0,0,.65)}
+.site-header.is-solid{background:rgba(10,10,10,.95);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 3px 0 var(--ink)}
+.site-header.is-solid .brand,.site-header.is-solid .nav a{text-shadow:none}
+.header-inner{position:relative;display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:var(--maxw);margin:0 auto;padding:.7rem var(--gutter)}
+.brand{font-family:var(--font-display);font-size:clamp(1.4rem,2.6vw,2rem);line-height:.9;letter-spacing:-.03em;text-transform:uppercase;flex-shrink:0}
+.nav{display:flex;gap:.1rem;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{padding:.55rem .8rem;font-size:var(--fs-mono);text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;border:2px solid transparent}
+.nav a:hover,.nav a:focus-visible{border-color:var(--ink)}
+.header-cta{flex-shrink:0;padding:.6rem 1rem;background:var(--lime);color:var(--bg);font-weight:700;font-size:var(--fs-btn);text-transform:uppercase;letter-spacing:.05em;border:2px solid var(--bg);box-shadow:3px 3px 0 var(--ink);transition:transform .12s steps(1),box-shadow .12s steps(1);white-space:nowrap}
+.header-cta:hover,.header-cta:focus-visible{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.mobile-menu-toggle{display:none;align-items:center;justify-content:center;min-height:42px;padding:.45rem .65rem;border:2px solid var(--ink);background:var(--bg);color:var(--ink);font:700 .72rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.mobile-menu-toggle[aria-expanded="true"]{background:var(--lime);border-color:var(--bg);color:var(--bg)}
 
-  .status {
-    position: fixed;
-    top: 10px; left: 10px;
-    color: #0f0;
-    font-family: monospace;
-    font-size: 11px;
-    z-index: 30;
-    background: rgba(0,0,0,0.75);
-    padding: 6px 10px;
-    border-radius: 4px;
-    pointer-events: none;
-  }
+/* BOTONES */
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:1rem 1.6rem;font-family:var(--font-mono);font-weight:700;font-size:var(--fs-btn);text-transform:uppercase;letter-spacing:.05em;text-align:center;border:3px solid var(--ink);background:var(--bg);color:var(--ink);box-shadow:var(--shadow-hard);cursor:pointer;min-height:56px;transition:transform .12s steps(2),box-shadow .12s steps(2),background .12s steps(1),color .12s steps(1)}
+.btn:hover,.btn:focus-visible{transform:translate(6px,6px);box-shadow:0 0 0 var(--ink);background:var(--ink);color:var(--bg)}
+.btn--lime{background:var(--lime);color:var(--bg);border-color:var(--bg);box-shadow:var(--shadow-hard-lime)}
+.btn--lime:hover,.btn--lime:focus-visible{background:var(--bg);color:var(--lime);border-color:var(--lime);box-shadow:0 0 0 var(--lime)}
+.btn--dark{background:var(--bg);color:var(--lime);border-color:var(--bg);box-shadow:6px 6px 0 var(--bg)}
+.btn--dark:hover,.btn--dark:focus-visible{background:var(--lime);color:var(--bg);box-shadow:0 0 0 var(--bg)}
+.btn--block{width:100%;justify-content:center}
+.btn--huge{font-size:clamp(1rem,1.8vw,1.4rem);padding:1.3rem 2rem}
+.badge{display:inline-flex;align-items:center;padding:.4rem .7rem;font-size:var(--fs-mono);font-weight:700;text-transform:uppercase;letter-spacing:.08em;border:2px solid currentColor;line-height:1;white-space:nowrap}
+
+/* HERO · VIDEO SCROLL */
+.scrolly{position:relative;width:100%;height:var(--story-height);background:#050609}
+.scrolly__sticky{position:sticky;top:0;width:100%;height:100vh;height:100svh;height:100dvh;min-height:0;overflow:hidden;isolation:isolate;background:#050609}
+.scrolly__media{position:absolute;inset:0;z-index:-2;overflow:hidden;background:#050609;pointer-events:none}
+.scrolly__video{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;transform:translate3d(0,0,0) scale(1.015);backface-visibility:hidden;background:#050609;pointer-events:none}
+.scrolly__sticky::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(5,6,9,.38),rgba(5,6,9,.08) 56%,rgba(5,6,9,.30)),
+    linear-gradient(180deg,rgba(5,6,9,.45),rgba(5,6,9,.05) 30%,rgba(5,6,9,.20) 70%,rgba(5,6,9,.55))}
+.scrolly__content{position:relative;width:100%;height:100%}
+.scrolly__scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem var(--edge) 4.5rem;gap:clamp(.8rem,2vw,1.5rem);opacity:0;visibility:hidden;pointer-events:none;will-change:opacity}
+.scrolly__scene.is-active{pointer-events:auto}
+.sl{transform:translate3d(calc(var(--x,0px) * var(--k,1)),calc(var(--y,0px) * var(--k,1)),0);will-change:transform;text-shadow:0 2px 28px rgba(0,0,0,.7),0 0 3px rgba(0,0,0,.45)}
+
+.scene-logo{display:block;width:clamp(52px,9vw,80px);height:clamp(52px,9vw,80px);border:3px solid var(--ink);background:var(--bg);overflow:hidden;margin-bottom:.2rem}
+.scene-logo img{width:100%;height:100%;object-fit:cover}
+.scene-title{width:100%;display:flex;justify-content:center;line-height:0}
+.fungy-chrome{display:block;width:min(90vw,980px,150vh);height:auto;filter:drop-shadow(0 14px 26px rgba(0,0,0,.65))}
+.scene-hint{font-size:var(--fs-mono);letter-spacing:.28em;text-transform:uppercase;color:var(--ink-soft);margin-top:.5rem;animation:hintPulse 1.8s steps(4) infinite}
+@keyframes hintPulse{0%,100%{opacity:.35;translate:0 0}50%{opacity:1;translate:0 6px}}
+
+.scene-left{align-items:flex-start;text-align:left}
+.scene-right{align-items:flex-end;text-align:right}
+.scene-copy{width:min(100%,46rem);display:flex;flex-direction:column;gap:clamp(.8rem,1.8vw,1.3rem)}
+.scene-left .scene-copy{align-items:flex-start}
+.scene-right .scene-copy{align-items:flex-end}
+.scene-kicker{font-weight:700;font-size:var(--fs-mono);letter-spacing:.24em;text-transform:uppercase;color:var(--lime)}
+.scene-big{font-family:var(--font-display);font-size:clamp(2.3rem,6.6vw,6rem);line-height:.92;letter-spacing:-.045em;text-transform:uppercase;color:var(--ink)}
+.scene-big em{font-style:normal;color:var(--lime)}
+.scene-lead{font-size:clamp(.92rem,1.25vw,1.12rem);line-height:1.6;color:rgba(242,242,242,.92);max-width:38ch}
+.scene-meta{font-weight:700;font-size:var(--fs-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.scene-cta-title{font-family:var(--font-display);font-size:clamp(2.8rem,10vw,7.5rem);line-height:.84;letter-spacing:-.05em;text-transform:uppercase;max-width:12ch;color:#fff}
+.scene-cta-sub{font-size:var(--fs-mono);letter-spacing:.22em;text-transform:uppercase;color:rgba(242,242,242,.85)}
+.scene-cta .btn{margin-top:.8rem;text-shadow:none}
+
+.circle-reveal{position:absolute;inset:0;background:#000;z-index:50;pointer-events:none;clip-path:circle(0% at 50% 50%);-webkit-clip-path:circle(0% at 50% 50%);will-change:clip-path}
+
+/* MARQUEE */
+.marquee{overflow:hidden;background:var(--lime);color:var(--bg);border-top:3px solid var(--bg);border-bottom:3px solid var(--bg);padding:.9rem 0;font-family:var(--font-display);font-size:clamp(1.2rem,3.2vw,2.5rem);letter-spacing:-.02em;text-transform:uppercase;line-height:1;position:relative;z-index:10}
+.marquee__track{display:flex;width:max-content;animation:marquee 28s linear infinite;will-change:transform}
+.marquee__item{white-space:nowrap;padding-right:1.2em}
+.marquee__item span{padding:0 .35em}
+@keyframes marquee{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+
+/* SECCIONES */
+section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid var(--ink)}
+.section-head{max-width:var(--maxw);margin:0 auto clamp(2rem,5vw,3.5rem);display:flex;flex-direction:column;gap:.5rem}
+.section-title{display:flex;align-items:baseline;gap:.8rem;font-family:var(--font-display);font-size:var(--fs-h2);line-height:.9;letter-spacing:-.04em;text-transform:uppercase}
+.section-num{font-size:clamp(.7rem,1.2vw,.9rem);letter-spacing:.15em;color:var(--ink-soft);font-weight:700;align-self:flex-start;padding-top:.4em}
+.js .reveal{opacity:0;transform:translate3d(0,30px,0);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.js .reveal.is-visible{opacity:1;transform:translate3d(0,0,0)}
+.js .reveal[data-delay="1"]{transition-delay:.1s}
+.js .reveal[data-delay="2"]{transition-delay:.2s}
+.js .reveal[data-delay="3"]{transition-delay:.3s}
+.js .reveal[data-delay="4"]{transition-delay:.4s}
+.js .reveal[data-delay="5"]{transition-delay:.5s}
+
+/* CTA DE ARTISTAS · aparece dentro del círculo al 60% de apertura */
+.circle-reveal__content{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(.85rem,2vw,1.25rem);width:100%;max-width:900px;margin:0 auto;padding:clamp(1.2rem,4vw,3rem);text-align:center;color:var(--ink);opacity:0;visibility:hidden;transform:translate3d(0,16px,0);pointer-events:none;transition:opacity .38s cubic-bezier(.22,1,.36,1),transform .38s cubic-bezier(.22,1,.36,1),visibility 0s linear .38s}
+.circle-reveal__content.is-visible{opacity:1;visibility:visible;transform:translate3d(0,0,0);pointer-events:auto;transition-delay:0s}
+.circle-reveal__kicker{font-size:var(--fs-mono);font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--lime)}
+.circle-reveal__title{font-family:var(--font-display);font-size:clamp(2rem,5.6vw,4.5rem);line-height:.9;letter-spacing:-.045em;text-transform:uppercase;max-width:16ch}
+.circle-reveal__title em{font-style:normal;color:var(--lime)}
+.circle-reveal__text{max-width:58ch;color:rgba(242,242,242,.78);font-size:clamp(.9rem,1.15vw,1.05rem);line-height:1.65}
+.circle-reveal__action{margin-top:.25rem}
+@media(max-width:600px){
+  .circle-reveal__content{gap:.85rem;padding:1.25rem 1.1rem}
+  .circle-reveal__kicker{font-size:.66rem;letter-spacing:.13em}
+  .circle-reveal__title{font-size:clamp(1.8rem,8.4vw,2.8rem);line-height:.92;max-width:14ch}
+  .circle-reveal__text{font-size:.82rem;line-height:1.5;max-width:38ch}
+  .circle-reveal__action .btn{min-height:48px;padding:.8rem 1rem;font-size:.7rem;box-shadow:4px 4px 0 var(--lime)}
+}
+@media(max-width:600px) and (max-height:650px){
+  .circle-reveal__content{gap:.55rem;padding:3.2rem 1rem 1rem}
+  .circle-reveal__title{font-size:clamp(1.55rem,6vw,2.1rem)}
+  .circle-reveal__text{font-size:.74rem;line-height:1.4}
+}
+
+/* ARTISTAS */
+.artists{background:#000;padding:clamp(2.5rem,6vw,5rem) 0;border-bottom:3px solid var(--ink);overflow:hidden}
+.artists__rows{display:flex;flex-direction:column;gap:clamp(.4rem,1.6vw,1.2rem)}
+.tg{display:none;position:relative;height:clamp(170px,25vw,340px);overflow:hidden;container-type:size;opacity:0;transition:opacity .6s ease}
+.js .tg{display:block}
+.tg.is-ready{opacity:1}
+.tg__band{position:absolute;inset:0;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.tg__tile{position:absolute;transform-style:preserve-3d;will-change:transform}
+.artists.is-paused .tg__tile{animation-play-state:paused!important}
+.artists__list{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);display:grid;gap:.5rem;font-family:var(--font-display);text-transform:uppercase;font-size:clamp(1.3rem,4vw,2.4rem);letter-spacing:-.03em}
+.js .artists__list{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.artists.is-fallback .artists__list{position:relative;width:auto;height:auto;margin:2rem auto;padding:0 var(--gutter);overflow:visible;clip:auto;white-space:normal}
+
+/* UBICACIÓN */
+.loc{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem);align-items:stretch}
+.loc__map{position:relative;min-height:clamp(300px,38vw,460px);overflow:hidden;border:3px solid var(--ink);background-color:#0B0B0B;background-image:linear-gradient(rgba(242,242,242,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(242,242,242,.07) 1px,transparent 1px);background-size:36px 36px;box-shadow:8px 8px 0 var(--lime)}
+.loc__street{position:absolute;background:rgba(242,242,242,.2)}
+.loc__street--v{top:0;bottom:0;width:10px}
+.loc__street--h{left:0;right:0;height:10px}
+.loc__street span{position:absolute;font-size:.62rem;font-weight:700;letter-spacing:.14em;color:var(--ink-soft);white-space:nowrap;text-transform:uppercase}
+.loc__street--v span{top:.7rem;left:16px}
+.loc__street--h span{left:.8rem;top:16px}
+.loc__zone{position:absolute;left:38%;top:30%;width:34%;height:42%;border:3px dashed var(--lime);background:rgba(223,255,0,.08)}
+.loc__zone span{position:absolute;left:-3px;bottom:100%;background:var(--lime);color:var(--bg);padding:.25rem .5rem;font-weight:700;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.loc__pin{position:absolute;left:55%;top:51%;width:26px;height:26px;margin:-13px 0 0 -13px;background:var(--lime);border:3px solid var(--bg);box-shadow:4px 4px 0 var(--bg);transform:rotate(45deg)}
+.loc__pin::after{content:"";position:absolute;inset:-14px;border:3px solid var(--lime);animation:locPing 2s steps(6) infinite}
+@keyframes locPing{from{opacity:.9;transform:scale(.5)}to{opacity:0;transform:scale(1.7)}}
+.loc__cap{position:absolute;left:0;right:0;bottom:0;padding:.7rem 1rem;background:var(--ink);color:var(--bg);font-weight:700;font-size:var(--fs-mono);letter-spacing:.16em;text-transform:uppercase;display:flex;justify-content:space-between;gap:1rem}
+.loc__card{display:flex;flex-direction:column;gap:1.4rem;border:3px solid var(--ink);background:#0F0F0F;padding:clamp(1.3rem,2.6vw,2.2rem)}
+.loc__venue{font-family:var(--font-display);font-size:clamp(2.1rem,4.6vw,3.8rem);line-height:.88;letter-spacing:-.045em;text-transform:uppercase}
+.loc__city{margin-top:.7rem;font-size:var(--fs-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--lime);font-weight:700}
+.loc__rows{border-top:2px solid var(--ink)}
+.loc__rows li{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.85rem 0;border-bottom:2px solid rgba(242,242,242,.25)}
+.loc__k{font-size:var(--fs-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);flex:none}
+.loc__v{font-weight:700;text-align:right;font-size:clamp(.85rem,1.1vw,1rem)}
+.loc__tbc{color:var(--bg);background:var(--red);padding:.2rem .5rem;font-size:var(--fs-mono);letter-spacing:.1em;text-transform:uppercase}
+.loc__card .btn{width:100%;justify-content:center;margin-top:auto}
+
+/* BOLETA (cortinas: más lentas y con retraso para que se vean en móvil) */
+.boleta{position:relative;overflow:hidden}
+.boleta__panels{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden}
+.boleta__panel{position:absolute;top:0;bottom:0;width:52%;background:repeating-linear-gradient(-45deg,var(--bg) 0,var(--bg) 20px,var(--lime) 20px,var(--lime) 40px);transition:transform 1s steps(10) .15s;will-change:transform;-webkit-transform:translateZ(0)}
+.boleta__panel--l{left:0;transform:translateX(-102%)}
+.boleta__panel--r{right:0;transform:translateX(102%)}
+.js .boleta__panel--l{transform:translateX(0)}
+.js .boleta__panel--r{transform:translateX(0)}
+.js .boleta.is-revealed .boleta__panel--l{transform:translateX(-102%)}
+.js .boleta.is-revealed .boleta__panel--r{transform:translateX(102%)}
+.boleta__inner{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto}
+.ticket{max-width:640px;margin:0 auto;border:3px solid var(--ink);background:#0F0F0F;padding:clamp(1.2rem,2.5vw,2rem);box-shadow:8px 8px 0 var(--lime)}
+.ticket__head{margin-bottom:1.4rem}
+.ticket__rows{border-top:2px solid var(--ink);margin-bottom:1rem}
+.ticket__row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.8rem 0;border-bottom:2px solid var(--ink)}
+.ticket__k{letter-spacing:.12em;text-transform:uppercase;font-size:var(--fs-mono);opacity:.8}
+.ticket__v{font-weight:700;font-size:1.2rem}
+.ticket__row--total{border-bottom:0;padding-top:1.2rem}
+.ticket__row--total .ticket__k{font-family:var(--font-display);font-size:clamp(1.1rem,2.5vw,1.6rem);letter-spacing:-.02em;opacity:1}
+.ticket__row--total .ticket__v{font-family:var(--font-display);font-size:clamp(2rem,6vw,3.5rem);line-height:.9;color:var(--lime);letter-spacing:-.03em}
+.ticket__note{font-size:var(--fs-mono);letter-spacing:.15em;color:var(--ink-soft);margin-bottom:1.4rem}
+.ticket__badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.ticket__badges .badge{font-size:clamp(.62rem,.75vw,.72rem)}
+
+/* RESTRICCIONES */
+.restrictions__sub{font-size:var(--fs-mono);letter-spacing:.15em;color:var(--red);margin-top:.4rem;text-transform:uppercase}
+.restrictions__list{max-width:var(--maxw);margin:0 auto;border-left:6px solid var(--red);background:#0D0D0D;padding:1.6rem 1.8rem}
+.restriction{display:flex;align-items:flex-start;gap:1rem;padding:1rem 0;border-bottom:2px solid rgba(242,242,242,.15);font-size:clamp(.95rem,1.5vw,1.15rem);line-height:1.4}
+.restriction:last-child{border-bottom:0}
+.restriction__x{color:var(--red);font-family:var(--font-display);font-size:1.4em;line-height:1;flex-shrink:0}
+.restriction .no{color:var(--red);font-weight:900;letter-spacing:.05em}
+
+/* COMPRA FINAL */
+.final{background:var(--lime);color:var(--bg);padding:clamp(4rem,10vw,8rem) var(--gutter)}
+.final__inner{max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:column;gap:1.5rem;align-items:flex-start}
+.final__title{font-family:var(--font-display);font-size:clamp(3rem,12vw,9rem);line-height:.82;letter-spacing:-.05em;text-transform:uppercase}
+.final__meta{font-size:var(--fs-mono);letter-spacing:.15em;text-transform:uppercase}
+.final .btn--huge{width:100%;justify-content:center;margin-top:.5rem}
+.final__aux{font-size:var(--fs-mono);letter-spacing:.08em;opacity:.75}
+
+/* FOOTER */
+.site-footer{background:var(--bg);border-top:3px solid var(--ink);padding:clamp(2rem,5vw,3.5rem) var(--gutter) clamp(2rem,5vw,3rem)}
+.footer__inner{max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:column;gap:.7rem;font-size:var(--fs-mono);color:var(--ink-soft);line-height:1.6}
+.footer__row strong{color:var(--ink);letter-spacing:.05em}
+.footer__row a{color:var(--lime);border-bottom:2px solid transparent;transition:border-color .15s}
+.footer__row a:hover{border-bottom-color:var(--lime)}
+.footer__legal{color:var(--ink);letter-spacing:.05em;margin-top:.6rem}
+.footer__copy{opacity:.5;margin-top:.4rem;letter-spacing:.05em}
+
+/* STICKY CTA */
+.sticky-cta{display:none;position:fixed;bottom:0;left:0;right:0;z-index:800;padding:1rem;padding-bottom:calc(1rem + env(safe-area-inset-bottom,0px));background:var(--lime);color:var(--bg);font-weight:700;font-size:var(--fs-btn);text-transform:uppercase;letter-spacing:.05em;text-align:center;border-top:3px solid var(--bg);min-height:60px;align-items:center;justify-content:center;transition:transform .25s steps(4)}
+.sticky-cta.is-hidden{transform:translateY(100%)}
+@media(max-width:768px){.site-footer{padding-bottom:calc(5.5rem + env(safe-area-inset-bottom,0px))}}
+
+/* RESPONSIVE */
+@media (max-width:768px){
+  :root{--pad-section:clamp(3rem,9vw,4.5rem);--gutter:1.15rem;--edge:1.25rem}
+  .header-inner{padding:.6rem var(--gutter);gap:.5rem}
+  .nav{display:none}
+  .mobile-menu-toggle{display:inline-flex;flex-shrink:0}
+  .site-header.menu-open{background:rgba(10,10,10,.98);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .site-header.menu-open .nav{display:flex;position:absolute;top:calc(100% + .35rem);left:var(--gutter);right:var(--gutter);z-index:910;flex-direction:column;gap:0;padding:.35rem;background:#0A0A0A;border:2px solid var(--ink);box-shadow:5px 5px 0 var(--lime);overflow:visible}
+  .site-header.menu-open .nav a{padding:.85rem .75rem;border:0;border-bottom:1px solid rgba(242,242,242,.2);font-size:.78rem}
+  .site-header.menu-open .nav a:last-child{border-bottom:0}
+  .header-cta{padding:.5rem .7rem;font-size:.7rem}
+  .scrolly__sticky{height:100svh}
+  .scrolly__scene{padding-top:calc(5rem + env(safe-area-inset-top,0px));padding-bottom:calc(3.5rem + env(safe-area-inset-bottom,0px))}
+  .loc{grid-template-columns:minmax(0,1fr)}
+  .loc__map{min-height:320px}
+  .boleta__panel{width:56%}
+  .ticket{box-shadow:6px 6px 0 var(--lime)}
+  .sticky-cta{display:flex}
+  .final .btn--huge{padding:1.2rem 1.4rem}
+  .scrolly__scene{padding:5.5rem var(--edge) 4rem}
+  .scene-big{font-size:clamp(2.1rem,10.5vw,3.6rem)}
+  .scene-cta-title{font-size:clamp(2.8rem,15vw,5rem)}
+}
+@media (max-width:480px){
+  .brand{font-size:1.15rem}
+  .header-inner{gap:.45rem}
+  .header-cta{padding:.48rem .55rem;font-size:.65rem}
+  .mobile-menu-toggle{padding:.42rem .5rem;font-size:.65rem}
+  .section-title{font-size:clamp(1.8rem,8vw,2.6rem);gap:.5rem}
+  .loc__venue{font-size:clamp(2.2rem,11vw,3.4rem)}
+  .ticket__row--total .ticket__v{font-size:clamp(1.7rem,8vw,2.6rem)}
+  .final__title{font-size:clamp(2.6rem,16vw,5rem)}
+  .restriction{font-size:.92rem;gap:.8rem}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .marquee__track,.scene-hint,.loc__pin::after{animation:none!important}
+  .js .reveal{opacity:1;transform:none;transition:none}
+  .tg__tile{animation:none!important}
+  .boleta__panel{transition:none!important}
+}
 </style>
 </head>
 <body>
 
-<canvas id="canvas"></canvas>
-<div class="hint">Desliza para explorar</div>
-<div class="status" id="status">⏳ Cargando frames...</div>
+<a href="#main" class="skip-link">Saltar al contenido</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#inicio" class="brand" aria-label="FUNGY — inicio">FUNGY</a>
+    <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="primaryNav" aria-label="Abrir menú">MENÚ</button>
+    <nav class="nav" id="primaryNav" aria-label="Navegación principal">
+      <a href="#artistas">Artistas</a>
+      <a href="#ubicacion">Ubicación</a>
+      <a href="#boleta">Boleta</a>
+      <a href="#restricciones">Restricciones</a>
+    </nav>
+    <a href="https://www.tickeo.co/fungy" data-ticket-link class="header-cta" target="_blank" rel="noopener noreferrer">Comprar tickets</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO · VIDEO SCROLL -->
+<section class="scrolly" id="inicio" aria-label="FUNGY">
+  <div class="scrolly__sticky">
+
+    <div class="scrolly__media" aria-hidden="true">
+      <video id="scrollyVideo" class="scrolly__video" muted playsinline webkit-playsinline preload="metadata" disablepictureinpicture>
+        <source src="https://organicbionatural.com/wp-content/uploads/2026/10/Scroll2.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="scrolly__content">
+      <div class="scrolly__scene" data-scene="0">
+        <span class="scene-logo sl" style="--k:.5" aria-hidden="true">
+          <img src="https://instagram.fbog4-1.fna.fbcdn.net/v/t51.82787-19/808375511_18383875840225252_7836036425215885302_n.jpg?_nc_cat=110&_nc_map=urlgen_bucketless&ig_cache_key=GNfULjDkLw2lCVBBAPa-A5ScMb9sbmNDAQAB0j-ccb7-5&ccb=7-5&_nc_sid=669407&efg=eyJ2ZXJzaW9uIjoid3d3LjQ2NC5DMiJ9&_nc_ohc=y57wCwsyUS0Q7kNvwHN-PKe&_nc_oc=Adobuh5jSkLIen4gxVocGSzdwsosZW5jzSkxzKY2ZmTsN6FZYoeH_TMiDjW4C4lLx3g&_nc_zt=24&_nc_ht=instagram.fbog4-1.fna&_nc_gid=zqJeeI8Unp-Lr_W6_J2lcA&_nc_ss=7b6a8&oh=00_AQT5WjxxXo99oZso0ARspRz74I4GSi38IutIL3iOtQFFkg&oe=6AE99CBE" alt="" loading="eager" decoding="async" onerror="this.parentNode.style.display='none'">
+        </span>
+        <h1 class="scene-title sl" style="--k:1">
+          <img class="fungy-chrome" src="https://organicbionatural.com/wp-content/uploads/2026/10/Captura_de_pantalla_2026-10-29_a_la_s__10.05.40_p.m.-removebg-preview.png" alt="FUNGY" decoding="async" fetchpriority="high">
+        </h1>
+        <p class="scene-hint sl" style="--k:1.4" aria-hidden="true">↓ Desliza ↓</p>
+      </div>
+
+      <div class="scrolly__scene scene-left" data-scene="1">
+        <div class="scene-copy">
+          <p class="scene-kicker sl" style="--k:.5">// Señal detectada</p>
+          <h2 class="scene-big sl" style="--k:1">Bajo el concreto<br>de Bogotá,<br><em>algo está creciendo.</em></h2>
+          <p class="scene-lead sl" style="--k:1.6">Raíces invisibles. Esporas en el aire. Una noche que se siente desde abajo.</p>
+        </div>
+      </div>
+
+      <div class="scrolly__scene scene-right" data-scene="2">
+        <div class="scene-copy">
+          <p class="scene-kicker sl" style="--k:.5">Nov 20 ✱ Antisistema ✱ Bogotá</p>
+          <h2 class="scene-big sl" style="--k:1">14 exponentes.<br><em>Un solo reino.</em></h2>
+          <p class="scene-lead sl" style="--k:1.6">Los máximos nombres de cada subgénero del underground bogotano, a todo volumen y sin filtro.</p>
+          <p class="scene-meta sl" style="--k:2">+18 · Aforo 800 · Venta de licor</p>
+        </div>
+      </div>
+
+      <div class="scrolly__scene scene-cta" data-scene="3">
+        <p class="scene-cta-title sl" style="--k:1">ENTRA AL REINO.</p>
+        <p class="scene-cta-sub sl" style="--k:1.4">NOV 20 · ANTISISTEMA · BOGOTÁ</p>
+        <a href="https://www.tickeo.co/fungy" data-ticket-link class="btn btn--lime sl" style="--k:1.8" target="_blank" rel="noopener noreferrer">
+          COMPRAR TICKETS <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="circle-reveal" id="circleReveal">
+      <div class="circle-reveal__content" id="artistsCircleCta" role="group" aria-labelledby="artists-circle-title">
+        <p class="circle-reveal__kicker">// El reino tiene nombres propios</p>
+        <h2 class="circle-reveal__title" id="artists-circle-title">No es solo una noche.<br><em>Es una escena.</em></h2>
+        <p class="circle-reveal__text">Descubre a los 14 artistas y proyectos que representan el pulso del underground bogotano. Conoce el line-up que le dará sonido al reino FUNGY.</p>
+        <div class="circle-reveal__action">
+          <a href="#artistas" class="btn btn--lime">CONOCE A LOS ARTISTAS <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTISTAS · bandas curvas -->
+<section class="artists" id="artistas" aria-label="Artistas">
+  <div class="artists__rows">
+    <div class="tg" data-tg="0" data-speed="3.6" data-dir="normal" aria-hidden="true"></div>
+    <div class="tg" data-tg="1" data-speed="4.2" data-dir="reverse" aria-hidden="true"></div>
+    <div class="tg" data-tg="2" data-speed="3.6" data-dir="normal" aria-hidden="true"></div>
+  </div>
+  <ol class="artists__list" aria-label="Line-up">
+    <li>ACIDO PANTERA</li><li>JØTATE</li><li>CAMI VÁSQUEZ</li><li>RENGO</li><li>MET4NOIA</li>
+    <li>VALERIO</li><li>DOLLHOUSE</li><li>NIHL</li><li>SANTI 999</li><li>LAV</li>
+    <li>ANGIE MOLANO</li><li>CERØ</li><li>TISAN</li><li>MEL</li>
+    <li>+ MÁS INVITADOS POR ANUNCIAR*</li>
+  </ol>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span class="marquee__item">NOV 20 <span>✱</span> ANTISISTEMA <span>✱</span> BOGOTÁ UNDERGROUND <span>✱</span>&nbsp;</span>
+    <span class="marquee__item">NOV 20 <span>✱</span> ANTISISTEMA <span>✱</span> BOGOTÁ UNDERGROUND <span>✱</span>&nbsp;</span>
+  </div>
+</div>
+
+<!-- UBICACIÓN -->
+<section class="block" id="ubicacion" aria-labelledby="ubicacion-title">
+  <header class="section-head">
+    <h2 class="section-title" id="ubicacion-title">
+      <span class="section-num">[01]</span>
+      <span>UBICACIÓN</span>
+    </h2>
+  </header>
+
+  <div class="loc">
+    <div class="loc__map reveal" aria-hidden="true">
+      <div class="loc__street loc__street--v" style="left:24%"><span>Cra 13</span></div>
+      <div class="loc__street loc__street--v" style="left:80%"><span>Cra 15</span></div>
+      <div class="loc__street loc__street--h" style="top:16%"><span>Calle 68</span></div>
+      <div class="loc__street loc__street--h" style="top:36%"><span>Calle 66</span></div>
+      <div class="loc__street loc__street--h" style="top:56%"><span>Calle 64</span></div>
+      <div class="loc__street loc__street--h" style="top:76%"><span>Calle 61A</span></div>
+      <div class="loc__zone"><span>Zona Royal Center</span></div>
+      <span class="loc__pin"></span>
+      <div class="loc__cap"><span>Antisistema</span><span>Bogotá, CO</span></div>
+    </div>
+
+    <div class="loc__card reveal" data-delay="1">
+      <div>
+        <p class="loc__venue">ANTISISTEMA</p>
+        <p class="loc__city">Bogotá · Colombia</p>
+      </div>
+      <ul class="loc__rows" aria-label="Referencias del mapa">
+        <li><span class="loc__k">Cerca de</span><span class="loc__v">Royal Center</span></li>
+        <li><span class="loc__k">Calles</span><span class="loc__v">64, 65, 66, 68 y 61A</span></li>
+        <li><span class="loc__k">Carreras</span><span class="loc__v">13 y 15</span></li>
+        <li><span class="loc__k">Dirección</span><span class="loc__v"><span class="loc__tbc">Por confirmar</span></span></li>
+      </ul>
+      <a href="https://www.google.com/maps/search/?api=1&query=Antisistema+Bogot%C3%A1" data-maps-link class="btn btn--lime" target="_blank" rel="noopener noreferrer">
+        ABRIR EN GOOGLE MAPS <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- BOLETA -->
+<section class="block boleta" id="boleta" aria-labelledby="boleta-title">
+  <div class="boleta__panels" aria-hidden="true">
+    <div class="boleta__panel boleta__panel--l"></div>
+    <div class="boleta__panel boleta__panel--r"></div>
+  </div>
+  <div class="boleta__inner">
+    <header class="section-head">
+      <h2 class="section-title" id="boleta-title">
+        <span class="section-num">[02]</span>
+        <span>BOLETA</span>
+      </h2>
+    </header>
+    <article class="ticket reveal">
+      <div class="ticket__head">
+        <span class="badge">GENERAL · TAQUILLA · AFORO 800</span>
+      </div>
+      <div class="ticket__rows">
+        <div class="ticket__row"><span class="ticket__k">Precio</span><span class="ticket__v">$36.000</span></div>
+        <div class="ticket__row"><span class="ticket__k">Servicio</span><span class="ticket__v">$5.000</span></div>
+        <div class="ticket__row ticket__row--total"><span class="ticket__k">TOTAL</span><span class="ticket__v">$41.000</span></div>
+      </div>
+      <p class="ticket__note">Valores en COP</p>
+      <div class="ticket__badges">
+        <span class="badge">SOLO MAYORES DE EDAD (18+)</span>
+        <span class="badge">VENTA DE LICOR</span>
+      </div>
+      <a href="https://www.tickeo.co/fungy" data-ticket-link class="btn btn--lime btn--block" target="_blank" rel="noopener noreferrer">
+        COMPRAR TICKETS <span aria-hidden="true">→</span>
+      </a>
+    </article>
+  </div>
+</section>
+
+<!-- RESTRICCIONES -->
+<section class="block" id="restricciones" aria-labelledby="restricciones-title">
+  <header class="section-head">
+    <h2 class="section-title" id="restricciones-title">
+      <span class="section-num">[03]</span>
+      <span>RESTRICCIONES</span>
+    </h2>
+    <p class="restrictions__sub">RESTRICCIONES DEL EVENTO</p>
+  </header>
+  <ul class="restrictions__list">
+    <li class="restriction reveal" data-delay="1"><span class="restriction__x" aria-hidden="true">✕</span><span><strong class="no">NO</strong> ingreso de bebidas y alimentos</span></li>
+    <li class="restriction reveal" data-delay="2"><span class="restriction__x" aria-hidden="true">✕</span><span><strong class="no">NO</strong> ingreso de armas o elementos cortopunzantes</span></li>
+    <li class="restriction reveal" data-delay="3"><span class="restriction__x" aria-hidden="true">✕</span><span><strong class="no">NO</strong> ingreso en estado de embriaguez</span></li>
+    <li class="restriction reveal" data-delay="4"><span class="restriction__x" aria-hidden="true">✕</span><span><strong class="no">NO</strong> ingreso de prendas alusivas a equipos de fútbol</span></li>
+    <li class="restriction reveal" data-delay="5"><span class="restriction__x" aria-hidden="true">✕</span><span><strong class="no">NO</strong> ingreso de equipo fotográfico profesional</span></li>
+  </ul>
+</section>
+
+<!-- COMPRA -->
+<section class="final" id="compra" aria-labelledby="compra-title">
+  <div class="final__inner reveal">
+    <h2 class="final__title" id="compra-title">ENTRA<br>AL REINO.</h2>
+    <p class="final__meta">NOV 20 · ANTISISTEMA · TOTAL $41.000</p>
+    <a href="https://www.tickeo.co/fungy" data-ticket-link class="btn btn--dark btn--block btn--huge" target="_blank" rel="noopener noreferrer">
+      COMPRAR TICKETS <span aria-hidden="true">→</span>
+    </a>
+    <p class="final__aux">Venta oficial en www.tickeo.co</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer__inner">
+    <p class="footer__row"><strong>Venta oficial:</strong> <a href="https://www.tickeo.co/fungy" data-ticket-link target="_blank" rel="noopener noreferrer">tickeo.co</a></p>
+    <p class="footer__row"><strong>Aliados:</strong> Mixxelio · PILAS · Tickeo</p>
+    <p class="footer__row"><strong>Instagram:</strong> <a href="https://www.instagram.com/fungy____" data-ig-link target="_blank" rel="noopener noreferrer">@fungy____</a></p>
+    <p class="footer__legal">Evento solo para mayores de 18 años. Venta de licor.</p>
+    <p class="footer__copy">© FUNGY 2026 · Bogotá Underground</p>
+  </div>
+</footer>
+
+<a href="https://www.tickeo.co/fungy" data-ticket-link class="sticky-cta" target="_blank" rel="noopener noreferrer">
+  COMPRAR TICKETS <span aria-hidden="true">→</span>
+</a>
 
 <script>
-(() => {
-  const canvas   = document.getElementById('canvas');
-  const ctx      = canvas.getContext('2d');
-  const statusEl = document.getElementById('status');
+(function(){
+  'use strict';
+  var n = function(v,a,b){return Math.max(a,Math.min(b,v))};
+  var lerp = function(p,a,b,va,vb){ if(p<=a) return va; if(p>=b) return vb; return va+(vb-va)*((p-a)/(b-a)); };
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ⚙️ CONFIGURA AQUÍ
-  const FRAME_COUNT = 300;        // total de imágenes generadas (mira cuántos archivos hay en /frames)
-  const FRAME_PATH  = 'frames/frame_'; // ruta base
-  const FRAME_EXT   = '.jpg';
-  const PAD         = 4;          // ceros de relleno: frame_0001.jpg = 4
+  var c = document.querySelector('.scrolly');
+  var l = document.getElementById('scrollyVideo');
+  var circle = document.getElementById('circleReveal');
+  var header = document.querySelector('.site-header');
+  var stickyCta = document.querySelector('.sticky-cta');
+  var finalSection = document.getElementById('compra');
+  var scenes = c ? Array.prototype.slice.call(c.querySelectorAll('.scrolly__scene')) : [];
+  if(!c||!l) return;
 
-  const images = new Array(FRAME_COUNT);
-  let loaded = 0;
-  let currentFrame = -1;
+  /* ---------- Video scrub · sincronización con scroll ---------- */
+  var q=0, S=false, T=0, F=false, pending=false, target=0, geo={side:60,below:60};
+  var viewportH=window.innerHeight||document.documentElement.clientHeight||1;
+  var stickyFrame=c.querySelector('.scrolly__sticky');
+  function storyTravel(){return Math.max(1,c.offsetHeight-(stickyFrame?stickyFrame.clientHeight:viewportH));}
 
-  // Ajustar canvas a pantalla
-  const resize = () => {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width  = window.innerWidth  * dpr;
-    canvas.height = window.innerHeight * dpr;
-    canvas.style.width  = window.innerWidth + 'px';
-    canvas.style.height = window.innerHeight + 'px';
-    ctx.scale(dpr, dpr);
-    // Repintar el frame actual
-    if (currentFrame >= 0 && images[currentFrame]) drawFrame(currentFrame);
-  };
-  window.addEventListener('resize', resize);
+  function Y(){
+    q = Number.isFinite(l.duration)&&l.duration>0 ? l.duration : 0;
+    S = q>0 && l.readyState>=1;
+    if(S){ try{ l.pause(); }catch(e){} }
+  }
+  l.addEventListener('loadedmetadata', function(){
+    Y();
+    if(T<=0.001){ try{ l.currentTime=0; }catch(e){} }
+    N();
+  }, {once:true});
+  l.addEventListener('durationchange', function(){Y();N();});
+  l.addEventListener('loadeddata', Y);
+  l.addEventListener('canplay', Y);
+  l.addEventListener('error', function(){ c.classList.add('video-unavailable'); });
+  /* Precargar el video en redes normales para que el scrub no dependa de descargas tardías.
+     En conexiones limitadas o con ahorro de datos se conserva la carga por metadatos. */
+  try{
+    var net=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+    var limited=!!(net&&(net.saveData||/^(slow-2g|2g)$/.test(net.effectiveType||'')));
+    if(!limited) l.preload='auto';
+    l.load();
+  }catch(e){}
 
-  const pad = (n, len) => String(n).padStart(len, '0');
-
-  const drawFrame = (i) => {
-    const img = images[i];
-    if (!img || !img.complete) return;
-    // object-fit: cover manual
-    const cw = window.innerWidth;
-    const ch = window.innerHeight;
-    const ir = img.width / img.height;
-    const cr = cw / ch;
-    let w, h, x, y;
-    if (ir > cr) {
-      h = ch; w = h * ir;
-      x = (cw - w) / 2; y = 0;
-    } else {
-      w = cw; h = w / ir;
-      x = 0; y = (ch - h) / 2;
-    }
-    ctx.clearRect(0, 0, cw, ch);
-    ctx.drawImage(img, x, y, w, h);
-    currentFrame = i;
-  };
-
-  // Cargar TODAS las imágenes de una vez (se cachean en el navegador)
-  for (let i = 0; i < FRAME_COUNT; i++) {
-    const img = new Image();
-    img.src = FRAME_PATH + pad(i + 1, PAD) + FRAME_EXT;
-    img.onload = () => {
-      loaded++;
-      statusEl.textContent = `⏳ ${loaded}/${FRAME_COUNT}`;
-      if (i === 0) drawFrame(0); // pintar el primero cuanto antes
-      if (loaded === FRAME_COUNT) {
-        statusEl.textContent = '✅ Listo. Desliza';
-        setTimeout(() => statusEl.style.display = 'none', 2000);
-      }
-    };
-    img.onerror = () => {
-      statusEl.textContent = `❌ Error en frame ${i + 1}`;
-      statusEl.style.color = '#f44';
-    };
-    images[i] = img;
+  function j(){
+    var r = c.getBoundingClientRect();
+    viewportH=window.innerHeight||document.documentElement.clientHeight||1;
+    var m = storyTravel();
+    T = n(-r.top / m, 0, 1);
+    geo.side  = Math.min(150, Math.max(54, innerWidth * 0.14));
+    geo.below = Math.min(110, Math.max(54, viewportH * 0.12));
   }
 
-  resize();
+  /* ---------- Círculo negro ---------- */
+  function z(){
+    if(!circle) return;
+    var startP = 0.95, endP = 1.00;
+    var p = n((T - startP) / (endP - startP), 0, 1);
+    var e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2;
+    var cp = 'circle(' + (e * 110).toFixed(2) + '% at 50% 50%)';
+    circle.style.clipPath = cp;
+    circle.style.webkitClipPath = cp;
 
-  // ------- SCROLL -------
-  const setFromScroll = () => {
-    const max = document.body.scrollHeight - window.innerHeight;
-    if (max <= 0) return;
-    const pct = Math.min(1, Math.max(0, window.scrollY / max));
-    const frame = Math.round(pct * (FRAME_COUNT - 1));
-    if (frame !== currentFrame) drawFrame(frame);
+    /* El CTA vive dentro de la máscara: entra cuando la apertura real supera el 60%. */
+    var artistsCta = document.getElementById('artistsCircleCta');
+    if(artistsCta) artistsCta.classList.toggle('is-visible', e >= 0.60);
+  }
+
+  /* ---------- Escenas ---------- */
+  var cache = scenes.map(function(){ return {s:-1,x:0,y:0}; });
+  function setScene(i,s,x,y){
+    s = Math.round(s*1000)/1000; x = Math.round(x); y = Math.round(y);
+    var k = cache[i]; if(k.s===s && k.x===x && k.y===y) return;
+    k.s=s; k.x=x; k.y=y;
+    var el = scenes[i]; if(!el) return;
+    el.style.opacity = s;
+    el.style.visibility = s > 0.01 ? 'visible' : 'hidden';
+    el.style.setProperty('--x', x+'px');
+    el.style.setProperty('--y', y+'px');
+    el.classList.toggle('is-active', s > 0.5);
+  }
+  function renderScenes(p){
+    setScene(0, lerp(p,0.06,0.14,1,0), 0, lerp(p,0.06,0.14,0,-geo.below*0.6));
+    setScene(1, lerp(p,0.14,0.24,0,1)*lerp(p,0.38,0.47,1,0),
+                lerp(p,0.14,0.24,-geo.side,0)+lerp(p,0.38,0.47,0,-geo.side), 0);
+    setScene(2, lerp(p,0.44,0.54,0,1)*lerp(p,0.64,0.73,1,0),
+                lerp(p,0.44,0.54,geo.side,0)+lerp(p,0.64,0.73,0,geo.side), 0);
+    setScene(3, lerp(p,0.74,0.82,0,1)*lerp(p,0.89,0.94,1,0), 0,
+                lerp(p,0.74,0.82,geo.below,0)+lerp(p,0.89,0.94,0,-geo.below*0.5));
+  }
+
+  /* ---------- Header sólido + CTA móvil ---------- */
+  var lastSolid=null, lastHide=null;
+  function chrome(){
+    var y = window.pageYOffset||0;
+    var top = c.getBoundingClientRect().top + y;
+    var end = top + storyTravel();
+    if(header){
+      var solid = y >= end - 4;
+      if(solid!==lastSolid){ lastSolid=solid; header.classList.toggle('is-solid', solid); }
+    }
+    if(stickyCta && finalSection){
+      var fTop = finalSection.getBoundingClientRect().top + y;
+      var hide = (fTop - y < innerHeight*0.9) || y < end - innerHeight*0.2;
+      if(hide!==lastHide){ lastHide=hide; stickyCta.classList.toggle('is-hidden', hide); }
+    }
+  }
+
+  l.addEventListener('seeked', function(){
+    pending=false;
+    if(Math.abs(l.currentTime-target)>.045) seek();
+  });
+  function seek(){
+    if(!S||pending||l.seeking||Math.abs(l.currentTime-target)<=.045) return;
+    pending=true;
+    try{ l.currentTime=target; }catch(e){ pending=false; }
+  }
+  function U(){
+    if(!S||!q||document.hidden) return;
+    var next=T*Math.max(.001,q-.05);
+    if(Math.abs(next-target)<.035 && (pending||Math.abs(l.currentTime-next)<=.045)) return;
+    target=next;
+    seek();
+  }
+
+  function _(){
+    j();
+    z();
+    U();
+    renderScenes(T);
+    chrome();
+    F=false;
+  }
+  function N(){ if(!F){F=true;requestAnimationFrame(_);} }
+  addEventListener('scroll', N, {passive:true});
+  addEventListener('resize', N, {passive:true});
+  addEventListener('orientationchange', N, {passive:true});
+  addEventListener('load', N);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden) N();});
+  j(); T=0; z(); renderScenes(0); chrome();
+  if(reduceMotion){ setScene(0,1,0,0); }
+
+  /* ---------- Enlaces ---------- */
+  var CONFIG = {
+    ticketUrl:'https://www.tickeo.co/fungy',
+    mapsUrl:'https://www.google.com/maps/search/?api=1&query=Antisistema+Bogot%C3%A1',
+    instagramUrl:'https://www.instagram.com/fungy____'
   };
+  Array.prototype.forEach.call(document.querySelectorAll('[data-ticket-link]'), function(a){
+    a.setAttribute('href', CONFIG.ticketUrl); a.setAttribute('target','_blank'); a.setAttribute('rel','noopener noreferrer');
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-maps-link]'), function(a){
+    a.setAttribute('href', CONFIG.mapsUrl); a.setAttribute('target','_blank'); a.setAttribute('rel','noopener noreferrer');
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-ig-link]'), function(a){
+    a.setAttribute('href', CONFIG.instagramUrl);
+  });
 
-  window.addEventListener('scroll', () => {
-    window.requestAnimationFrame(setFromScroll);
-  }, { passive: true });
+  /* ---------- Reveal ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && revealEls.length){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('is-visible'); io.unobserve(en.target); } });
+    }, {threshold:0.08, rootMargin:'0px 0px -30px 0px'});
+    Array.prototype.forEach.call(revealEls, function(el){ io.observe(el); });
+  } else {
+    Array.prototype.forEach.call(revealEls, function(el){ el.classList.add('is-visible'); });
+  }
 
-  // ------- TÁCTIL (arrastre directo) -------
-  let startY = 0, startScroll = 0, dragging = false;
+  /* ---------- Boleta: activar al entrar realmente en el viewport ---------- */
+  var boleta = document.getElementById('boleta');
+  function revealBoleta(){
+    if(!boleta||boleta.classList.contains('is-revealed')) return;
+    boleta.classList.add('is-revealed');
+  }
+  if(boleta && 'IntersectionObserver' in window){
+    var ioB = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){ revealBoleta(); ioB.disconnect(); }
+      });
+    }, {threshold:0, rootMargin:'0px 0px -12% 0px'});
+    ioB.observe(boleta);
+  } else if(boleta){
+    var checkBoleta=function(){
+      if(boleta.getBoundingClientRect().top < (window.innerHeight||0)*0.92){ revealBoleta(); removeEventListener('scroll',checkBoleta); }
+    };
+    addEventListener('scroll',checkBoleta,{passive:true});
+    checkBoleta();
+  }
 
-  document.addEventListener('touchstart', (e) => {
-    dragging = true;
-    startY = e.touches[0].clientY;
-    startScroll = window.scrollY;
-  }, { passive: true });
+  /* ---------- ARTISTAS · bandas curvas (port de TiltedGridHero) ---------- */
+  (function(){
+    var rows = document.querySelectorAll('[data-tg]');
+    var sec = document.getElementById('artistas');
+    if(!rows.length) return;
 
-  document.addEventListener('touchmove', (e) => {
-    if (!dragging) return;
-    const delta = startY - e.touches[0].clientY;
-    const max = document.body.scrollHeight - window.innerHeight;
-    window.scrollTo(0, Math.max(0, Math.min(max, startScroll + delta)));
-  }, { passive: true });
+    var GROUPS = [
+      ['ACIDO PANTERA','JØTATE','CAMI VÁSQUEZ','RENGO','MET4NOIA'],
+      ['VALERIO','DOLLHOUSE','NIHL','SANTI 999','LAV'],
+      ['ANGIE MOLANO','CERØ','TISAN','MEL','+ MÁS INVITADOS POR ANUNCIAR*']
+    ];
+    var FIRST_NUM = [1,6,11];
+    var SLICES=16, CAMERA=1.6, MAX_WIDTH=55, ASPECT=1.6, GAP=7, AXIS=50, bandCount=0;
 
-  document.addEventListener('touchend', () => { dragging = false; });
+    function arc(b){ return (CAMERA-1+Math.cos(b))/(2*CAMERA*Math.sin(b)); }
+    function measureBand(width,height,tile,aspect,gap,bend){
+      var h = Math.min((tile/100)*height, ((MAX_WIDTH/100)*width)/aspect);
+      var radius = width*arc(bend);
+      if(!(h>0)||!(radius>0)) return {columns:2,sweep:0,unit:0,limit:0};
+      var deg=function(x){return x*180/Math.PI};
+      var unit=deg(h/radius), pitch=(aspect+gap/100)*unit, limit=deg(bend)+(aspect*unit)/2;
+      var columns=Math.min(60,Math.max(2,Math.ceil((2*limit)/pitch)));
+      var rd=function(x){return +x.toFixed(4)};
+      var sweep=rd((columns*pitch)/2);
+      return {columns:columns,sweep:sweep,unit:rd(unit),limit:rd(Math.min(sweep,limit))};
+    }
+
+    function createBand(root,urls,opt){
+      var n=urls.length, uid='tgo'+(++bandCount);
+      var styleEl=document.createElement('style'), band=document.createElement('div');
+      band.className='tg__band';
+      root.appendChild(styleEl); root.appendChild(band);
+      var lastKey='', raf=0;
+
+      function build(){
+        var w=root.clientWidth, h=root.clientHeight;
+        if(!w||!h) return;
+        var small=w<640, tile=74, slices=small?8:SLICES;
+        var bend=(Math.min(85,Math.max(5,small?50:70))*Math.PI)/180;
+        var m=measureBand(w,h,tile,ASPECT,GAP,bend);
+        var key=[m.columns,m.sweep,m.unit,tile,bend].join('|');
+        if(key===lastKey) return;
+        lastKey=key;
+        var cols=m.columns, sweep=m.sweep, unit=m.unit, limit=m.limit;
+        var cap=+(MAX_WIDTH/ASPECT).toFixed(4);
+        var u=function(k){return 'calc('+(+k.toFixed(4))+' * min('+tile+'cqh, '+cap+'cqw))'};
+        var r=100*arc(bend), radius=(+r.toFixed(3))+'cqw';
+        var turn=function(d){return 'translateZ('+radius+') rotateY('+(+d.toFixed(4))+'deg) translateZ(-'+radius+')'};
+        var hide=+(((sweep-limit)/(2*(sweep||1)))*100).toFixed(4);
+        styleEl.textContent='@keyframes '+uid+'{from{transform:'+turn(-sweep)+'}to{transform:'+turn(sweep)+'}'+
+          '0%,'+hide+'%,'+(100-hide)+'%,100%{visibility:hidden}'+
+          (hide+0.001)+'%,'+(100-hide-0.001)+'%{visibility:visible}}';
+        band.style.perspective=(+(r*CAMERA).toFixed(3))+'cqw';
+        band.style.perspectiveOrigin='50% '+AXIS+'%';
+        var share=ASPECT/slices, duration=cols*opt.speed;
+        var sliceBase='position:absolute;top:0;height:'+u(1)+';left:'+u((ASPECT-share)/2)+
+          ';background-image:var(--img);background-repeat:no-repeat;background-size:'+u(ASPECT)+' '+u(1)+
+          ';backface-visibility:hidden;';
+        var frag=document.createDocumentFragment();
+        for(var t=0;t<cols;t++){
+          (function(t){
+            var first=cols-1-t, tileEl=document.createElement('div');
+            tileEl.className='tg__tile';
+            tileEl.style.cssText='left:calc(50% - '+u(ASPECT/2)+');top:calc('+AXIS+'% - '+u(0.5)+');width:'+u(ASPECT)+';height:'+u(1)+
+              ';animation:'+uid+' '+duration+'s linear '+(-t*opt.speed)+'s infinite '+opt.dir;
+            tileEl.style.setProperty('--img','url("'+urls[first%n]+'")');
+            for(var k=0;k<slices;k++){
+              var s=document.createElement('div');
+              s.style.cssText=sliceBase+'width:'+(k===slices-1?u(share):'calc('+u(share)+' + 1px)')+
+                ';background-position:'+u(-k*share)+' 0;transform:'+turn((ASPECT/2-(k+0.5)*share)*unit);
+              tileEl.appendChild(s);
+            }
+            tileEl.addEventListener('animationiteration',function(e){
+              if(e.target!==tileEl) return;
+              var lap=Math.round(e.elapsedTime/duration);
+              tileEl.style.setProperty('--img','url("'+urls[(lap*cols+first)%n]+'")');
+            });
+            frag.appendChild(tileEl);
+          })(t);
+        }
+        band.textContent=''; band.appendChild(frag);
+        root.classList.add('is-ready');
+      }
+      function schedule(){ if(raf) return; raf=requestAnimationFrame(function(){raf=0;build();}); }
+      if('ResizeObserver' in window) new ResizeObserver(schedule).observe(root);
+      else addEventListener('resize',schedule,{passive:true});
+      build();
+    }
+
+    /* Cards brutalistas en canvas: borde grueso + sombra dura doble */
+    var PALETTE=[
+      {bg:'#DFFF00',fg:'#0A0A0A',bd:'#0A0A0A',sh:'#F2F2F2'},
+      {bg:'#F2F2F2',fg:'#0A0A0A',bd:'#0A0A0A',sh:'#DFFF00'},
+      {bg:'#FF3B30',fg:'#0A0A0A',bd:'#0A0A0A',sh:'#F2F2F2'},
+      {bg:'#141414',fg:'#F2F2F2',bd:'#DFFF00',sh:'#DFFF00'}
+    ];
+    function wrapLines(g,text,maxW){
+      var words=text.split(' '),lines=[],cur='',i,test;
+      for(i=0;i<words.length;i++){
+        test=cur?cur+' '+words[i]:words[i];
+        if(g.measureText(test).width<=maxW||!cur) cur=test; else{lines.push(cur);cur=words[i];}
+      }
+      if(cur) lines.push(cur);
+      return lines;
+    }
+    function drawCard(text,label,pal){
+      var W=960,H=600,SH=38,X=14,Y=14,CW=W-SH-X*2,CH=H-SH-Y*2,P=48;
+      var c=document.createElement('canvas'); c.width=W; c.height=H;
+      var g=c.getContext('2d');
+      g.clearRect(0,0,W,H);
+      /* sombra dura doble */
+      g.fillStyle='#000'; g.fillRect(X+SH,Y+SH,CW,CH);
+      g.fillStyle=pal.sh; g.fillRect(X+SH*0.55,Y+SH*0.55,CW,CH);
+      /* card */
+      g.fillStyle=pal.bg; g.fillRect(X,Y,CW,CH);
+      g.strokeStyle=pal.bd; g.lineWidth=14; g.strokeRect(X+7,Y+7,CW-14,CH-14);
+      g.fillStyle=pal.fg; g.textBaseline='alphabetic';
+      g.font='700 34px "Space Mono","Courier New",monospace';
+      g.textAlign='left'; g.fillText(label,X+P,Y+P+26);
+      g.textAlign='right'; g.fillText('✱',X+CW-P,Y+P+26);
+      g.font='700 24px "Space Mono","Courier New",monospace';
+      g.textAlign='left'; g.fillText('FUNGY · NOV 20',X+P,Y+CH-P+14);
+      g.textAlign='right'; g.fillText('ANTISISTEMA',X+CW-P,Y+CH-P+14);
+      g.textAlign='left';
+      var maxW=CW-2*P,size,lines=[text],ok=false;
+      if('letterSpacing' in g) g.letterSpacing='-3px';
+      for(size=190;size>=48;size-=6){
+        g.font=size+'px "Archivo Black",Impact,"Arial Black",sans-serif';
+        lines=wrapLines(g,text,maxW);
+        ok=lines.length<=3&&lines.length*size*0.96<=290;
+        for(var i=0;ok&&i<lines.length;i++) if(g.measureText(lines[i]).width>maxW) ok=false;
+        if(ok) break;
+      }
+      var blockH=lines.length*size*0.96, top=Y+104+(CH-104-70-blockH)/2;
+      for(var j=0;j<lines.length;j++) g.fillText(lines[j],X+P,top+size*0.82+j*size*0.96);
+      return new Promise(function(res){
+        if(c.toBlob) c.toBlob(function(b){res(b?URL.createObjectURL(b):c.toDataURL('image/png'));},'image/png');
+        else res(c.toDataURL('image/png'));
+      });
+    }
+    function fontsReady(){
+      var ps=[];
+      if(document.fonts&&document.fonts.load){
+        ps.push(document.fonts.load('400 80px "Archivo Black"'));
+        ps.push(document.fonts.load('700 30px "Space Mono"'));
+      }
+      return Promise.race([Promise.all(ps),new Promise(function(r){setTimeout(r,3000);})]);
+    }
+
+    var bandsStarted=false;
+    function initArtistBands(){
+      if(bandsStarted) return;
+      bandsStarted=true;
+      fontsReady().then(function(){
+        return Promise.all(GROUPS.map(function(names,g){
+          return Promise.all(names.map(function(nm,i){
+            var more=nm.charAt(0)==='+';
+            var num=more?'+':(FIRST_NUM[g]+i<10?'0':'')+(FIRST_NUM[g]+i);
+            return drawCard(nm,num,more?PALETTE[0]:PALETTE[(i+g)%4]);
+          }));
+        }));
+      }).then(function(all){
+        Array.prototype.forEach.call(rows,function(el){
+          var g=+el.getAttribute('data-tg'), reverse=el.getAttribute('data-dir')==='reverse';
+          var urls=all[g].slice(); if(reverse) urls.reverse();
+          createBand(el,urls,{speed:+el.getAttribute('data-speed')||3.6,dir:reverse?'reverse':'normal'});
+        });
+      }).catch(function(){ if(sec) sec.classList.add('is-fallback'); });
+    }
+
+    if(sec&&'IntersectionObserver' in window){
+      var buildObserver=new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){ initArtistBands(); buildObserver.disconnect(); }
+        });
+      },{rootMargin:'500px 0px',threshold:0});
+      buildObserver.observe(sec);
+      var visibilityObserver=new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){ sec.classList.toggle('is-paused',!entry.isIntersecting); });
+      },{rootMargin:'120px 0px'});
+      visibilityObserver.observe(sec);
+    } else {
+      initArtistBands();
+    }
+  })();
+
+
+  /* ---------- Menú móvil accesible ---------- */
+  var menuToggle=document.querySelector('.mobile-menu-toggle');
+  var primaryNav=document.getElementById('primaryNav');
+  function setMobileMenu(open){
+    if(!menuToggle||!header) return;
+    menuToggle.setAttribute('aria-expanded',open?'true':'false');
+    menuToggle.setAttribute('aria-label',open?'Cerrar menú':'Abrir menú');
+    menuToggle.textContent=open?'CERRAR':'MENÚ';
+    header.classList.toggle('menu-open',open);
+  }
+  if(menuToggle&&primaryNav){
+    menuToggle.addEventListener('click',function(){
+      setMobileMenu(menuToggle.getAttribute('aria-expanded')!=='true');
+    });
+    primaryNav.addEventListener('click',function(ev){
+      var a=ev.target;
+      while(a&&a!==primaryNav&&a.tagName!=='A') a=a.parentNode;
+      if(a&&a.tagName==='A') setMobileMenu(false);
+    });
+    document.addEventListener('keydown',function(ev){if(ev.key==='Escape') setMobileMenu(false);});
+    addEventListener('resize',function(){if(innerWidth>768) setMobileMenu(false);},{passive:true});
+  }
+
+  /* ---------- Scroll suave a anclas ---------- */
+  document.addEventListener('click', function(ev){
+    var el = ev.target;
+    while(el && el!==document && !(el.tagName==='A' && el.getAttribute && el.getAttribute('href'))) el = el.parentNode;
+    if(!el || el===document) return;
+    var href = el.getAttribute('href');
+    if(!href || href.charAt(0)!=='#' || href.length<2) return;
+    var t = document.getElementById(href.slice(1));
+    if(!t) return;
+    ev.preventDefault();
+    var y = href==='#inicio' ? 0 : t.getBoundingClientRect().top + window.pageYOffset - 72;
+    try{ window.scrollTo({top:Math.max(0,y), behavior:'smooth'}); }catch(_){ window.scrollTo(0,Math.max(0,y)); }
+    if(history.replaceState){ try{ history.replaceState(null,'',href); }catch(_){} }
+  });
 })();
 </script>
 </body>
