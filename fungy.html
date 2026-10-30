@@ -55,7 +55,6 @@ video{display:block;max-width:100%}
     linear-gradient(90deg,rgba(5,6,9,.34),rgba(5,6,9,.08) 56%,rgba(5,6,9,.24)),
     linear-gradient(180deg,rgba(5,6,9,.12),transparent 24%,transparent 70%,rgba(5,6,9,.28));
 }
-
 .scrolly__content{position:relative;width:100%;height:100%}
 .scrolly__scene{
   position:absolute;inset:0;
@@ -92,7 +91,7 @@ video{display:block;max-width:100%}
   width:100%;
   background:#0A0A0A;
   color:var(--ink);
-  padding:clamp(4rem,10vw,8rem) 0;
+  padding:clamp(2.5rem,6vw,5rem) 0;
   overflow:hidden;
   font-family:var(--font-mono);
   line-height:1.5;
@@ -104,7 +103,7 @@ video{display:block;max-width:100%}
   align-items:center;
   width:100%;
   padding:0 var(--gutter);
-  gap:clamp(1.5rem,4vh,2.5rem);
+  gap:clamp(1rem,3vh,2rem);
 }
 
 .stage__head{
@@ -114,7 +113,7 @@ video{display:block;max-width:100%}
   flex-direction:column;
   align-items:center;
   text-align:center;
-  gap:clamp(.55rem,1.6vh,1rem);
+  gap:clamp(.4rem,1.3vh,.8rem);
 }
 
 .stage__kicker{
@@ -159,7 +158,7 @@ video{display:block;max-width:100%}
   display:flex;
   flex-direction:column;
   gap:clamp(.25rem,1.2vh,.9rem);
-  height:clamp(420px,55vh,650px);
+  height:clamp(420px,55vh,640px);
 }
 
 .tg-group{
@@ -199,27 +198,74 @@ video{display:block;max-width:100%}
   will-change:transform;
 }
 
-/* Lista accesible (solo lector de pantalla) */
+/* Lista accesible */
 .artists-fallback{
   position:absolute;
-  width:1px;
-  height:1px;
-  margin:-1px;
-  padding:0;
+  width:1px;height:1px;
+  margin:-1px;padding:0;
   overflow:hidden;
   clip:rect(0 0 0 0);
   white-space:nowrap;
   border:0;
 }
 
-@media (max-width:768px){
-  .artists-section{--gutter:1.15rem}
-  .stage__kicker{letter-spacing:.2em}
-  .stage__title{font-size:clamp(1.55rem,7.4vw,2.4rem);max-width:17ch}
-  .stage__bands{height:clamp(360px,55vh,500px)}
+/* --- Móvil: bandas más altas y espacio para que los cards respiren --- */
+@media (max-width: 768px){
+  .artists-section{
+    --gutter:1.15rem;
+    padding:clamp(2rem,5vw,3rem) 0;
+  }
+  .artists-stage{
+    gap:clamp(.8rem,2vh,1.4rem);
+  }
+  .stage__head{
+    gap:.5rem;
+  }
+  .stage__kicker{
+    letter-spacing:.2em;
+  }
+  .stage__title{
+    font-size:clamp(1.55rem,7.4vw,2.4rem);
+    max-width:17ch;
+  }
+  .stage__bands{
+    height:clamp(480px,68vh,700px);
+    gap:clamp(.4rem,1.6vh,.9rem);
+  }
 }
-@media (max-height:640px){
-  .stage__lead{display:none}
+
+/* --- Landscape móvil / viewports cortos: todo más compacto --- */
+@media (max-height: 500px){
+  .artists-section{
+    padding:1.25rem 0;
+  }
+  .artists-stage{
+    gap:.5rem;
+  }
+  .stage__head{
+    gap:.2rem;
+  }
+  .stage__kicker{
+    font-size:.62rem;
+  }
+  .stage__title{
+    font-size:clamp(1rem,2.6vw,1.5rem);
+    max-width:none;
+    line-height:1;
+  }
+  .stage__lead{
+    display:none;
+  }
+  .stage__bands{
+    height:300px;
+    gap:.35rem;
+  }
+}
+
+@media (max-height: 420px){
+  .stage__bands{
+    height:260px;
+  }
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -236,27 +282,23 @@ video{display:block;max-width:100%}
 
 <section class="scrolly" id="inicio" aria-label="Video scroll">
   <div class="scrolly__sticky">
-
     <div class="scrolly__media" aria-hidden="true">
       <video id="scrollyVideo" class="scrolly__video" muted playsinline preload="metadata">
         <source src="https://organicbionatural.com/wp-content/uploads/2026/10/Scroll2.mp4" type="video/mp4">
       </video>
     </div>
-
     <div class="scrolly__content">
       <div class="scrolly__scene" data-scene="0"></div>
       <div class="scrolly__scene" data-scene="1"></div>
       <div class="scrolly__scene" data-scene="2"></div>
       <div class="scrolly__scene" data-scene="3"></div>
     </div>
-
     <div class="circle-reveal" id="circleReveal" aria-hidden="true"></div>
-
   </div>
 </section>
 
 <!-- ============================================================
-     ARTISTAS (sección añadida debajo del scroll video)
+     ARTISTAS
      ============================================================ -->
 <section class="artists-section" id="artistas" aria-labelledby="artistas-title">
   <div class="artists-stage">
@@ -309,18 +351,10 @@ video{display:block;max-width:100%}
 
   function z(){
     if(!circle) return;
-
-    /* El círculo arranca SOLO al final del scroll (T=0.95) — espera ~5 "frames"
-       antes de salir, para no adelantarse al final del video.
-       Termina en T=1.00 cuando el scroll se acaba. */
     var startP = 0.95;
     var endP   = 1.00;
-
     var p = n((T - startP) / (endP - startP), 0, 1);
-
-    /* Ease-in-out cúbica: entra sutil, aterriza suave */
     var e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2;
-
     var radius = (e * 110).toFixed(2);
     var cp = 'circle(' + radius + '% at 50% 50%)';
     circle.style.clipPath = cp;
@@ -341,13 +375,12 @@ video{display:block;max-width:100%}
 </script>
 
 <!-- ============================================================
-     ARTISTAS JS · bandas curvas (port a JS puro del "Tilted Grid Hero")
+     ARTISTAS JS · bandas curvas
      ============================================================ -->
 <script>
 (function(){
   'use strict';
 
-  /* Artistas por grupo (cada grupo = una banda curva) */
   var GROUPS = [
     ['ACIDO PANTERA', 'JØTATE', 'CAMI VÁSQUEZ', 'RENGO', 'MET4NOIA'],
     ['VALERIO', 'DOLLHOUSE', 'NIHL', 'SANTI 999', 'LAV'],
@@ -355,20 +388,20 @@ video{display:block;max-width:100%}
   ];
   var FIRST_NUM = [1, 6, 11];
 
-  /* Constantes de la geometría del cilindro */
   var SLICES = 12;
-  var CAMERA = 1.6;
-  var MAX_WIDTH = 55;
   var ASPECT = 1.6;
   var GAP = 7;
   var AXIS = 50;
+  var MAX_WIDTH = 55;
   var bandCount = 0;
 
-  function arc(b){ return (CAMERA - 1 + Math.cos(b)) / (2 * CAMERA * Math.sin(b)); }
+  function arc(b, camera) {
+    return (camera - 1 + Math.cos(b)) / (2 * camera * Math.sin(b));
+  }
 
-  function measure(width, height, tile, aspect, gap, bend) {
+  function measure(width, height, tile, aspect, gap, bend, camera) {
     var h = Math.min((tile / 100) * height, ((MAX_WIDTH / 100) * width) / aspect);
-    var radius = width * arc(bend);
+    var radius = width * arc(bend, camera);
     if (!(h > 0) || !(radius > 0)) return { columns: 2, sweep: 0, unit: 0, limit: 0 };
     var deg = function (x) { return (x * 180) / Math.PI; };
     var unit = deg(h / radius);
@@ -393,18 +426,31 @@ video{display:block;max-width:100%}
     function build() {
       var w = root.clientWidth, h = root.clientHeight;
       if (!w || !h) return;
-      var small = w < 640;
+
+      /* === CLAVE DEL FIX ===
+         - small: móvil/tablet (<=768).
+         - camera: en móvil aumentamos la cámara (2.4) → el efecto
+           perspectiva escala MENOS los cards (1.71× vs 2.67×), así
+           caben completos dentro de la banda sin recortarse.
+         - tile: en móvil bajamos de 74 → 55 para que cada card
+           ocupe menos y quepan más en el arco.
+         - curve: en móvil bajamos de 70° → 55° para que el arco
+           no se cierre tanto y los cards no se aplasten en los bordes. */
+      var small = w < 768;
+      var camera = small ? 2.4 : 1.6;
       var tile = small ? opt.tileSm : opt.tile;
-      var bend = (Math.min(85, Math.max(5, small ? opt.curveSm : opt.curve)) * Math.PI) / 180;
-      var m = measure(w, h, tile, ASPECT, GAP, bend);
-      var key = [m.columns, m.sweep, m.unit, tile, bend].join('|');
+      var curveDeg = small ? opt.curveSm : opt.curve;
+      var bend = (Math.min(85, Math.max(5, curveDeg)) * Math.PI) / 180;
+
+      var m = measure(w, h, tile, ASPECT, GAP, bend, camera);
+      var key = [m.columns, m.sweep, m.unit, tile, bend, camera].join('|');
       if (key === lastKey) return;
       lastKey = key;
 
       var cols = m.columns, sweep = m.sweep, unit = m.unit, limit = m.limit;
       var cap = +(MAX_WIDTH / ASPECT).toFixed(4);
       var u = function (k) { return 'calc(' + (+k.toFixed(4)) + ' * min(' + tile + 'cqh, ' + cap + 'cqw))'; };
-      var r = 100 * arc(bend);
+      var r = 100 * arc(bend, camera);
       var radius = (+r.toFixed(3)) + 'cqw';
       var turn = function (d) { return 'translateZ(' + radius + ') rotateY(' + (+d.toFixed(4)) + 'deg) translateZ(-' + radius + ')'; };
       var hide = +(((sweep - limit) / (2 * (sweep || 1))) * 100).toFixed(4);
@@ -414,7 +460,7 @@ video{display:block;max-width:100%}
         '0%,' + hide + '%,' + (100 - hide) + '%,100%{visibility:hidden}' +
         (hide + 0.001) + '%,' + (100 - hide - 0.001) + '%{visibility:visible}}';
 
-      band.style.perspective = (+(r * CAMERA).toFixed(3)) + 'cqw';
+      band.style.perspective = (+(r * camera).toFixed(3)) + 'cqw';
       band.style.perspectiveOrigin = '50% ' + AXIS + '%';
 
       var share = ASPECT / SLICES;
@@ -465,7 +511,6 @@ video{display:block;max-width:100%}
     build();
   }
 
-  /* Paleta de las cards */
   var PALETTE = [
     { bg: '#DFFF00', fg: '#0A0A0A', bd: '#0A0A0A' },
     { bg: '#F2F2F2', fg: '#0A0A0A', bd: '#0A0A0A' },
@@ -548,13 +593,12 @@ video{display:block;max-width:100%}
         createBand(el, urls, {
           speed: +el.getAttribute('data-speed') || 3.6,
           dir: reverse ? 'reverse' : 'normal',
-          tile: 74, tileSm: 74, curve: 70, curveSm: 50
+          tile: 74, tileSm: 55, curve: 70, curveSm: 55
         });
       });
     });
   }
 
-  /* Pausa las animaciones cuando la sección no está en pantalla (perf) */
   var section = document.getElementById('artistas');
   if (section && 'IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
