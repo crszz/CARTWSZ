@@ -80,9 +80,7 @@ h1,h2,h3,p{margin:0}
 .btn--huge{font-size:clamp(1rem,1.8vw,1.4rem);padding:1.3rem 2rem}
 .badge{display:inline-flex;align-items:center;padding:.4rem .7rem;font-size:var(--fs-mono);font-weight:700;text-transform:uppercase;letter-spacing:.08em;border:2px solid currentColor;line-height:1;white-space:nowrap}
 
-/* ============================================================
-   HERO · VIDEO SCROLL (base código 1)
-   ============================================================ */
+/* HERO · VIDEO SCROLL */
 .scrolly{position:relative;width:100%;height:var(--story-height);background:#050609}
 .scrolly__sticky{position:sticky;top:0;width:100%;height:100vh;height:100svh;height:100dvh;min-height:0;overflow:hidden;isolation:isolate;background:#050609}
 .scrolly__media{position:absolute;inset:0;z-index:-2;overflow:hidden;background:#050609;pointer-events:none}
@@ -117,7 +115,6 @@ h1,h2,h3,p{margin:0}
 .scene-cta-sub{font-size:var(--fs-mono);letter-spacing:.22em;text-transform:uppercase;color:rgba(242,242,242,.85)}
 .scene-cta .btn{margin-top:.8rem;text-shadow:none}
 
-/* círculo negro (código 1) */
 .circle-reveal{position:absolute;inset:0;background:#000;z-index:50;pointer-events:none;clip-path:circle(0% at 50% 50%);-webkit-clip-path:circle(0% at 50% 50%);will-change:clip-path}
 
 /* MARQUEE */
@@ -140,20 +137,17 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
 .js .reveal[data-delay="4"]{transition-delay:.4s}
 .js .reveal[data-delay="5"]{transition-delay:.5s}
 
-/* ARTISTAS · solo nombres */
-.artists{background:#000;padding:var(--pad-section) var(--gutter);border-bottom:3px solid var(--ink);scroll-margin-top:0}
-.artists__list{max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:column}
-.artists__list li{
-  font-family:var(--font-display);text-transform:uppercase;
-  font-size:clamp(2rem,7.5vw,6rem);line-height:1;letter-spacing:-.045em;
-  padding:.18em 0;border-bottom:3px solid rgba(242,242,242,.18);
-  color:var(--ink);overflow-wrap:anywhere;
-  transition:color .12s steps(1),padding-left .12s steps(2);
-}
-.artists__list li:nth-child(4n+1){color:var(--lime)}
-.artists__list li:hover{color:var(--lime);padding-left:.25em}
-.artists__list li.more{font-family:var(--font-mono);font-size:clamp(.85rem,1.6vw,1.2rem);letter-spacing:.1em;color:var(--ink-soft);border-bottom:0;padding-top:1.2rem}
-.artists__list li.more:hover{padding-left:0;color:var(--ink-soft)}
+/* ARTISTAS */
+.artists{background:#000;padding:clamp(2.5rem,6vw,5rem) 0;border-bottom:3px solid var(--ink);overflow:hidden}
+.artists__rows{display:flex;flex-direction:column;gap:clamp(.4rem,1.6vw,1.2rem)}
+.tg{display:none;position:relative;height:clamp(170px,25vw,340px);overflow:hidden;container-type:size;opacity:0;transition:opacity .6s ease}
+.js .tg{display:block}
+.tg.is-ready{opacity:1}
+.tg__band{position:absolute;inset:0;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.tg__tile{position:absolute;transform-style:preserve-3d;will-change:transform}
+.artists.is-paused .tg__tile{animation-play-state:paused!important}
+.artists__list{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);display:grid;gap:.5rem;font-family:var(--font-display);text-transform:uppercase;font-size:clamp(1.3rem,4vw,2.4rem);letter-spacing:-.03em}
+.js .artists__list{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* UBICACIÓN */
 .loc{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem);align-items:stretch}
@@ -180,10 +174,10 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
 .loc__tbc{color:var(--bg);background:var(--red);padding:.2rem .5rem;font-size:var(--fs-mono);letter-spacing:.1em;text-transform:uppercase}
 .loc__card .btn{width:100%;justify-content:center;margin-top:auto}
 
-/* BOLETA */
+/* BOLETA (cortinas: más lentas y con retraso para que se vean en móvil) */
 .boleta{position:relative;overflow:hidden}
 .boleta__panels{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden}
-.boleta__panel{position:absolute;top:0;bottom:0;width:52%;background:repeating-linear-gradient(-45deg,var(--bg) 0,var(--bg) 20px,var(--lime) 20px,var(--lime) 40px);transition:transform .7s steps(8);will-change:transform}
+.boleta__panel{position:absolute;top:0;bottom:0;width:52%;background:repeating-linear-gradient(-45deg,var(--bg) 0,var(--bg) 20px,var(--lime) 20px,var(--lime) 40px);transition:transform 1s steps(10) .15s;will-change:transform;-webkit-transform:translateZ(0)}
 .boleta__panel--l{left:0;transform:translateX(-102%)}
 .boleta__panel--r{right:0;transform:translateX(102%)}
 .js .boleta__panel--l{transform:translateX(0)}
@@ -257,13 +251,6 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
   .final__title{font-size:clamp(2.6rem,16vw,5rem)}
   .restriction{font-size:.92rem;gap:.8rem}
 }
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-  .js .reveal{opacity:1;transform:none}
-  .marquee__track{animation:none}
-  .boleta__panel{transform:translateX(-102%)!important}
-  .boleta__panel--r{transform:translateX(102%)!important}
-}
 </style>
 </head>
 <body>
@@ -336,24 +323,18 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
   </div>
 </section>
 
-<!-- ARTISTAS · solo nombres -->
+<!-- ARTISTAS · bandas curvas -->
 <section class="artists" id="artistas" aria-label="Artistas">
-  <ol class="artists__list">
-    <li class="reveal">ACIDO PANTERA</li>
-    <li class="reveal">JØTATE</li>
-    <li class="reveal">CAMI VÁSQUEZ</li>
-    <li class="reveal">RENGO</li>
-    <li class="reveal">MET4NOIA</li>
-    <li class="reveal">VALERIO</li>
-    <li class="reveal">DOLLHOUSE</li>
-    <li class="reveal">NIHL</li>
-    <li class="reveal">SANTI 999</li>
-    <li class="reveal">LAV</li>
-    <li class="reveal">ANGIE MOLANO</li>
-    <li class="reveal">CERØ</li>
-    <li class="reveal">TISAN</li>
-    <li class="reveal">MEL</li>
-    <li class="more reveal">+ MÁS INVITADOS POR ANUNCIAR*</li>
+  <div class="artists__rows">
+    <div class="tg" data-tg="0" data-speed="3.6" data-dir="normal" aria-hidden="true"></div>
+    <div class="tg" data-tg="1" data-speed="4.2" data-dir="reverse" aria-hidden="true"></div>
+    <div class="tg" data-tg="2" data-speed="3.6" data-dir="normal" aria-hidden="true"></div>
+  </div>
+  <ol class="artists__list" aria-label="Line-up">
+    <li>ACIDO PANTERA</li><li>JØTATE</li><li>CAMI VÁSQUEZ</li><li>RENGO</li><li>MET4NOIA</li>
+    <li>VALERIO</li><li>DOLLHOUSE</li><li>NIHL</li><li>SANTI 999</li><li>LAV</li>
+    <li>ANGIE MOLANO</li><li>CERØ</li><li>TISAN</li><li>MEL</li>
+    <li>+ MÁS INVITADOS POR ANUNCIAR*</li>
   </ol>
 </section>
 
@@ -365,7 +346,7 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
   </div>
 </div>
 
-<!-- 02 UBICACIÓN -->
+<!-- UBICACIÓN -->
 <section class="block" id="ubicacion" aria-labelledby="ubicacion-title">
   <header class="section-head">
     <h2 class="section-title" id="ubicacion-title">
@@ -405,7 +386,7 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
   </div>
 </section>
 
-<!-- 03 BOLETA -->
+<!-- BOLETA -->
 <section class="block boleta" id="boleta" aria-labelledby="boleta-title">
   <div class="boleta__panels" aria-hidden="true">
     <div class="boleta__panel boleta__panel--l"></div>
@@ -439,7 +420,7 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
   </div>
 </section>
 
-<!-- 04 RESTRICCIONES -->
+<!-- RESTRICCIONES -->
 <section class="block" id="restricciones" aria-labelledby="restricciones-title">
   <header class="section-head">
     <h2 class="section-title" id="restricciones-title">
@@ -457,7 +438,7 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
   </ul>
 </section>
 
-<!-- 05 COMPRA -->
+<!-- COMPRA -->
 <section class="final" id="compra" aria-labelledby="compra-title">
   <div class="final__inner reveal">
     <h2 class="final__title" id="compra-title">ENTRA<br>AL REINO.</h2>
@@ -501,7 +482,7 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
   var scenes = c ? Array.prototype.slice.call(c.querySelectorAll('.scrolly__scene')) : [];
   if(!c||!l) return;
 
-  /* ---------- Video scrub (base código 1) ---------- */
+  /* ---------- Video scrub ---------- */
   var q=0, S=false, T=0, F=false, pending=false, target=0, geo={side:60,below:60};
 
   function Y(){ q = Number.isFinite(l.duration)?l.duration:0; S=q>0 && l.readyState>=1; }
@@ -519,7 +500,7 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
     geo.below = Math.min(110, Math.max(54, innerHeight * 0.12));
   }
 
-  /* ---------- Círculo negro al final del scroll ---------- */
+  /* ---------- Círculo negro ---------- */
   function z(){
     if(!circle) return;
     var startP = 0.95, endP = 1.00;
@@ -530,7 +511,7 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
     circle.style.webkitClipPath = cp;
   }
 
-  /* ---------- Escenas de texto ---------- */
+  /* ---------- Escenas ---------- */
   var cache = scenes.map(function(){ return {s:-1,x:0,y:0}; });
   function setScene(i,s,x,y){
     s = Math.round(s*1000)/1000; x = Math.round(x); y = Math.round(y);
@@ -598,7 +579,7 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
     a.setAttribute('href', CONFIG.instagramUrl);
   });
 
-  /* ---------- Reveal + boleta ---------- */
+  /* ---------- Reveal ---------- */
   var revealEls = document.querySelectorAll('.reveal');
   if('IntersectionObserver' in window && revealEls.length){
     var io = new IntersectionObserver(function(entries){
@@ -608,13 +589,188 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
   } else {
     Array.prototype.forEach.call(revealEls, function(el){ el.classList.add('is-visible'); });
   }
+
+  /* ---------- Boleta: cortinas se abren cuando la sección llega a media pantalla ---------- */
   var boleta = document.getElementById('boleta');
-  if(boleta && 'IntersectionObserver' in window && !reduceMotion){
+  if(boleta && 'IntersectionObserver' in window){
     var ioB = new IntersectionObserver(function(en){
-      if(en[0].isIntersecting){ boleta.classList.add('is-revealed'); ioB.disconnect(); }
-    }, {threshold:0.35});
+      if(en[0].isIntersecting){
+        setTimeout(function(){ boleta.classList.add('is-revealed'); }, 250);
+        ioB.disconnect();
+      }
+    }, {threshold:0, rootMargin:'0px 0px -50% 0px'});
     ioB.observe(boleta);
   } else if(boleta){ boleta.classList.add('is-revealed'); }
+
+  /* ---------- ARTISTAS · bandas curvas (port de TiltedGridHero) ---------- */
+  (function(){
+    var rows = document.querySelectorAll('[data-tg]');
+    var sec = document.getElementById('artistas');
+    if(!rows.length) return;
+
+    var GROUPS = [
+      ['ACIDO PANTERA','JØTATE','CAMI VÁSQUEZ','RENGO','MET4NOIA'],
+      ['VALERIO','DOLLHOUSE','NIHL','SANTI 999','LAV'],
+      ['ANGIE MOLANO','CERØ','TISAN','MEL','+ MÁS INVITADOS POR ANUNCIAR*']
+    ];
+    var FIRST_NUM = [1,6,11];
+    var SLICES=16, CAMERA=1.6, MAX_WIDTH=55, ASPECT=1.6, GAP=7, AXIS=50, bandCount=0;
+
+    function arc(b){ return (CAMERA-1+Math.cos(b))/(2*CAMERA*Math.sin(b)); }
+    function measureBand(width,height,tile,aspect,gap,bend){
+      var h = Math.min((tile/100)*height, ((MAX_WIDTH/100)*width)/aspect);
+      var radius = width*arc(bend);
+      if(!(h>0)||!(radius>0)) return {columns:2,sweep:0,unit:0,limit:0};
+      var deg=function(x){return x*180/Math.PI};
+      var unit=deg(h/radius), pitch=(aspect+gap/100)*unit, limit=deg(bend)+(aspect*unit)/2;
+      var columns=Math.min(60,Math.max(2,Math.ceil((2*limit)/pitch)));
+      var rd=function(x){return +x.toFixed(4)};
+      var sweep=rd((columns*pitch)/2);
+      return {columns:columns,sweep:sweep,unit:rd(unit),limit:rd(Math.min(sweep,limit))};
+    }
+
+    function createBand(root,urls,opt){
+      var n=urls.length, uid='tgo'+(++bandCount);
+      var styleEl=document.createElement('style'), band=document.createElement('div');
+      band.className='tg__band';
+      root.appendChild(styleEl); root.appendChild(band);
+      var lastKey='', raf=0;
+
+      function build(){
+        var w=root.clientWidth, h=root.clientHeight;
+        if(!w||!h) return;
+        var small=w<640, tile=74;
+        var bend=(Math.min(85,Math.max(5,small?50:70))*Math.PI)/180;
+        var m=measureBand(w,h,tile,ASPECT,GAP,bend);
+        var key=[m.columns,m.sweep,m.unit,tile,bend].join('|');
+        if(key===lastKey) return;
+        lastKey=key;
+        var cols=m.columns, sweep=m.sweep, unit=m.unit, limit=m.limit;
+        var cap=+(MAX_WIDTH/ASPECT).toFixed(4);
+        var u=function(k){return 'calc('+(+k.toFixed(4))+' * min('+tile+'cqh, '+cap+'cqw))'};
+        var r=100*arc(bend), radius=(+r.toFixed(3))+'cqw';
+        var turn=function(d){return 'translateZ('+radius+') rotateY('+(+d.toFixed(4))+'deg) translateZ(-'+radius+')'};
+        var hide=+(((sweep-limit)/(2*(sweep||1)))*100).toFixed(4);
+        styleEl.textContent='@keyframes '+uid+'{from{transform:'+turn(-sweep)+'}to{transform:'+turn(sweep)+'}'+
+          '0%,'+hide+'%,'+(100-hide)+'%,100%{visibility:hidden}'+
+          (hide+0.001)+'%,'+(100-hide-0.001)+'%{visibility:visible}}';
+        band.style.perspective=(+(r*CAMERA).toFixed(3))+'cqw';
+        band.style.perspectiveOrigin='50% '+AXIS+'%';
+        var share=ASPECT/SLICES, duration=cols*opt.speed;
+        var sliceBase='position:absolute;top:0;height:'+u(1)+';left:'+u((ASPECT-share)/2)+
+          ';background-image:var(--img);background-repeat:no-repeat;background-size:'+u(ASPECT)+' '+u(1)+
+          ';backface-visibility:hidden;';
+        var frag=document.createDocumentFragment();
+        for(var t=0;t<cols;t++){
+          (function(t){
+            var first=cols-1-t, tileEl=document.createElement('div');
+            tileEl.className='tg__tile';
+            tileEl.style.cssText='left:calc(50% - '+u(ASPECT/2)+');top:calc('+AXIS+'% - '+u(0.5)+');width:'+u(ASPECT)+';height:'+u(1)+
+              ';animation:'+uid+' '+duration+'s linear '+(-t*opt.speed)+'s infinite '+opt.dir;
+            tileEl.style.setProperty('--img','url("'+urls[first%n]+'")');
+            for(var k=0;k<SLICES;k++){
+              var s=document.createElement('div');
+              s.style.cssText=sliceBase+'width:'+(k===SLICES-1?u(share):'calc('+u(share)+' + 1px)')+
+                ';background-position:'+u(-k*share)+' 0;transform:'+turn((ASPECT/2-(k+0.5)*share)*unit);
+              tileEl.appendChild(s);
+            }
+            tileEl.addEventListener('animationiteration',function(e){
+              if(e.target!==tileEl) return;
+              var lap=Math.round(e.elapsedTime/duration);
+              tileEl.style.setProperty('--img','url("'+urls[(lap*cols+first)%n]+'")');
+            });
+            frag.appendChild(tileEl);
+          })(t);
+        }
+        band.textContent=''; band.appendChild(frag);
+        root.classList.add('is-ready');
+      }
+      function schedule(){ if(raf) return; raf=requestAnimationFrame(function(){raf=0;build();}); }
+      if('ResizeObserver' in window) new ResizeObserver(schedule).observe(root);
+      else addEventListener('resize',schedule,{passive:true});
+      build();
+    }
+
+    /* Cards brutalistas en canvas: borde grueso + sombra dura doble */
+    var PALETTE=[
+      {bg:'#DFFF00',fg:'#0A0A0A',bd:'#0A0A0A',sh:'#F2F2F2'},
+      {bg:'#F2F2F2',fg:'#0A0A0A',bd:'#0A0A0A',sh:'#DFFF00'},
+      {bg:'#FF3B30',fg:'#0A0A0A',bd:'#0A0A0A',sh:'#F2F2F2'},
+      {bg:'#141414',fg:'#F2F2F2',bd:'#DFFF00',sh:'#DFFF00'}
+    ];
+    function wrapLines(g,text,maxW){
+      var words=text.split(' '),lines=[],cur='',i,test;
+      for(i=0;i<words.length;i++){
+        test=cur?cur+' '+words[i]:words[i];
+        if(g.measureText(test).width<=maxW||!cur) cur=test; else{lines.push(cur);cur=words[i];}
+      }
+      if(cur) lines.push(cur);
+      return lines;
+    }
+    function drawCard(text,label,pal){
+      var W=960,H=600,SH=38,X=14,Y=14,CW=W-SH-X*2,CH=H-SH-Y*2,P=48;
+      var c=document.createElement('canvas'); c.width=W; c.height=H;
+      var g=c.getContext('2d');
+      g.clearRect(0,0,W,H);
+      /* sombra dura doble */
+      g.fillStyle='#000'; g.fillRect(X+SH,Y+SH,CW,CH);
+      g.fillStyle=pal.sh; g.fillRect(X+SH*0.55,Y+SH*0.55,CW,CH);
+      /* card */
+      g.fillStyle=pal.bg; g.fillRect(X,Y,CW,CH);
+      g.strokeStyle=pal.bd; g.lineWidth=14; g.strokeRect(X+7,Y+7,CW-14,CH-14);
+      g.fillStyle=pal.fg; g.textBaseline='alphabetic';
+      g.font='700 34px "Space Mono","Courier New",monospace';
+      g.textAlign='left'; g.fillText(label,X+P,Y+P+26);
+      g.textAlign='right'; g.fillText('✱',X+CW-P,Y+P+26);
+      g.font='700 24px "Space Mono","Courier New",monospace';
+      g.textAlign='left'; g.fillText('FUNGY · NOV 20',X+P,Y+CH-P+14);
+      g.textAlign='right'; g.fillText('ANTISISTEMA',X+CW-P,Y+CH-P+14);
+      g.textAlign='left';
+      var maxW=CW-2*P,size,lines=[text],ok=false;
+      if('letterSpacing' in g) g.letterSpacing='-3px';
+      for(size=190;size>=48;size-=6){
+        g.font=size+'px "Archivo Black",Impact,"Arial Black",sans-serif';
+        lines=wrapLines(g,text,maxW);
+        ok=lines.length<=3&&lines.length*size*0.96<=290;
+        for(var i=0;ok&&i<lines.length;i++) if(g.measureText(lines[i]).width>maxW) ok=false;
+        if(ok) break;
+      }
+      var blockH=lines.length*size*0.96, top=Y+104+(CH-104-70-blockH)/2;
+      for(var j=0;j<lines.length;j++) g.fillText(lines[j],X+P,top+size*0.82+j*size*0.96);
+      return new Promise(function(res){
+        if(c.toBlob) c.toBlob(function(b){res(b?URL.createObjectURL(b):c.toDataURL('image/png'));},'image/png');
+        else res(c.toDataURL('image/png'));
+      });
+    }
+    function fontsReady(){
+      var ps=[];
+      if(document.fonts&&document.fonts.load){
+        ps.push(document.fonts.load('400 80px "Archivo Black"'));
+        ps.push(document.fonts.load('700 30px "Space Mono"'));
+      }
+      return Promise.race([Promise.all(ps),new Promise(function(r){setTimeout(r,3000);})]);
+    }
+
+    fontsReady().then(function(){
+      return Promise.all(GROUPS.map(function(names,g){
+        return Promise.all(names.map(function(nm,i){
+          var more=nm.charAt(0)==='+';
+          var num=more?'+':(FIRST_NUM[g]+i<10?'0':'')+(FIRST_NUM[g]+i);
+          return drawCard(nm,num,more?PALETTE[0]:PALETTE[(i+g)%4]);
+        }));
+      }));
+    }).then(function(all){
+      Array.prototype.forEach.call(rows,function(el){
+        var g=+el.getAttribute('data-tg'), reverse=el.getAttribute('data-dir')==='reverse';
+        var urls=all[g].slice(); if(reverse) urls.reverse();
+        createBand(el,urls,{speed:+el.getAttribute('data-speed')||3.6,dir:reverse?'reverse':'normal'});
+      });
+    });
+
+    if(sec&&'IntersectionObserver' in window){
+      new IntersectionObserver(function(en){ sec.classList.toggle('is-paused',!en[0].isIntersecting); },{rootMargin:'120px 0px'}).observe(sec);
+    }
+  })();
 
   /* ---------- Scroll suave a anclas ---------- */
   document.addEventListener('click', function(ev){
