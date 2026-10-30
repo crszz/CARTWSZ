@@ -2,30 +2,28 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Scroll Video Táctil</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* Fondo negro SOLO en html (fallback), no en body */
-        html {
-            background: #000;
-        }
+        html { background: #111; }
 
         body {
             height: 400vh;
             overflow-x: hidden;
-            /* ⚠️ SIN background aquí (era el que tapaba el video) */
+            -webkit-overflow-scrolling: touch;
         }
 
         .video-container {
             position: fixed;
             top: 0; left: 0;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
+            height: 100dvh;      /* ✅ altura correcta en móvil (barra URL) */
             overflow: hidden;
-            z-index: 0;              /* ✅ CAMBIO: era -1 */
-            background: #111;        /* color visible mientras carga */
+            z-index: 0;
+            background: #111;
         }
 
         #scroll-video {
@@ -34,15 +32,20 @@
             object-fit: cover;
             pointer-events: none;
             display: block;
+            /* ✅ fuerza render por GPU en móvil */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .touch-layer {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100vh;
+            top: 0; left: 0; right: 0; bottom: 0;
             z-index: 10;
             touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .hint {
@@ -66,18 +69,19 @@
             50% { opacity: 0.9; }
         }
 
-        /* Panel de debug — bórralo cuando ya funcione */
         .status {
             position: fixed;
             top: 10px; left: 10px;
             color: #0f0;
             font-family: monospace;
-            font-size: 12px;
+            font-size: 11px;
             z-index: 30;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.75);
             padding: 6px 10px;
             border-radius: 4px;
             line-height: 1.4;
+            max-width: 90vw;
+            word-break: break-all;
         }
     </style>
 </head>
@@ -89,6 +93,7 @@
             src="https://organicbionatural.com/wp-content/uploads/2026/10/Scroll2.mp4" 
             muted 
             playsinline 
+            webkit-playsinline
             preload="auto"
             disablepictureinpicture>
         </video>
@@ -96,7 +101,7 @@
 
     <div class="touch-layer" id="touch-layer"></div>
     <div class="hint">Desliza para explorar</div>
-    <div class="status" id="status">⏳ Cargando video...</div>
+    <div class="status" id="status">👆 Toca la pantalla para activar</div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -104,59 +109,109 @@
             const touchLayer = document.getElementById('touch-layer');
             const statusEl   = document.getElementById('status');
 
-            let isDragging    = false;
-            let startY        = 0;
+            let isDragging     = false;
+            let startY         = 0;
             let startVideoTime = 0;
-            const sensitivity = 300;
-            let videoReady    = false;
+            const sensitivity  = 300;
+            let videoReady     = false;
+            let unlocking      = false;
 
             // ---------------------------------------------
-            // ESTADO DEL VIDEO (para debug visual)
+            // LOG DE ESTADO
             // ---------------------------------------------
-            video.addEventListener('loadstart', () => {
-                statusEl.textContent = '⏳ Conectando con el video...';
-            });
+            const setStatus = (txt, color = '#0f0') => {
+                statusEl.textContent = txt;
+                statusEl.style.color = color;
+            };
 
             video.addEventListener('loadedmetadata', () => {
-                statusEl.textContent = `✅ Metadata OK\nDuración: ${video.duration.toFixed(2)}s`;
-            });
-
-            video.addEventListener('loadeddata', () => {
-                // Fuerza el render del primer frame
-                video.currentTime = 0.001;
-                videoReady = true;
-                statusEl.textContent = `✅ Video listo\nDuración: ${video.duration.toFixed(2)}s`;
-                setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+                setStatus(`📥 Metadata OK (${video.duration.toFixed(2)}s). Toca para activar`);
             });
 
             video.addEventListener('error', () => {
-                const err = video.error;
                 const codes = {
                     1: 'Carga abortada',
                     2: 'Error de red',
                     3: 'Error de decodificación',
-                    4: 'Formato no soportado / URL inválida (404)'
+                    4: 'URL inválida / archivo no encontrado (404)'
                 };
-                statusEl.innerHTML = `❌ ${codes[err?.code] || 'Error desconocido'}<br>Código: ${err?.code}`;
-                statusEl.style.color = '#f44';
+                const c = video.error?.code;
+                setStatus(`❌ ${codes[c] || 'Error'} (código ${c})`, '#f44');
             });
 
             // ---------------------------------------------
-            // ACTUALIZAR TIEMPO DEL VIDEO
+            // DESBLOQUEO DEL VIDEO EN MÓVIL
+            // Un toque = play + pause = video listo para scrubbing
+            // ---------------------------------------------
+            const unlockVideo = () => {
+                if (videoReady || unlocking) return;
+                unlocking = true;
+                setStatus('⏳ Activando video...');
+
+                // Forzar carga (ignora preload en algunos navegadores)
+                try { video.load(); } catch(e) {}
+
+                const tryPlay = video.play();
+
+                if (tryPlay && tryPlay.then) {
+                    tryPlay.then(() => {
+                        video.pause();
+                        video.currentTime = 0.001;
+                        videoReady = true;
+                        unlocking = false;
+                        setStatus('✅ Listo. Desliza para mover');
+                        setTimeout(() => { statusEl.style.display = 'none'; }, 2500);
+                    }).catch((err) => {
+                        console.warn('play() falló:', err);
+                        unlocking = false;
+                        setStatus('⚠️ Toca de nuevo para activar', '#fa0');
+                    });
+                } else {
+                    // Fallback para navegadores viejos
+                    video.pause();
+                    video.currentTime = 0.001;
+                    videoReady = true;
+                    unlocking = false;
+                    setStatus('✅ Listo. Desliza para mover');
+                }
+            };
+
+            // Si el navegador sí cargó datos, marcar listo
+            video.addEventListener('loadeddata', () => {
+                if (video.readyState >= 2 && !videoReady && !unlocking) {
+                    // En algunos Android funciona sin necesidad de toque
+                    videoReady = true;
+                    video.currentTime = 0.001;
+                    setStatus('✅ Listo. Desliza para mover');
+                    setTimeout(() => { statusEl.style.display = 'none'; }, 2500);
+                }
+            });
+
+            // ---------------------------------------------
+            // ACTUALIZAR TIEMPO
             // ---------------------------------------------
             const updateVideoTime = (deltaY) => {
                 if (!videoReady) return;
                 const timeDelta = (deltaY / sensitivity) * video.duration;
                 let newTime = startVideoTime - timeDelta;
                 newTime = Math.max(0, Math.min(newTime, video.duration - 0.01));
-                video.currentTime = newTime;
+
+                // iOS: fastSeek es más fluido que currentTime
+                if (typeof video.fastSeek === 'function') {
+                    video.fastSeek(newTime);
+                } else {
+                    video.currentTime = newTime;
+                }
             };
 
             // ---------------------------------------------
-            // EVENTOS TÁCTILES (MÓVIL)
+            // TÁCTIL (MÓVIL)
             // ---------------------------------------------
             touchLayer.addEventListener('touchstart', (e) => {
-                if (!videoReady) return;
+                if (!videoReady) {
+                    unlockVideo();
+                    return;
+                }
                 isDragging = true;
                 startY = e.touches[0].clientY;
                 startVideoTime = video.currentTime;
@@ -173,10 +228,10 @@
             touchLayer.addEventListener('touchcancel', () => { isDragging = false; });
 
             // ---------------------------------------------
-            // EVENTOS DE RATÓN (ESCRITORIO)
+            // RATÓN (ESCRITORIO)
             // ---------------------------------------------
             touchLayer.addEventListener('mousedown', (e) => {
-                if (!videoReady) return;
+                if (!videoReady) { unlockVideo(); return; }
                 isDragging = true;
                 startY = e.clientY;
                 startVideoTime = video.currentTime;
@@ -192,7 +247,7 @@
             document.addEventListener('mouseup', () => { isDragging = false; });
 
             // ---------------------------------------------
-            // SCROLL CON RUEDA (fallback)
+            // FALLBACK: SCROLL CON RUEDA
             // ---------------------------------------------
             let ticking = false;
             window.addEventListener('scroll', () => {
@@ -200,6 +255,7 @@
                 if (!ticking) {
                     window.requestAnimationFrame(() => {
                         const scrollMax = document.body.scrollHeight - window.innerHeight;
+                        if (scrollMax <= 0) { ticking = false; return; }
                         const pct = window.scrollY / scrollMax;
                         const target = pct * (video.duration - 0.01);
                         video.currentTime += (target - video.currentTime) * 0.15;
