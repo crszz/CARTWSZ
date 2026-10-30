@@ -63,31 +63,44 @@
 </script>
 
 <style>
+/* =====================================================================
+   FUNGY · Brutalist Experience
+===================================================================== */
+
+/* TOKENS */
 :root{
   --bg:#0A0A0A;
   --ink:#F2F2F2;
   --ink-soft:rgba(242,242,242,.62);
   --lime:#DFFF00;
   --red:#FF3B30;
+
   --shadow-hard:6px 6px 0 var(--ink);
   --shadow-hard-lime:6px 6px 0 var(--lime);
+
   --font-display:'Archivo Black',Impact,'Arial Black',sans-serif;
   --font-mono:'Space Mono','Courier New',monospace;
+
   --fs-h2:clamp(2.25rem,6vw,5rem);
   --fs-artist:clamp(1.6rem,5.5vw,4.5rem);
   --fs-body:clamp(.9rem,1vw,1.05rem);
   --fs-mono:clamp(.72rem,.9vw,.85rem);
   --fs-btn:clamp(.82rem,1vw,.95rem);
+
   --gutter:clamp(1rem,4vw,3rem);
   --edge:clamp(1.25rem,7vw,7rem);
   --pad-section:clamp(4rem,10vw,8rem);
   --maxw:1200px;
-  --hold: 90vh;
-  --story-height: calc(400vh + var(--hold));
+
+  --hold: 70svh;
+  --story-height: calc(260svh + var(--hold));
 }
+
 @media (min-width: 768px) {
-  :root { --story-height: calc(500vh + var(--hold)); }
+  :root { --story-height: calc(340svh + var(--hold)); }
 }
+
+/* RESET */
 *,*::before,*::after{box-sizing:border-box}
 html{
   scroll-behavior:smooth;scroll-padding-top:88px;-webkit-text-size-adjust:100%;
@@ -115,6 +128,7 @@ h1,h2,h3,p{margin:0}
 ::selection{background:var(--lime);color:var(--bg)}
 :focus-visible{outline:3px solid var(--lime);outline-offset:3px}
 
+/* ---------- FIX ESPACIO BLANCO SUPERIOR ---------- */
 .skip-link{
   position:fixed;top:-100px;left:1rem;z-index:10001;
   padding:.7rem 1.1rem;background:var(--lime);color:var(--bg);
@@ -138,6 +152,7 @@ h1,h2,h3,p{margin:0}
 }
 main#main{display:block;margin:0;padding:0}
 
+/* GRAIN */
 .grain{
   position:fixed;inset:0;
   pointer-events:none;
@@ -147,6 +162,7 @@ main#main{display:block;margin:0;padding:0}
   background-size:128px 128px;
 }
 
+/* HEADER */
 .site-header{
   position:fixed;top:0;left:0;right:0;
   z-index:900;
@@ -207,6 +223,7 @@ main#main{display:block;margin:0;padding:0}
   box-shadow:0 0 0 var(--ink);
 }
 
+/* BUTTONS */
 .btn{
   display:inline-flex;align-items:center;gap:.6rem;
   padding:1rem 1.6rem;
@@ -252,6 +269,7 @@ main#main{display:block;margin:0;padding:0}
   padding:1.3rem 2rem;
 }
 
+/* BADGES */
 .badge{
   display:inline-flex;align-items:center;
   padding:.4rem .7rem;
@@ -263,6 +281,9 @@ main#main{display:block;margin:0;padding:0}
   white-space:nowrap;
 }
 
+/* =====================================================================
+   SCROLLYTELLING HERO
+===================================================================== */
 .scrolly{
   position:relative;
   width:100%;
@@ -278,7 +299,6 @@ main#main{display:block;margin:0;padding:0}
   width:100%;
   height:100vh;
   height:100svh;
-  height:100dvh;
   overflow:hidden;
   isolation:isolate;
   background:#000;
@@ -325,6 +345,7 @@ main#main{display:block;margin:0;padding:0}
   text-shadow:0 2px 28px rgba(0,0,0,.7),0 0 3px rgba(0,0,0,.45);
 }
 
+/* Escena 0 */
 .scene-logo{
   display:block;
   width:clamp(52px,9vw,80px);height:clamp(52px,9vw,80px);
@@ -358,6 +379,7 @@ main#main{display:block;margin:0;padding:0}
   50%{opacity:1;translate:0 6px}
 }
 
+/* Escenas 1-3 */
 .scene-left{align-items:flex-start;text-align:left}
 .scene-right{align-items:flex-end;text-align:right}
 
@@ -424,6 +446,9 @@ main#main{display:block;margin:0;padding:0}
   will-change:clip-path,opacity;
 }
 
+/* =====================================================================
+   MARQUEE
+===================================================================== */
 .marquee{
   overflow:hidden;
   background:var(--lime);color:var(--bg);
@@ -450,6 +475,9 @@ main#main{display:block;margin:0;padding:0}
   to{transform:translate3d(-50%,0,0)}
 }
 
+/* =====================================================================
+   SECCIONES Y ANIMACIONES REVEAL
+===================================================================== */
 section{
   padding:var(--pad-section) var(--gutter);
   border-bottom:3px solid var(--ink);
@@ -489,6 +517,9 @@ section{
 .js .reveal[data-delay="4"] { transition-delay: 0.4s; }
 .js .reveal[data-delay="5"] { transition-delay: 0.5s; }
 
+/* =====================================================================
+   ARTISTAS · escena dentro del hero
+===================================================================== */
 .scrolly__hold{position:absolute;left:0;right:0;bottom:0;height:var(--hold);pointer-events:none}
 
 .artists-stage{
@@ -569,6 +600,9 @@ html:not(.js) .artists-stage{display:none}
   font-family:var(--font-display);text-transform:uppercase;font-size:clamp(1.3rem,4vw,2.4rem);letter-spacing:-.03em;
 }
 
+/* =====================================================================
+   GALERÍA 3D
+===================================================================== */
 .gx{position:relative;height:380vh;padding:0;background:#050505;border-bottom:3px solid var(--ink)}
 @media (min-width:768px){.gx{height:520vh}}
 html:not(.js) .gx{display:none}
@@ -619,6 +653,9 @@ html:not(.js) .gx{display:none}
 }
 .gx__big em{font-style:normal;color:var(--lime)}
 
+/* =====================================================================
+   UBICACIÓN
+===================================================================== */
 .loc{
   max-width:var(--maxw);margin:0 auto;
   display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(1.5rem,4vw,3rem);align-items:stretch;
@@ -692,6 +729,9 @@ html:not(.js) .gx{display:none}
 }
 .loc__card .btn{width:100%;justify-content:center;margin-top:auto}
 
+/* =====================================================================
+   BOLETA
+===================================================================== */
 .boleta{
   position:relative;overflow:hidden;padding:var(--pad-section) var(--gutter);
 }
@@ -729,6 +769,9 @@ html:not(.js) .gx{display:none}
 .ticket__badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.6rem;}
 .ticket__badges .badge{border-color:var(--ink);color:var(--ink);font-size:clamp(.62rem,.75vw,.72rem);}
 
+/* =====================================================================
+   RESTRICCIONES
+===================================================================== */
 .restrictions__sub{font-family:var(--font-mono);font-size:var(--fs-mono);letter-spacing:.15em;color:var(--red);margin-top:.4rem;text-transform:uppercase;}
 .restrictions__list{max-width:var(--maxw);margin:0 auto;border-left:6px solid var(--red);background:#0D0D0D;padding:1.6rem 1.8rem;}
 .restriction{display:flex;align-items:flex-start;gap:1rem;padding:1rem 0;border-bottom:2px solid rgba(242,242,242,.15);font-size:clamp(.95rem,1.5vw,1.15rem);line-height:1.4;}
@@ -736,6 +779,9 @@ html:not(.js) .gx{display:none}
 .restriction__x{color:var(--red);font-family:var(--font-display);font-size:1.4em;line-height:1;flex-shrink:0;}
 .restriction .no{color:var(--red);font-weight:900;letter-spacing:.05em;}
 
+/* =====================================================================
+   COMPRA FINAL
+===================================================================== */
 .final{background:var(--lime);color:var(--bg);border-bottom:0;padding:clamp(4rem,10vw,8rem) var(--gutter);}
 .final__inner{max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:column;gap:1.5rem;align-items:flex-start;}
 .final__title{font-family:var(--font-display);font-size:clamp(3rem,12vw,9rem);line-height:.82;letter-spacing:-.05em;text-transform:uppercase;color:var(--bg);}
@@ -743,6 +789,9 @@ html:not(.js) .gx{display:none}
 .final .btn--huge{width:100%;justify-content:center;margin-top:.5rem;}
 .final__aux{font-family:var(--font-mono);font-size:var(--fs-mono);letter-spacing:.08em;color:var(--bg);opacity:.75;}
 
+/* =====================================================================
+   FOOTER
+===================================================================== */
 .site-footer{background:var(--bg);border-top:3px solid var(--ink);padding:clamp(2rem,5vw,3.5rem) var(--gutter) clamp(2rem,5vw,3rem);}
 .footer__inner{max-width:var(--maxw);margin:0 auto;display:flex;flex-direction:column;gap:.7rem;font-family:var(--font-mono);font-size:var(--fs-mono);color:var(--ink-soft);line-height:1.6;}
 .footer__row strong{color:var(--ink);letter-spacing:.05em;}
@@ -751,6 +800,9 @@ html:not(.js) .gx{display:none}
 .footer__legal{color:var(--ink);letter-spacing:.05em;margin-top:.6rem;}
 .footer__copy{opacity:.5;margin-top:.4rem;letter-spacing:.05em;}
 
+/* =====================================================================
+   STICKY CTA
+===================================================================== */
 .sticky-cta{
   display:none;position:fixed;bottom:0;left:0;right:0;z-index:800;
   padding:1rem;background:var(--lime);color:var(--bg);
@@ -762,12 +814,14 @@ html:not(.js) .gx{display:none}
 }
 .sticky-cta.is-hidden{transform:translateY(100%);}
 
+/* =====================================================================
+   RESPONSIVE
+===================================================================== */
 @media (max-width:768px){
   :root{--pad-section:clamp(3rem,9vw,4.5rem);--gutter:1.15rem;--edge:1.25rem}
   .header-inner{padding:.6rem var(--gutter);gap:.5rem;}
   .nav{display:none;}
   .header-cta{display:inline-flex;padding:.5rem .8rem;font-size:0.75rem;}
-  .artist-row{grid-template-columns:2.4rem 1fr;padding:.85rem .9rem}
   .loc{grid-template-columns:1fr}
   .loc__map{min-height:320px}
   .boleta__panel{width:56%}
@@ -783,7 +837,6 @@ html:not(.js) .gx{display:none}
   .brand{font-size:1.2rem}
   .section-title{font-size:clamp(1.8rem,8vw,2.6rem);gap:.5rem}
   .section-num{font-size:.62rem;padding-top:.35em}
-  .artist-name{font-size:clamp(1.35rem,7vw,2.2rem)}
   .loc__venue{font-size:clamp(2.2rem,11vw,3.4rem)}
   .ticket__row--total .ticket__v{font-size:clamp(1.7rem,8vw,2.6rem)}
   .final__title{font-size:clamp(2.6rem,16vw,5rem)}
@@ -791,6 +844,7 @@ html:not(.js) .gx{display:none}
   .restriction__x{font-size:1.2em}
 }
 
+/* Reduced motion fallback */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important;}
   .js .reveal{opacity:1;transform:none}
@@ -818,6 +872,7 @@ html:not(.js) .gx{display:none}
 <div class="grain" aria-hidden="true"></div>
 <a href="#main" class="skip-link">Saltar al contenido</a>
 
+<!-- HEADER -->
 <header class="site-header">
   <div class="header-inner">
     <a href="#hero" class="brand" aria-label="FUNGY — inicio">FUNGY</a>
@@ -833,6 +888,7 @@ html:not(.js) .gx{display:none}
 
 <main id="main">
 
+<!-- HERO -->
 <section class="scrolly" id="hero" aria-labelledby="hero-title">
   <div class="scrolly__sticky">
     <video class="scrolly__video" id="heroVideo" muted playsinline preload="metadata" disablepictureinpicture aria-hidden="true">
@@ -903,6 +959,7 @@ html:not(.js) .gx{display:none}
   <div class="scrolly__hold" aria-hidden="true"></div>
 </section>
 
+<!-- ARTISTAS · versión estática -->
 <section class="artists-static" id="artistas-static" aria-labelledby="artistas-title-static">
   <header class="section-head">
     <h2 class="section-title" id="artistas-title-static">
@@ -918,6 +975,7 @@ html:not(.js) .gx{display:none}
   </ol>
 </section>
 
+<!-- MARQUEE -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee__track">
     <span class="marquee__item">NOV 20 <span>✱</span> ANTISISTEMA <span>✱</span> BOGOTÁ UNDERGROUND <span>✱</span>&nbsp;</span>
@@ -925,6 +983,7 @@ html:not(.js) .gx{display:none}
   </div>
 </div>
 
+<!-- GALERÍA 3D -->
 <section class="gx" id="galeria" aria-label="Galería FUNGY">
   <div class="gx__sticky">
     <div class="gx__banner" id="gxBanner">
@@ -943,6 +1002,7 @@ html:not(.js) .gx{display:none}
   </div>
 </section>
 
+<!-- 02 UBICACIÓN -->
 <section class="location" id="ubicacion" aria-labelledby="ubicacion-title">
   <header class="section-head">
     <h2 class="section-title" id="ubicacion-title">
@@ -982,6 +1042,7 @@ html:not(.js) .gx{display:none}
   </div>
 </section>
 
+<!-- 03 BOLETA -->
 <section class="boleta" id="boleta" aria-labelledby="boleta-title">
   <div class="boleta__panels" aria-hidden="true">
     <div class="boleta__panel boleta__panel--l"></div>
@@ -1030,6 +1091,7 @@ html:not(.js) .gx{display:none}
   </div>
 </section>
 
+<!-- 04 RESTRICCIONES -->
 <section class="restrictions" id="restricciones" aria-labelledby="restricciones-title">
   <header class="section-head">
     <h2 class="section-title" id="restricciones-title">
@@ -1063,6 +1125,7 @@ html:not(.js) .gx{display:none}
   </ul>
 </section>
 
+<!-- 05 COMPRA -->
 <section class="final" id="compra" aria-labelledby="compra-title">
   <div class="final__inner reveal">
     <h2 class="final__title" id="compra-title">ENTRA<br>AL REINO.</h2>
@@ -1076,6 +1139,7 @@ html:not(.js) .gx{display:none}
 
 </main>
 
+<!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer__inner">
     <p class="footer__row"><strong>Venta oficial:</strong> <a href="https://www.tickeo.co/fungy" data-ticket-link target="_blank" rel="noopener noreferrer">tickeo.co</a></p>
@@ -1086,27 +1150,35 @@ html:not(.js) .gx{display:none}
   </div>
 </footer>
 
+<!-- STICKY CTA (móvil) -->
 <a href="https://www.tickeo.co/fungy" data-ticket-link class="sticky-cta" target="_blank" rel="noopener noreferrer">
   COMPRAR TICKETS <span aria-hidden="true">→</span>
 </a>
 
-</div>
+</div><!-- /#fungy-app -->
 
 <script>
 (function () {
   'use strict';
+
+  /* =====================================================================
+     CONFIG
+  ===================================================================== */
   var CONFIG = {
     ticketUrl: 'https://www.tickeo.co/fungy',
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Antisistema+Bogot%C3%A1',
     instagramUrl: 'https://www.instagram.com/fungy____'
   };
+
   var EYE = { x: 50, y: 47, r: 8, start: 0.95, end: 0.985 };
+
   var GROUPS = [
     ['ACIDO PANTERA', 'JØTATE', 'CAMI VÁSQUEZ', 'RENGO', 'MET4NOIA'],
     ['VALERIO', 'DOLLHOUSE', 'NIHL', 'SANTI 999', 'LAV'],
     ['ANGIE MOLANO', 'CERØ', 'TISAN', 'MEL', '+ MÁS INVITADOS POR ANUNCIAR*']
   ];
   var FIRST_NUM = [1, 6, 11];
+
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var lerp = function (p, a, b, va, vb) {
     if (p <= a) return va;
@@ -1114,6 +1186,9 @@ html:not(.js) .gx{display:none}
     return va + (vb - va) * ((p - a) / (b - a));
   };
 
+  /* =====================================================================
+     BRIDGE (WordPress/Elementor)
+  ===================================================================== */
   (function () {
     var app = document.getElementById('fungy-app');
     if (!app) return;
@@ -1125,6 +1200,7 @@ html:not(.js) .gx{display:none}
     document.documentElement.classList.add('fungy-bridge');
   })();
 
+  /* ENLACES */
   (function () {
     var i, t = document.querySelectorAll('[data-ticket-link]');
     for (i = 0; i < t.length; i++) {
@@ -1142,6 +1218,7 @@ html:not(.js) .gx{display:none}
     for (i = 0; i < g.length; i++) g[i].setAttribute('href', CONFIG.instagramUrl);
   })();
 
+  /* GRANO */
   (function () {
     var g = document.querySelector('.grain');
     if (!g) return;
@@ -1158,6 +1235,9 @@ html:not(.js) .gx{display:none}
     g.style.backgroundImage = 'url(' + c.toDataURL('image/png') + ')';
   })();
 
+  /* =====================================================================
+     HERO SCROLLYTELLING · arquitectura Chalet
+  ===================================================================== */
   var scrolly = document.querySelector('.scrolly');
   var video = document.getElementById('heroVideo');
   var scenes = scrolly ? Array.prototype.slice.call(scrolly.querySelectorAll('.scrolly__scene')) : [];
@@ -1168,63 +1248,49 @@ html:not(.js) .gx{display:none}
   var holdEl = document.querySelector('.scrolly__hold');
   var stage = document.querySelector('.artists-stage');
 
-  var geo = { top: 0, bottom: 0, max: 1, hold: 0, vh: window.innerHeight, hb: 70, side: 60, below: 60, finalTop: 0 };
-  var lastP = -1, lastG = -1, lastSolid = null, lastHide = null, maskOn = false, ticking = false;
-  var cache = scenes.map(function () { return { s: -1, x: 0, y: 0 }; });
+  var geo = { top: 0, max: 1, hold: 0, vh: 0, hb: 70, side: 60, below: 60, finalTop: 0 };
 
-  function closeTopGap() {
-    if (!scrolly) return;
-    scrolly.style.marginTop = '0px';
-    var top = scrolly.getBoundingClientRect().top + (window.pageYOffset || 0);
-    if (top > 0.5 && top < 320) scrolly.style.marginTop = (-top) + 'px';
+  /* ---------- VIDEO · patrón Chalet ---------- */
+  var vDur = 0, vReady = false, vPending = false, vTarget = 0;
+
+  function refreshVideo() {
+    vDur = (video && isFinite(video.duration)) ? video.duration : 0;
+    vReady = vDur > 0 && video.readyState >= 1;
+    if (vReady) { try { video.pause(); } catch (e) {} }
   }
-
-  function measureGeo() {
-    if (!scrolly) return;
-    closeTopGap();
-    var y = window.pageYOffset || 0;
-    var r = scrolly.getBoundingClientRect();
-    geo.vh = window.innerHeight;
-    geo.top = r.top + y;
-    geo.bottom = geo.top + scrolly.offsetHeight;
-    geo.max = Math.max(1, scrolly.offsetHeight - geo.vh);
-    geo.hold = holdEl ? Math.min(holdEl.offsetHeight, geo.max - 1) : 0;
-    geo.hb = siteHeader ? siteHeader.offsetHeight : 70;
-    geo.side = Math.min(150, Math.max(54, window.innerWidth * 0.14));
-    geo.below = Math.min(110, Math.max(54, geo.vh * 0.12));
-    if (finalSection) geo.finalTop = finalSection.getBoundingClientRect().top + y;
-  }
-
-  var videoDuration = 0, seeking = false, targetTime = 0;
   if (video) {
-    var onLoaded = function () {
-      videoDuration = isFinite(video.duration) ? video.duration : 0;
-      try { video.pause(); video.currentTime = 0; } catch (e) {}
-    };
-    video.addEventListener('loadedmetadata', onLoaded, { once: true });
-    video.addEventListener('durationchange', function () {
-      videoDuration = isFinite(video.duration) ? video.duration : 0;
-    });
+    video.addEventListener('loadedmetadata', refreshVideo);
+    video.addEventListener('durationchange', refreshVideo);
+    video.addEventListener('loadeddata', refreshVideo);
+    video.addEventListener('canplay', refreshVideo);
     video.addEventListener('seeked', function () {
-      seeking = false;
-      if (videoDuration > 0 && Math.abs(video.currentTime - targetTime) > 0.03) seekTo(targetTime);
+      vPending = false;
+      if (Math.abs(video.currentTime - vTarget) > 0.02) seekVideo();
     });
-    video.addEventListener('loadeddata', function () { try { video.pause(); } catch (e) {} }, { once: true });
     video.muted = true;
-    if (video.readyState >= 1) onLoaded();
-    try { video.pause(); } catch (e) {}
+    try { video.load(); } catch (e) {}
+    refreshVideo();
   }
-  function seekTo(t) {
-    if (seeking || !video) return;
-    if (Math.abs(video.currentTime - t) <= 0.02) return;
-    seeking = true;
-    try { video.currentTime = t; } catch (e) { seeking = false; }
+  function seekVideo() {
+    if (vPending || !vReady || !video) return;
+    if (Math.abs(video.currentTime - vTarget) <= 0.02) return;
+    vPending = true;
+    try { video.currentTime = vTarget; } catch (e) { vPending = false; }
   }
+  function updateVideoTarget(p) {
+    if (!vReady || vDur <= 0) return;
+    vTarget = p * Math.max(0.001, vDur - 0.05);
+    seekVideo();
+  }
+
+  /* ---------- Escenas ---------- */
+  var sceneCache = scenes.map(function () { return { s: -1, x: 0, y: 0 }; });
 
   function setScene(i, s, x, y) {
-    s = Math.round(s * 1000) / 1000; x = Math.round(x); y = Math.round(y);
-    var c = cache[i];
-    if (s === 0 && c.s === 0) return;
+    s = Math.round(s * 1000) / 1000;
+    x = Math.round(x);
+    y = Math.round(y);
+    var c = sceneCache[i];
     if (c.s === s && c.x === x && c.y === y) return;
     c.s = s; c.x = x; c.y = y;
     var el = scenes[i];
@@ -1235,28 +1301,28 @@ html:not(.js) .gx{display:none}
     el.classList.toggle('is-active', s > 0.5);
   }
 
-  function updateHero(p) {
-    if (reduceMotion || scenes.length < 4) return;
-    if (videoDuration > 0) {
-      targetTime = p * Math.max(0.001, videoDuration - 0.05);
-      seekTo(targetTime);
-    }
-    setScene(0, lerp(p, 0.05, 0.12, 1, 0), 0, lerp(p, 0.05, 0.12, 0, -geo.below * 0.6));
+  function renderScenes(p) {
+    setScene(0,
+      lerp(p, 0.05, 0.12, 1, 0),
+      0,
+      lerp(p, 0.05, 0.12, 0, -geo.below * 0.6));
     setScene(1,
       lerp(p, 0.12, 0.22, 0, 1) * lerp(p, 0.38, 0.48, 1, 0),
-      lerp(p, 0.12, 0.22, -geo.side, 0) + lerp(p, 0.38, 0.48, 0, -geo.side), 0);
+      lerp(p, 0.12, 0.22, -geo.side, 0) + lerp(p, 0.38, 0.48, 0, -geo.side),
+      0);
     setScene(2,
       lerp(p, 0.42, 0.52, 0, 1) * lerp(p, 0.64, 0.73, 1, 0),
-      lerp(p, 0.42, 0.52, geo.side, 0) + lerp(p, 0.64, 0.73, 0, geo.side), 0);
+      lerp(p, 0.42, 0.52, geo.side, 0) + lerp(p, 0.64, 0.73, 0, geo.side),
+      0);
     setScene(3,
       lerp(p, 0.74, 0.82, 0, 1) * lerp(p, 0.89, 0.935, 1, 0),
       0,
       lerp(p, 0.74, 0.82, geo.below, 0) + lerp(p, 0.89, 0.935, 0, -geo.below * 0.5));
+
     if (eyeMask) {
       if (p < EYE.start) {
-        if (maskOn) { eyeMask.style.opacity = '0'; maskOn = false; }
+        eyeMask.style.opacity = '0';
       } else {
-        maskOn = true;
         var t = lerp(p, EYE.start, EYE.end, 0, 1);
         var radius = EYE.r + (150 - EYE.r) * t * t * t;
         var cp = 'circle(' + radius.toFixed(2) + '% at ' + EYE.x + '% ' + EYE.y + '%)';
@@ -1267,13 +1333,14 @@ html:not(.js) .gx{display:none}
     }
   }
 
+  /* ---------- Stage artistas ---------- */
   var ST = [[0.962, 0.978], [0.968, 0.988], [0.978, 0.994], [0.985, 1.06], [1.05, 1.3], [1.2, 1.45]];
   var stEls = stage ? Array.prototype.slice.call(stage.querySelectorAll('[data-st]')) : [];
   var stCache = stEls.map(function () { return -1; });
   var stageOn = false;
 
-  function updateStage(g) {
-    if (!stage || reduceMotion) return;
+  function renderStage(g) {
+    if (!stage) return;
     var on = g > 0.955;
     if (on !== stageOn) {
       stageOn = on;
@@ -1289,43 +1356,80 @@ html:not(.js) .gx{display:none}
       var dy = k >= 3 ? 56 : 26;
       var sc = k === 1 ? 0.07 : 0;
       stEls[i].style.opacity = t;
-      stEls[i].style.transform = 'translate3d(0,' + (e * dy).toFixed(1) + 'px,0) scale(' + (1 + e * sc).toFixed(4) + ')';
+      stEls[i].style.transform =
+        'translate3d(0,' + (e * dy).toFixed(1) + 'px,0) scale(' + (1 + e * sc).toFixed(4) + ')';
     }
   }
+
+  /* ---------- Measure ---------- */
+  function measureGeo() {
+    if (!scrolly) return;
+    scrolly.style.marginTop = '0px';
+    var top0 = scrolly.getBoundingClientRect().top + (window.pageYOffset || 0);
+    if (top0 > 0.5 && top0 < 320) scrolly.style.marginTop = (-top0) + 'px';
+    var y = window.pageYOffset || 0;
+    var r = scrolly.getBoundingClientRect();
+    geo.vh = window.innerHeight;
+    geo.top = r.top + y;
+    geo.max = Math.max(1, scrolly.offsetHeight - geo.vh);
+    geo.hold = holdEl ? Math.min(holdEl.offsetHeight, geo.max - 1) : 0;
+    geo.hb = siteHeader ? siteHeader.offsetHeight : 70;
+    geo.side = Math.min(150, Math.max(54, window.innerWidth * 0.14));
+    geo.below = Math.min(110, Math.max(54, geo.vh * 0.12));
+    if (finalSection) geo.finalTop = finalSection.getBoundingClientRect().top + y;
+  }
+
+  /* ---------- Frame único ---------- */
+  var ticking = false;
+  var lastSolid = null, lastHide = null;
 
   function frame() {
     ticking = false;
     var y = window.pageYOffset || 0;
+
     if (siteHeader) {
-      var solid = y >= geo.bottom - geo.hb - 4;
+      var solid = y >= (geo.top + geo.max) - geo.hb - 4;
       if (solid !== lastSolid) { lastSolid = solid; siteHeader.classList.toggle('is-solid', solid); }
     }
     if (stickyCta && finalSection) {
       var hide = geo.finalTop - y < geo.vh * 0.9;
       if (hide !== lastHide) { lastHide = hide; stickyCta.classList.toggle('is-hidden', hide); }
     }
-    if (scrolly) {
-      var raw = y - geo.top;
-      var heroMax = Math.max(1, geo.max - geo.hold);
-      var p = raw / heroMax;
-      p = p < 0 ? 0 : p > 1 ? 1 : p;
-      var q = geo.hold > 0 ? (raw - heroMax) / geo.hold : 0;
-      q = q < 0 ? 0 : q > 1 ? 1 : q;
-      var g = p + q;
-      if (p !== lastP) { lastP = p; updateHero(p); }
-      if (g !== lastG) { lastG = g; updateStage(g); }
-    }
+    if (!scrolly) return;
+
+    var raw = y - geo.top;
+    var heroMax = Math.max(1, geo.max - geo.hold);
+    var p = raw / heroMax;
+    p = p < 0 ? 0 : p > 1 ? 1 : p;
+    var q = geo.hold > 0 ? (raw - heroMax) / geo.hold : 0;
+    q = q < 0 ? 0 : q > 1 ? 1 : q;
+    var g = p + q;
+
+    updateVideoTarget(p);
+    renderScenes(p);
+    renderStage(g);
   }
+
   function onScroll() {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(frame);
   }
-  function remeasure() { measureGeo(); lastP = -1; lastG = -1; onScroll(); }
+  function remeasure() {
+    measureGeo();
+    lastSolid = null;
+    lastHide = null;
+    sceneCache.forEach(function (c) { c.s = -1; });
+    stCache.forEach(function (v, i) { stCache[i] = -1; });
+    onScroll();
+  }
 
   var rzT = 0;
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { clearTimeout(rzT); rzT = setTimeout(remeasure, 120); }, { passive: true });
+  window.addEventListener('resize', function () {
+    clearTimeout(rzT);
+    rzT = setTimeout(remeasure, 120);
+  }, { passive: true });
   window.addEventListener('load', remeasure);
 
   if (reduceMotion && scenes.length) setScene(0, 1, 0, 0);
@@ -1333,6 +1437,9 @@ html:not(.js) .gx{display:none}
   measureGeo();
   frame();
 
+  /* =====================================================================
+     REVEAL · BOLETA · MARQUEE
+  ===================================================================== */
   var revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && revealEls.length) {
     var io = new IntersectionObserver(function (entries) {
@@ -1366,6 +1473,7 @@ html:not(.js) .gx{display:none}
     pauseEls.forEach(function (el) { ioP.observe(el); });
   }
 
+  /* SMOOTH SCROLL */
   document.addEventListener('click', function (ev) {
     var el = ev.target;
     while (el && el !== document && !(el.tagName === 'A' && el.getAttribute && el.getAttribute('href'))) el = el.parentNode;
@@ -1387,12 +1495,16 @@ html:not(.js) .gx{display:none}
     if (history.replaceState) { try { history.replaceState(null, '', href); } catch (_) {} }
   }, false);
 
+  /* =====================================================================
+     GALERÍA 3D
+  ===================================================================== */
   (function () {
     var sec = document.getElementById('galeria');
     var banner = document.getElementById('gxBanner');
     var grid = document.getElementById('gxGrid');
     var title = document.getElementById('gxTitle');
     if (!sec || !banner || !grid) return;
+
     var IMAGES = [
       'https://organicbionatural.com/wp-content/uploads/2026/10/WhatsApp-Image-2026-10-29-at-19.01.23-1.jpeg',
       'https://organicbionatural.com/wp-content/uploads/2026/10/WhatsApp-Image-2026-10-29-at-19.01.23-2.jpeg',
@@ -1403,6 +1515,7 @@ html:not(.js) .gx{display:none}
     ];
     var OFFSETS = [0, 2, 4, 3];
     var PER_COL = 10;
+
     var cols = Array.prototype.slice.call(grid.querySelectorAll('.gx__col'));
     cols.forEach(function (col, k) {
       var frag = document.createDocumentFragment();
@@ -1418,9 +1531,11 @@ html:not(.js) .gx{display:none}
       }
       col.appendChild(frag);
     });
+
     var COLY = [[0, -40], [-40, 10], [0, -40], [-30, 20]];
     var mix = function (a, b, t) { return a + (b - a) * t; };
     var seg = function (p, a, b) { return p <= a ? 0 : p >= b ? 1 : (p - a) / (b - a); };
+
     function apply(p) {
       var b = seg(p, 0, 0.15);
       banner.style.width = mix(90, 100, b) + 'vw';
@@ -1438,7 +1553,9 @@ html:not(.js) .gx{display:none}
       }
       if (title) title.style.opacity = String(1 - seg(p, 0.02, 0.2));
     }
+
     if (reduceMotion) { apply(1); return; }
+
     var top = 0, range = 1, target = 0, cur = 0, vis = false, raf = 0, last = 0;
     function measure() {
       var r = sec.getBoundingClientRect();
@@ -1475,6 +1592,9 @@ html:not(.js) .gx{display:none}
     } else { vis = true; kick(); }
   })();
 
+  /* =====================================================================
+     ARTISTAS · bandas curvas
+  ===================================================================== */
   var SLICES = 12;
   var CAMERA = 1.6;
   var MAX_WIDTH = 55;
