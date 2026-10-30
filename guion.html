@@ -141,23 +141,28 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
 
 /* CTA DE ARTISTAS · aparece dentro del círculo al 60% de apertura */
 .circle-reveal__content{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(.85rem,2vw,1.25rem);width:100%;max-width:900px;margin:0 auto;padding:clamp(1.2rem,4vw,3rem);text-align:center;color:var(--ink);opacity:0;visibility:hidden;transform:translate3d(0,16px,0);pointer-events:none;transition:opacity .38s cubic-bezier(.22,1,.36,1),transform .38s cubic-bezier(.22,1,.36,1),visibility 0s linear .38s}
-.circle-reveal__content.is-visible{opacity:1;visibility:visible;transform:translate3d(0,0,0);pointer-events:auto;transition-delay:0s}
+.circle-reveal__content.is-visible{opacity:1;visibility:visible;transform:translate3d(0,0,0);pointer-events:none;transition-delay:0s}
 .circle-reveal__kicker{font-size:var(--fs-mono);font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--lime)}
 .circle-reveal__title{font-family:var(--font-display);font-size:clamp(2rem,5.6vw,4.5rem);line-height:.9;letter-spacing:-.045em;text-transform:uppercase;max-width:16ch}
 .circle-reveal__title em{font-style:normal;color:var(--lime)}
 .circle-reveal__text{max-width:58ch;color:rgba(242,242,242,.78);font-size:clamp(.9rem,1.15vw,1.05rem);line-height:1.65}
-.circle-reveal__action{margin-top:.25rem}
+/* Indicador visual, no interactivo: bloque duro + desplazamiento por pasos */
+.circle-reveal__scroll{display:flex;flex-direction:column;align-items:center;gap:.4rem;margin-top:.15rem;color:var(--lime);font-family:var(--font-mono);font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.circle-reveal__scroll-mark{display:grid;place-items:center;width:34px;height:34px;background:var(--lime);color:var(--bg);border:2px solid var(--bg);box-shadow:4px 4px 0 var(--ink);font-family:var(--font-display);font-size:1.35rem;line-height:1;animation:brutalistDrop 1s steps(3,end) infinite}
+@keyframes brutalistDrop{0%,100%{transform:translateY(-2px);box-shadow:4px 4px 0 var(--ink)}50%{transform:translateY(6px);box-shadow:2px 2px 0 var(--ink)}}
 @media(max-width:600px){
-  .circle-reveal__content{gap:.85rem;padding:1.25rem 1.1rem}
+  .circle-reveal__content{gap:.55rem;padding:calc(5.7rem + env(safe-area-inset-top,0px)) 1.1rem 1.25rem;justify-content:flex-start}
   .circle-reveal__kicker{font-size:.66rem;letter-spacing:.13em}
   .circle-reveal__title{font-size:clamp(1.8rem,8.4vw,2.8rem);line-height:.92;max-width:14ch}
   .circle-reveal__text{font-size:.82rem;line-height:1.5;max-width:38ch}
-  .circle-reveal__action .btn{min-height:48px;padding:.8rem 1rem;font-size:.7rem;box-shadow:4px 4px 0 var(--lime)}
+  .circle-reveal__scroll{gap:.25rem;margin-top:.05rem;font-size:.61rem;letter-spacing:.13em}
+  .circle-reveal__scroll-mark{width:30px;height:30px;font-size:1.2rem;box-shadow:3px 3px 0 var(--ink)}
 }
 @media(max-width:600px) and (max-height:650px){
-  .circle-reveal__content{gap:.55rem;padding:3.2rem 1rem 1rem}
+  .circle-reveal__content{gap:.4rem;padding:calc(5.2rem + env(safe-area-inset-top,0px)) 1rem .75rem}
   .circle-reveal__title{font-size:clamp(1.55rem,6vw,2.1rem)}
   .circle-reveal__text{font-size:.74rem;line-height:1.4}
+  .circle-reveal__scroll{font-size:.56rem}
 }
 
 /* ARTISTAS */
@@ -171,7 +176,6 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
 .artists.is-paused .tg__tile{animation-play-state:paused!important}
 .artists__list{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);display:grid;gap:.5rem;font-family:var(--font-display);text-transform:uppercase;font-size:clamp(1.3rem,4vw,2.4rem);letter-spacing:-.03em}
 .js .artists__list{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.artists.is-fallback .artists__list{position:relative;width:auto;height:auto;margin:2rem auto;padding:0 var(--gutter);overflow:visible;clip:auto;white-space:normal}
 
 /* UBICACIÓN */
 .loc{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem);align-items:stretch}
@@ -270,6 +274,8 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
   .boleta__panel{width:56%}
   .ticket{box-shadow:6px 6px 0 var(--lime)}
   .sticky-cta{display:flex}
+  /* La primera fila se acerca al final del hero sin ocultar ni retrasar sus animaciones. */
+  .artists{position:relative;z-index:60;margin-top:clamp(-780px,-66svh,-440px);padding-top:1rem}
   .final .btn--huge{padding:1.2rem 1.4rem}
   .scrolly__scene{padding:5.5rem var(--edge) 4rem}
   .scene-big{font-size:clamp(2.1rem,10.5vw,3.6rem)}
@@ -290,8 +296,8 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
   html{scroll-behavior:auto}
   .marquee__track,.scene-hint,.loc__pin::after{animation:none!important}
   .js .reveal{opacity:1;transform:none;transition:none}
-  .tg__tile{animation:none!important}
   .boleta__panel{transition:none!important}
+  .circle-reveal__scroll-mark{animation:none!important}
 }
 </style>
 </head>
@@ -367,8 +373,9 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
         <p class="circle-reveal__kicker">// El reino tiene nombres propios</p>
         <h2 class="circle-reveal__title" id="artists-circle-title">No es solo una noche.<br><em>Es una escena.</em></h2>
         <p class="circle-reveal__text">Descubre a los 14 artistas y proyectos que representan el pulso del underground bogotano. Conoce el line-up que le dará sonido al reino FUNGY.</p>
-        <div class="circle-reveal__action">
-          <a href="#artistas" class="btn btn--lime">CONOCE A LOS ARTISTAS <span aria-hidden="true">↓</span></a>
+        <div class="circle-reveal__scroll" aria-hidden="true">
+          <span>DESLIZA PARA DESCUBRIR</span>
+          <span class="circle-reveal__scroll-mark">↓</span>
         </div>
       </div>
     </div>
@@ -746,7 +753,7 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
       function build(){
         var w=root.clientWidth, h=root.clientHeight;
         if(!w||!h) return;
-        var small=w<640, tile=74, slices=small?8:SLICES;
+        var small=w<640, tile=74;
         var bend=(Math.min(85,Math.max(5,small?50:70))*Math.PI)/180;
         var m=measureBand(w,h,tile,ASPECT,GAP,bend);
         var key=[m.columns,m.sweep,m.unit,tile,bend].join('|');
@@ -763,7 +770,7 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
           (hide+0.001)+'%,'+(100-hide-0.001)+'%{visibility:visible}}';
         band.style.perspective=(+(r*CAMERA).toFixed(3))+'cqw';
         band.style.perspectiveOrigin='50% '+AXIS+'%';
-        var share=ASPECT/slices, duration=cols*opt.speed;
+        var share=ASPECT/SLICES, duration=cols*opt.speed;
         var sliceBase='position:absolute;top:0;height:'+u(1)+';left:'+u((ASPECT-share)/2)+
           ';background-image:var(--img);background-repeat:no-repeat;background-size:'+u(ASPECT)+' '+u(1)+
           ';backface-visibility:hidden;';
@@ -775,9 +782,9 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
             tileEl.style.cssText='left:calc(50% - '+u(ASPECT/2)+');top:calc('+AXIS+'% - '+u(0.5)+');width:'+u(ASPECT)+';height:'+u(1)+
               ';animation:'+uid+' '+duration+'s linear '+(-t*opt.speed)+'s infinite '+opt.dir;
             tileEl.style.setProperty('--img','url("'+urls[first%n]+'")');
-            for(var k=0;k<slices;k++){
+            for(var k=0;k<SLICES;k++){
               var s=document.createElement('div');
-              s.style.cssText=sliceBase+'width:'+(k===slices-1?u(share):'calc('+u(share)+' + 1px)')+
+              s.style.cssText=sliceBase+'width:'+(k===SLICES-1?u(share):'calc('+u(share)+' + 1px)')+
                 ';background-position:'+u(-k*share)+' 0;transform:'+turn((ASPECT/2-(k+0.5)*share)*unit);
               tileEl.appendChild(s);
             }
@@ -858,40 +865,24 @@ section.block{padding:var(--pad-section) var(--gutter);border-bottom:3px solid v
       return Promise.race([Promise.all(ps),new Promise(function(r){setTimeout(r,3000);})]);
     }
 
-    var bandsStarted=false;
-    function initArtistBands(){
-      if(bandsStarted) return;
-      bandsStarted=true;
-      fontsReady().then(function(){
-        return Promise.all(GROUPS.map(function(names,g){
-          return Promise.all(names.map(function(nm,i){
-            var more=nm.charAt(0)==='+';
-            var num=more?'+':(FIRST_NUM[g]+i<10?'0':'')+(FIRST_NUM[g]+i);
-            return drawCard(nm,num,more?PALETTE[0]:PALETTE[(i+g)%4]);
-          }));
+    fontsReady().then(function(){
+      return Promise.all(GROUPS.map(function(names,g){
+        return Promise.all(names.map(function(nm,i){
+          var more=nm.charAt(0)==='+';
+          var num=more?'+':(FIRST_NUM[g]+i<10?'0':'')+(FIRST_NUM[g]+i);
+          return drawCard(nm,num,more?PALETTE[0]:PALETTE[(i+g)%4]);
         }));
-      }).then(function(all){
-        Array.prototype.forEach.call(rows,function(el){
-          var g=+el.getAttribute('data-tg'), reverse=el.getAttribute('data-dir')==='reverse';
-          var urls=all[g].slice(); if(reverse) urls.reverse();
-          createBand(el,urls,{speed:+el.getAttribute('data-speed')||3.6,dir:reverse?'reverse':'normal'});
-        });
-      }).catch(function(){ if(sec) sec.classList.add('is-fallback'); });
-    }
+      }));
+    }).then(function(all){
+      Array.prototype.forEach.call(rows,function(el){
+        var g=+el.getAttribute('data-tg'), reverse=el.getAttribute('data-dir')==='reverse';
+        var urls=all[g].slice(); if(reverse) urls.reverse();
+        createBand(el,urls,{speed:+el.getAttribute('data-speed')||3.6,dir:reverse?'reverse':'normal'});
+      });
+    });
 
     if(sec&&'IntersectionObserver' in window){
-      var buildObserver=new IntersectionObserver(function(entries){
-        entries.forEach(function(entry){
-          if(entry.isIntersecting){ initArtistBands(); buildObserver.disconnect(); }
-        });
-      },{rootMargin:'500px 0px',threshold:0});
-      buildObserver.observe(sec);
-      var visibilityObserver=new IntersectionObserver(function(entries){
-        entries.forEach(function(entry){ sec.classList.toggle('is-paused',!entry.isIntersecting); });
-      },{rootMargin:'120px 0px'});
-      visibilityObserver.observe(sec);
-    } else {
-      initArtistBands();
+      new IntersectionObserver(function(en){ sec.classList.toggle('is-paused',!en[0].isIntersecting); },{rootMargin:'120px 0px'}).observe(sec);
     }
   })();
 
