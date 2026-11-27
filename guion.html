@@ -8,10 +8,7 @@
 <link rel="preconnect" href="https://fastly.picsum.photos" crossorigin />
 <title>Chazky — Crea contenido. Cobra por cada vista.</title>
 <meta name="description" content="Chazky te paga por crear contenido. Gana $4.200 COP por cada 1.000 vistas recomendando negocios, conciertos y marcas. Cobras cada semana directo a tu Nequi o Daviplata." />
-<!-- GSAP para las animaciones base -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js" defer></script>
+<!-- GSAP se carga al final del <body> con CDN de respaldo (ver bloque SCRIPTS) -->
 <style>
 /* ============================================================
 RESET + TOKENS (APPLE GLASS EDITION)
@@ -769,6 +766,43 @@ BOTÓN LIQUID METAL (cromo líquido) · anillo cromado + cara negra
 }
 @media(prefers-reduced-motion:reduce){.lm-btn{transition:none}}
 </style>
+<style id="chazky-v4-fixes">
+/* ===== CHAZKY v4 · Liquid Metal en todos los botones + robustez en producción ===== */
+/* Anillo cromado ANIMADO (giro del conic-gradient) para .lm-btn */
+.lm-btn.lm-live .lm-shader{overflow:hidden}
+.lm-btn.lm-live .lm-shader::before{content:"";position:absolute;inset:-55%;background:var(--lm-ring);animation:lm-ring-spin 6s linear infinite}
+.lm-btn.lm-live .lm-shader::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,0) 45%)}
+.lm-btn:hover .lm-shader::before{animation-duration:2.2s}
+@keyframes lm-ring-spin{to{transform:rotate(1turn)}}
+/* Flechas de carruseles (.clc-btn): anillo cromado animado vía @property */
+@property --lm-a{syntax:'<angle>';initial-value:0deg;inherits:false}
+.clc-btn{position:relative;background:linear-gradient(180deg,#202020,#000) padding-box,conic-gradient(from var(--lm-a),#f6f6f8,#8c8c94,#fff,#6b6b74,#e8e8ed,#9b9ba4,#f6f6f8) border-box!important;border:2px solid transparent!important;animation:lm-a-spin 6s linear infinite}
+.clc-btn:hover{animation-duration:2.2s}
+@keyframes lm-a-spin{to{--lm-a:360deg}}
+/* Toggle de movimiento y botón flotante del editorial con el mismo anillo cromado */
+.motion-toggle{border:2px solid transparent;border-radius:99px;padding:0 16px;background:linear-gradient(180deg,#202020,#000) padding-box,var(--lm-ring) border-box;color:var(--muted)}
+.motion-toggle:hover{color:var(--accent)}
+.editorial-open{border:2px solid transparent;background:linear-gradient(180deg,#202020,#000) padding-box,var(--lm-ring) border-box;color:var(--accent);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+/* Fallback si GSAP no carga (CDN caído/bloqueado en producción): el mosaico sigue en movimiento */
+html.no-gsap .mosaic-grid{transform:rotate(-8deg)}
+html.no-gsap .mosaic-track{animation:mosaic-drift 36s linear infinite}
+html.no-gsap .mosaic-column:nth-child(2) .mosaic-track{animation-duration:46s;animation-direction:reverse}
+html.no-gsap .mosaic-column:nth-child(3) .mosaic-track{animation-duration:41s}
+@keyframes mosaic-drift{to{transform:translateY(-50%)}}
+/* Respaldo visual de las puertas del intro aunque el canvas tarde en pintar */
+.pi-door{background:radial-gradient(ellipse 60% 45% at 50% 42%,#1c1148 0%,#0b0a24 55%,#04050d 100%)}
+/* Carrusel "Futuras campañas": más aire en escritorio */
+@media (min-width:900px){.cc-stage{height:clamp(540px,70vh,640px)}}
+@media (prefers-reduced-motion:reduce){
+.lm-btn.lm-live .lm-shader::before,.clc-btn{animation:none}
+html.no-gsap .mosaic-track{animation:none}
+}
+</style>
+<noscript><style>
+.pi-doors,.pi-seam,.pi-hint{display:none!important}
+.pi-eyebrow,.pi-title,.pi-text,.pi-dots{opacity:1!important;transform:none!important}
+</style></noscript>
+<base target="_blank">
 </head>
 <body>
 <div id="top">
@@ -1033,10 +1067,10 @@ BOTÓN LIQUID METAL (cromo líquido) · anillo cromado + cara negra
 <span class="section-label section-label--creator">Para creadores</span>
 <h2>Futuras campañas <span class="accent">donde puedes crear.</span></h2>
 <p>Estos son los 3 tipos de campañas que encontrarás en Chazky. Elige las que más conecten con tu estilo y empieza a monetizar.</p>
+</div>
 <div class="cc-root" id="campaignCarousel" role="region" aria-roledescription="carrusel" aria-label="Tipos de campañas" tabindex="0">
   <div class="cc-atmo" aria-hidden="true"></div>
   <div class="cc-stage"><div class="cc-floor" aria-hidden="true"></div></div>
-  </div>
 </div>
 <div class="gallery" id="gallery">
 <div class="gallery-tilt">
@@ -1267,8 +1301,14 @@ BOTÓN LIQUID METAL (cromo líquido) · anillo cromado + cara negra
 </main>
 </div>
 <!-- ============================================================
-SCRIPTS
+SCRIPTS · GSAP con respaldo a un segundo CDN (evita animaciones muertas en deploy)
 ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script>window.gsap||document.write('<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"><\/script>')</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>window.ScrollTrigger||document.write('<script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"><\/script>')</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js"></script>
+<script>window.MotionPathPlugin||document.write('<script src="https://unpkg.com/gsap@3.12.5/dist/MotionPathPlugin.min.js"><\/script>')</script>
 <script>
 /* ============================================================
 INTRO PIXEL: escena pixel art generada por código (sin imágenes que descargar)
@@ -1397,6 +1437,8 @@ if ('IntersectionObserver' in window) new IntersectionObserver(([en]) => { visib
 
 build();
 update();
+requestAnimationFrame(() => { last = -1; onScroll(); });
+window.addEventListener('load', () => { build(); last = -1; onScroll(); }, { once: true });
 })();
 </script>
 <script>
@@ -1451,6 +1493,31 @@ form.querySelector('input').value = '';
 setTimeout(() => btn.innerHTML = orig, 2600);
 });
 });
+/* ============================================================
+2b. LIQUID METAL: anillo cromado animado + ripple en todos los botones
+============================================================ */
+document.querySelectorAll('.lm-btn').forEach(b => {
+b.classList.add('lm-live');
+if (!b.querySelector('.lm-shader')) {
+const sh = document.createElement('span'); sh.className = 'lm-shader'; sh.setAttribute('aria-hidden', 'true');
+const fc = document.createElement('span'); fc.className = 'lm-face'; fc.setAttribute('aria-hidden', 'true');
+b.prepend(sh); b.insertBefore(fc, sh.nextSibling);
+}
+});
+document.addEventListener('click', (e) => {
+const btn = e.target.closest('.lm-btn, .clc-btn, .motion-toggle');
+if (!btn) return;
+const r = btn.getBoundingClientRect();
+const holder = document.createElement('span');
+holder.className = 'lm-ripples';
+const s = document.createElement('span');
+s.className = 'lm-ripple';
+s.style.left = (e.clientX - r.left) + 'px';
+s.style.top = (e.clientY - r.top) + 'px';
+holder.appendChild(s);
+btn.appendChild(holder);
+setTimeout(() => holder.remove(), 700);
+}, { passive: true });
 /* ============================================================
 3. DOC 1: TILTED GRID SCROLLABLE (EL PROBLEMA REAL)
 Dirección corregida + auto-rotación lenta + pausa de 10s al mover
@@ -1899,9 +1966,9 @@ if (cfWrapEl && cfFooterEl && 'IntersectionObserver' in window) {
   const measure = () => {
     const sw = stage.clientWidth;
     let w, f;
-    if (sw >= 900) { w = Math.min(380, sw * 0.34); f = 1.02; }        /* escritorio: las cards no se pisan */
-    else if (sw >= 640) { w = Math.min(340, sw * 0.4); f = 0.95; }    /* tablet */
-    else { w = Math.min(340, sw * 0.72); f = 0.8; }                   /* móvil: se asoman las laterales */
+    if (sw >= 900) { w = Math.min(430, sw * 0.36); f = 1.06; }        /* escritorio: cards grandes con aire */
+    else if (sw >= 640) { w = Math.min(360, sw * 0.44); f = 1.0; }    /* tablet */
+    else { w = Math.min(340, sw * 0.74); f = 0.82; }                  /* móvil: se asoman las laterales */
     root.style.setProperty('--cc-w', w + 'px');
     step = w * f;
     layout();
@@ -1978,11 +2045,14 @@ if (cfWrapEl && cfFooterEl && 'IntersectionObserver' in window) {
 /* ============================================================
 5. GSAP ANIMATIONS
 ============================================================ */
-if (typeof gsap === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (typeof gsap === 'undefined' || reducedMotion) {
 document.getElementById('counter-num').textContent = '322,572';
-document.querySelectorAll('.mosaic-grid').forEach(el => el.style.transform = 'rotate(-8deg)');
+if (typeof gsap === 'undefined') document.documentElement.classList.add('no-gsap');
+else document.querySelectorAll('.mosaic-grid').forEach(el => el.style.transform = 'rotate(-8deg)');
 return;
 }
+if (!window.ScrollTrigger) { console.warn('[Chazky] ScrollTrigger no cargó'); return; }
 gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true }); /* evita saltos cuando la barra del navegador móvil sube/baja */
 if (window.MotionPathPlugin) gsap.registerPlugin(MotionPathPlugin);
@@ -2053,7 +2123,7 @@ const inspecting = !!gallery.querySelector(':focus-visible') || gallery.matches(
 for (const t of gtracks) {
 if (t.lane.scrollLeft !== t.rendered) { t.position = t.lane.scrollLeft; t.rendered = t.lane.scrollLeft; t.resumeAt = time + 0.8; }
 if (time < t.resumeAt || inspecting || !t.period) continue;
-t.position = gsap.utils.wrap(0, t.period, t.position + t.direction * Math.min(elapsed, 48) * 0.032);
+t.position = ((t.position + t.direction * Math.min(elapsed, 48) * 0.032) % t.period + t.period) % t.period;
 t.lane.scrollLeft = t.position; t.rendered = t.lane.scrollLeft;
 }
 };
@@ -2097,7 +2167,19 @@ lane.addEventListener('touchmove', e => { if (g && g.h && e.cancelable) e.preven
 });
 measure();
 const ro = new ResizeObserver(measure); gtracks.forEach(t => ro.observe(t.group));
-const io = new IntersectionObserver(([entry]) => { gsap.ticker.remove(tick); if (entry.isIntersecting) gsap.ticker.add(tick); });
+/* Bucle propio con rAF: las galerías se mueven aunque GSAP falle en producción */
+let laneRaf = null, laneLast = 0;
+const laneLoop = (ts) => {
+laneRaf = null;
+const dt = laneLast ? Math.min(48, ts - laneLast) : 16;
+laneLast = ts;
+tick(ts / 1000, dt);
+laneRaf = requestAnimationFrame(laneLoop);
+};
+const io = new IntersectionObserver(([entry]) => {
+if (entry.isIntersecting) { laneLast = 0; if (!laneRaf) laneRaf = requestAnimationFrame(laneLoop); }
+else if (laneRaf) { cancelAnimationFrame(laneRaf); laneRaf = null; }
+});
 io.observe(gallery);
 }
 gsap.from('.sim-card', { y: 40, opacity: 0, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '.sim-card', start: 'top 80%' } });
