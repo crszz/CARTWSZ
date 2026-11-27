@@ -8,7 +8,10 @@
 <link rel="preconnect" href="https://fastly.picsum.photos" crossorigin />
 <title>Chazky — Crea contenido. Cobra por cada vista.</title>
 <meta name="description" content="Chazky te paga por crear contenido. Gana $4.200 COP por cada 1.000 vistas recomendando negocios, conciertos y marcas. Cobras cada semana directo a tu Nequi o Daviplata." />
-<!-- GSAP se carga al final del <body> con CDN de respaldo (ver bloque SCRIPTS) -->
+<!-- GSAP para las animaciones base -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js" defer></script>
 <style>
 /* ============================================================
 RESET + TOKENS (APPLE GLASS EDITION)
@@ -53,8 +56,8 @@ color:var(--ink);
 font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 -webkit-font-smoothing:antialiased;
 -moz-osx-font-smoothing:grayscale;
-overflow-x:clip;
 }
+body{overflow-x:clip;}
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 50% 0%,#1a1a24 0%,#050505 70%)}
 ::selection{background:var(--accent);color:#000}
 img,svg{display:block;max-width:100%}
@@ -238,9 +241,9 @@ display: flex; justify-content: space-between; align-items: center; font-size: 1
 .clc-btn {
 width: 46px; height: 46px; border-radius: 999px; display: grid; place-items: center; color: var(--ink); cursor: pointer;
 background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: var(--glass-blur);
-box-shadow: 0 10px 30px -10px rgba(0,0,0,.7); transition: transform .35s, background .3s;
+box-shadow: 0 10px 30px -10px rgba(0,0,0,.7); transition: none;
 }
-.clc-btn:hover { transform: translateY(-2px) scale(1.06); background: var(--glass-bg-hover); }
+.clc-btn:hover { transform: none; background: var(--glass-bg-hover); }
 .clc-btn svg { width: 18px; height: 18px; }
 /* ============================================================
 FEATURES (Glass Cards)
@@ -454,8 +457,8 @@ transition:transform .7s cubic-bezier(.22,1,.36,1),opacity .5s ease,border-color
 .cc-pay strong{font-size:1.5rem;font-weight:800;letter-spacing:-.04em;color:var(--ink)}
 .cc-pay strong span{font-size:.72rem;font-weight:500;letter-spacing:0;color:var(--muted);margin-left:4px}
 .cc-meta{margin-top:4px;font-size:.68rem;color:var(--muted)}
-.cc-go{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;color:#000;background:var(--cc);transition:transform .3s cubic-bezier(.16,1,.3,1)}
-.cc-go:hover{transform:scale(1.08) rotate(-8deg)}
+.cc-go{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;color:#000;background:var(--cc);transition:none}
+.cc-go:hover{transform:none}
 .cc-go svg{width:16px;height:16px}
 
 /* ============================================================
@@ -490,8 +493,8 @@ transition:background .4s,border-color .4s,box-shadow .4s,color .4s}
 .cf-made b{font-size:.78rem;color:var(--ink);letter-spacing:0;text-transform:none;font-weight:800}
 .cf-heart{color:var(--red);font-size:1rem;animation:cf-heartbeat 2s cubic-bezier(.25,1,.5,1) infinite}
 .cf-top{width:48px;height:48px;padding:0}
-.cf-top svg{width:18px;height:18px;transition:transform .3s}
-.cf-top:hover svg{transform:translateY(-4px)}
+.cf-top svg{width:18px;height:18px;transition:none}
+.cf-top:hover svg{transform:none}
 @keyframes cf-breathe{0%{transform:translate(-50%,-50%) scale(1);opacity:.6}100%{transform:translate(-50%,-50%) scale(1.1);opacity:1}}
 @keyframes cf-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes cf-heartbeat{0%,100%{transform:scale(1);filter:drop-shadow(0 0 5px rgba(232,93,93,.5))}15%,45%{transform:scale(1.2);filter:drop-shadow(0 0 10px rgba(232,93,93,.8))}30%{transform:scale(1)}}
@@ -592,7 +595,6 @@ AJUSTES v3 · ESPACIADO, CTAs SUTILES, RENDIMIENTO
 .gallery-footer{flex-wrap:wrap;gap:12px 24px;margin-top:8px}
 .gallery-note{display:flex;flex-direction:column;align-items:flex-start;gap:6px;flex:1 1 260px;font-size:.8rem;line-height:1.5;color:var(--muted)}
 /* Rendimiento */
-#faq{content-visibility:auto;contain-intrinsic-size:auto 700px}
 .cf-footer:not(.is-live) .cf-aurora,.cf-footer:not(.is-live) .cf-marquee-track,.cf-footer:not(.is-live) .cf-heart{animation-play-state:paused}
 html.lite{--glass-blur:blur(8px)}
 html.lite .cf-aurora{display:none}
@@ -691,7 +693,7 @@ html.lite .cf-aurora{display:none}
 INTRO PIXEL · puertas que se abren con el scroll
 ============================================================ */
 .pi-scroll{position:relative;height:250vh;height:250svh;margin-bottom:-30vh;margin-bottom:-30svh}
-.pi-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;isolation:isolate;contain:layout style paint;background:#000}
+.pi-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;isolation:isolate;background:#000}
 .pi-content{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;background:radial-gradient(ellipse 52% 36% at 50% 46%,rgba(255,214,10,.08),transparent 72%),radial-gradient(ellipse 80% 46% at 50% 100%,rgba(79,122,238,.08),transparent 72%),radial-gradient(ellipse 80% 60% at 50% 40%,#0d0d10 0%,#000 100%)}
 .pi-eyebrow{display:inline-flex;align-items:center;gap:14px;margin:0 0 1.3rem;font-size:.7rem;font-weight:500;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);opacity:var(--pi-e,0);transform:translateY(calc((1 - var(--pi-e,0)) * 24px))}
 .pi-eyebrow::before,.pi-eyebrow::after{content:"";width:clamp(18px,6vw,40px);height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35))}
@@ -727,13 +729,16 @@ INTRO PIXEL · puertas que se abren con el scroll
 .chazky-header{transition:opacity .45s ease,transform .45s ease}
 body.pi-intro .chazky-header{opacity:0;transform:translateY(-14px);pointer-events:none}
 /* ============================================================
-BOTÓN LIQUID METAL (cromo líquido) · anillo cromado + cara negra
+BOTÓN LIQUID METAL (cromo líquido) · estáticos e intercalados (negro/blanco)
 ============================================================ */
 :root{--cta-h:46px;--lm-ring:conic-gradient(from 210deg at 50% 50%,#f6f6f8,#8c8c94,#fff,#6b6b74,#e8e8ed,#9b9ba4,#f6f6f8)}
-.lm-btn{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;min-height:var(--cta-h);margin:0;padding:0 30px;border:2px solid transparent;border-radius:999px;font-family:inherit;font-size:.88rem;font-weight:500;line-height:1;color:#cfcfd6;text-decoration:none;white-space:nowrap;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;text-shadow:0 1px 2px rgba(0,0,0,.5);background:linear-gradient(180deg,#202020 0%,#000 100%) padding-box,var(--lm-ring) border-box;box-shadow:0 0 0 1px rgba(0,0,0,.3),0 14px 8px rgba(0,0,0,.06),0 8px 5px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.18);transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .25s,color .25s}
-.lm-btn:hover{color:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.4),0 12px 6px rgba(0,0,0,.05),0 8px 5px rgba(0,0,0,.1),0 4px 4px rgba(0,0,0,.15)}
-.lm-btn:active{transform:translateY(1px) scale(.98)}
+.lm-btn{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;min-height:var(--cta-h);margin:0;padding:0 30px;border:2px solid transparent;border-radius:999px;font-family:inherit;font-size:.88rem;font-weight:500;line-height:1;color:#ffffff;text-decoration:none;white-space:nowrap;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;text-shadow:0 1px 2px rgba(0,0,0,.5);background:linear-gradient(180deg,#202020 0%,#000 100%) padding-box,var(--lm-ring) border-box;box-shadow:0 0 0 1px rgba(0,0,0,.3),0 14px 8px rgba(0,0,0,.06),0 8px 5px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.18);transition:none}
+.lm-btn:hover{color:#ffffff;transform:none;box-shadow:0 0 0 1px rgba(0,0,0,.3),0 14px 8px rgba(0,0,0,.06),0 8px 5px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.18)}
+.lm-btn:active{transform:none}
 .lm-btn:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.lm-btn.lm-btn--light{color:#000000;text-shadow:none;background:linear-gradient(180deg,#ffffff 0%,#e5e5ea 100%) padding-box,var(--lm-ring) border-box}
+.lm-btn.lm-btn--light:hover{color:#000000}
+.lm-btn.lm-btn--light .lm-label svg:not(.lm-arrow){color:#000000}
 .lm-shader,.lm-face{display:none;position:absolute;border-radius:inherit}
 .lm-live{background:none}
 .lm-live .lm-shader{display:block;inset:-2px;z-index:-2;overflow:hidden}
@@ -742,8 +747,8 @@ BOTÓN LIQUID METAL (cromo líquido) · anillo cromado + cara negra
 .lm-label{position:relative;display:inline-flex;align-items:center;gap:8px}
 .lm-label svg{width:16px;height:16px;flex:none}
 .lm-label svg:not(.lm-arrow){color:var(--accent)}
-.lm-arrow{width:14px!important;height:14px!important;transition:transform .3s}
-.lm-btn:hover .lm-arrow{transform:translateX(3px)}
+.lm-arrow{width:14px!important;height:14px!important;transition:none}
+.lm-btn:hover .lm-arrow{transform:none}
 .lm-ripples{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none}
 .lm-ripple{position:absolute;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.4) 0%,rgba(255,255,255,0) 70%);animation:lm-ripple .6s ease-out forwards}
 @keyframes lm-ripple{0%{transform:translate(-50%,-50%) scale(0);opacity:.6}100%{transform:translate(-50%,-50%) scale(4);opacity:0}}
@@ -752,7 +757,7 @@ BOTÓN LIQUID METAL (cromo líquido) · anillo cromado + cara negra
 .lm-btn.lm-block{display:flex;width:100%}
 .lm-btn.lm-icon{width:46px;min-height:46px;padding:0}
 .lm-icon svg{width:18px;height:18px}
-.cf-magnetic.lm-btn{transition:box-shadow .25s,color .25s}
+.cf-magnetic.lm-btn{transition:none}
 /* flechas de los carruseles con el mismo anillo cromado */
 .clc-btn{background:linear-gradient(180deg,#202020,#000) padding-box,var(--lm-ring) border-box!important;border:2px solid transparent!important;box-shadow:0 8px 14px rgba(0,0,0,.4)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .dual-cta-box form{gap:10px;align-items:center}
@@ -766,43 +771,6 @@ BOTÓN LIQUID METAL (cromo líquido) · anillo cromado + cara negra
 }
 @media(prefers-reduced-motion:reduce){.lm-btn{transition:none}}
 </style>
-<style id="chazky-v4-fixes">
-/* ===== CHAZKY v4 · Liquid Metal en todos los botones + robustez en producción ===== */
-/* Anillo cromado ANIMADO (giro del conic-gradient) para .lm-btn */
-.lm-btn.lm-live .lm-shader{overflow:hidden}
-.lm-btn.lm-live .lm-shader::before{content:"";position:absolute;inset:-55%;background:var(--lm-ring);animation:lm-ring-spin 6s linear infinite}
-.lm-btn.lm-live .lm-shader::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,0) 45%)}
-.lm-btn:hover .lm-shader::before{animation-duration:2.2s}
-@keyframes lm-ring-spin{to{transform:rotate(1turn)}}
-/* Flechas de carruseles (.clc-btn): anillo cromado animado vía @property */
-@property --lm-a{syntax:'<angle>';initial-value:0deg;inherits:false}
-.clc-btn{position:relative;background:linear-gradient(180deg,#202020,#000) padding-box,conic-gradient(from var(--lm-a),#f6f6f8,#8c8c94,#fff,#6b6b74,#e8e8ed,#9b9ba4,#f6f6f8) border-box!important;border:2px solid transparent!important;animation:lm-a-spin 6s linear infinite}
-.clc-btn:hover{animation-duration:2.2s}
-@keyframes lm-a-spin{to{--lm-a:360deg}}
-/* Toggle de movimiento y botón flotante del editorial con el mismo anillo cromado */
-.motion-toggle{border:2px solid transparent;border-radius:99px;padding:0 16px;background:linear-gradient(180deg,#202020,#000) padding-box,var(--lm-ring) border-box;color:var(--muted)}
-.motion-toggle:hover{color:var(--accent)}
-.editorial-open{border:2px solid transparent;background:linear-gradient(180deg,#202020,#000) padding-box,var(--lm-ring) border-box;color:var(--accent);box-shadow:0 6px 20px rgba(0,0,0,.4)}
-/* Fallback si GSAP no carga (CDN caído/bloqueado en producción): el mosaico sigue en movimiento */
-html.no-gsap .mosaic-grid{transform:rotate(-8deg)}
-html.no-gsap .mosaic-track{animation:mosaic-drift 36s linear infinite}
-html.no-gsap .mosaic-column:nth-child(2) .mosaic-track{animation-duration:46s;animation-direction:reverse}
-html.no-gsap .mosaic-column:nth-child(3) .mosaic-track{animation-duration:41s}
-@keyframes mosaic-drift{to{transform:translateY(-50%)}}
-/* Respaldo visual de las puertas del intro aunque el canvas tarde en pintar */
-.pi-door{background:radial-gradient(ellipse 60% 45% at 50% 42%,#1c1148 0%,#0b0a24 55%,#04050d 100%)}
-/* Carrusel "Futuras campañas": más aire en escritorio */
-@media (min-width:900px){.cc-stage{height:clamp(540px,70vh,640px)}}
-@media (prefers-reduced-motion:reduce){
-.lm-btn.lm-live .lm-shader::before,.clc-btn{animation:none}
-html.no-gsap .mosaic-track{animation:none}
-}
-</style>
-<noscript><style>
-.pi-doors,.pi-seam,.pi-hint{display:none!important}
-.pi-eyebrow,.pi-title,.pi-text,.pi-dots{opacity:1!important;transform:none!important}
-</style></noscript>
-<base target="_blank">
 </head>
 <body>
 <div id="top">
@@ -882,7 +850,7 @@ html.no-gsap .mosaic-track{animation:none}
 <p class="hero-sub">Monetiza tus redes sociales desde el primer video. Elige campañas de negocios, conciertos y marcas que necesitan atención, publica con tu estilo y cobra por cada 1.000 vistas directo a tu Nequi o Daviplata.</p>
 <div class="hero-ctas">
 <a href="#unete" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Quiero ser Creador<svg class="lm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
-<a href="#creadores" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">¿Cuánto puedo ganar?</span></a>
+<a href="#creadores" class="lm-btn lm-btn--light"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">¿Cuánto puedo ganar?</span></a>
 </div>
 <div class="hero-stat">
 <div><small>Ganas por 1K vistas</small><strong class="accent">$4.200 COP</strong></div>
@@ -937,7 +905,7 @@ html.no-gsap .mosaic-track{animation:none}
 </article>
 </div>
 <div class="split-cta-bar">
-<a href="#unete" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Registrarme gratis<svg class="lm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
+<a href="#unete" class="lm-btn lm-btn--light"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Registrarme gratis<svg class="lm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
 </div>
 </section>
 <!-- ===================== CREATORS ===================== -->
@@ -1047,7 +1015,7 @@ html.no-gsap .mosaic-track{animation:none}
 <span style="font-size:.82rem;color:var(--muted);display:block;margin-bottom:6px">Visualizaciones estimadas</span>
 <div class="sim-total" id="simTotalViews">166.667 <span>vistas</span></div>
 </div>
-<a href="#unete"  style="margin-top:24px" class="lm-btn lm-block"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Lanzar esta campaña<svg class="lm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
+<a href="#unete"  style="margin-top:24px" class="lm-btn lm-btn--light lm-block"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Lanzar esta campaña<svg class="lm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
 </div>
 <div class="sim-result">
 <div class="sim-result-header"><h3>Proyección a 30 días</h3><strong id="simHeaderViews">167K</strong></div>
@@ -1067,10 +1035,10 @@ html.no-gsap .mosaic-track{animation:none}
 <span class="section-label section-label--creator">Para creadores</span>
 <h2>Futuras campañas <span class="accent">donde puedes crear.</span></h2>
 <p>Estos son los 3 tipos de campañas que encontrarás en Chazky. Elige las que más conecten con tu estilo y empieza a monetizar.</p>
-</div>
 <div class="cc-root" id="campaignCarousel" role="region" aria-roledescription="carrusel" aria-label="Tipos de campañas" tabindex="0">
   <div class="cc-atmo" aria-hidden="true"></div>
   <div class="cc-stage"><div class="cc-floor" aria-hidden="true"></div></div>
+  </div>
 </div>
 <div class="gallery" id="gallery">
 <div class="gallery-tilt">
@@ -1197,7 +1165,7 @@ html.no-gsap .mosaic-track{animation:none}
 <h2>Hazle espacio<br />a tu próxima <span class="accent">idea.</span></h2>
 <p>Un video distinto puede cambiarlo todo. Graba desde tu cuarto, cuenta una historia real sobre una marca o un evento y convierte tu creatividad en ingresos semanales.</p>
 <div class="editorial-actions">
-<a href="#unete" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Empezar como Creador</span></a>
+<a href="#unete" class="lm-btn lm-btn--light"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Empezar como Creador</span></a>
 <a href="#library" class="split-link split-link--creator">Ver futuras campañas →</a>
 </div>
 <div class="trust">
@@ -1254,7 +1222,7 @@ html.no-gsap .mosaic-track{animation:none}
 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
 <h3>Únete como <span class="accent">Creador</span></h3>
 <p>Crea contenido sobre conciertos, negocios y marcas reales y gana $4.200 COP por cada 1.000 vistas directo a tu Nequi.</p>
-<form class="waitlist-form" data-role="creator"><input type="email" required placeholder="tu@correo.com" aria-label="Tu correo como creador" /><button type="submit" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Unirme</span></button></form>
+<form class="waitlist-form" data-role="creator"><input type="email" required placeholder="tu@correo.com" aria-label="Tu correo como creador" /><button type="submit" class="lm-btn lm-btn--light"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Unirme</span></button></form>
 </div>
 </div>
 <p style="margin-top:20px;font-size:.66rem;color:var(--muted)">Sin spam. Solo te escribimos cuando abramos tu ola.</p>
@@ -1279,13 +1247,13 @@ html.no-gsap .mosaic-track{animation:none}
       <div class="cf-links" id="cfLinks">
         <div class="cf-row">
           <a href="#unete" class="lm-btn cf-magnetic"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Ser Creador</span></a>
-          <a href="#creadores" class="lm-btn cf-magnetic"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Ver cuánto ganar</span></a>
+          <a href="#creadores" class="lm-btn lm-btn--light cf-magnetic"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Ver cuánto ganar</span></a>
         </div>
         <div class="cf-row">
           <a href="#beneficios" class="lm-btn lm-sm lm-static cf-magnetic">Beneficios</a>
-          <a href="#library" class="lm-btn lm-sm lm-static cf-magnetic">Futuras campañas</a>
+          <a href="#library" class="lm-btn lm-btn--light lm-sm lm-static cf-magnetic">Futuras campañas</a>
           <a href="#marcas" class="lm-btn lm-sm lm-static cf-magnetic">Pagos</a>
-          <a href="#simulador" class="lm-btn lm-sm lm-static cf-magnetic">Para marcas</a>
+          <a href="#simulador" class="lm-btn lm-btn--light lm-sm lm-static cf-magnetic">Para marcas</a>
           <a href="#faq" class="lm-btn lm-sm lm-static cf-magnetic">FAQ</a>
         </div>
       </div>
@@ -1294,12 +1262,15 @@ html.no-gsap .mosaic-track{animation:none}
     <div class="cf-bottom">
       <div class="cf-copy">© 2026 Chazky · Cifras ilustrativas en beta</div>
       <div class="cf-pill cf-made"><span>Hecho con</span><span class="cf-heart">❤</span><span>en</span><b>Colombia</b></div>
-      <button type="button" id="cfTop" class="lm-btn lm-icon lm-static cf-magnetic" aria-label="Volver arriba"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg></button>
+      <button type="button" id="cfTop" class="lm-btn lm-btn--light lm-icon lm-static cf-magnetic" aria-label="Volver arriba"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg></button>
     </div>
   </footer>
 </div>
 </main>
 </div>
+<!-- ============================================================
+SCRIPTS
+============================================================ -->
 <script>
 /* ============================================================
 INTRO PIXEL: escena pixel art generada por código (sin imágenes que descargar)
@@ -1423,28 +1394,14 @@ const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(u
 let rz = null;
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { build(); last = -1; onScroll(); }, 200); }, { passive: true });
-window.addEventListener('pageshow', () => { last = -1; onScroll(); });
+window.addEventListener('load', () => { build(); last = -1; update(); });
+window.addEventListener('pageshow', () => { build(); last = -1; onScroll(); });
 if ('IntersectionObserver' in window) new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible) onScroll(); }).observe(root);
 
 build();
 update();
-requestAnimationFrame(() => { last = -1; onScroll(); });
-window.addEventListener('load', () => { build(); last = -1; onScroll(); }, { once: true });
 })();
 </script>
-
-<!-- ============================================================
-SCRIPTS · GSAP con respaldo a un segundo CDN (evita animaciones muertas en deploy)
-============================================================ -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script>window.gsap||document.write('<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"><\/script>')</script>
-<script>window.gsap||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"><\/script>')</script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script>window.ScrollTrigger||document.write('<script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"><\/script>')</script>
-<script>window.ScrollTrigger||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"><\/script>')</script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js"></script>
-<script>window.MotionPathPlugin||document.write('<script src="https://unpkg.com/gsap@3.12.5/dist/MotionPathPlugin.min.js"><\/script>')</script>
-<script>window.MotionPathPlugin||document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"><\/script>')</script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 /* Detección de dispositivos modestos / ahorro de datos: se aligeran efectos sin quitar animaciones */
@@ -1497,31 +1454,6 @@ form.querySelector('input').value = '';
 setTimeout(() => btn.innerHTML = orig, 2600);
 });
 });
-/* ============================================================
-2b. LIQUID METAL: anillo cromado animado + ripple en todos los botones
-============================================================ */
-document.querySelectorAll('.lm-btn').forEach(b => {
-b.classList.add('lm-live');
-if (!b.querySelector('.lm-shader')) {
-const sh = document.createElement('span'); sh.className = 'lm-shader'; sh.setAttribute('aria-hidden', 'true');
-const fc = document.createElement('span'); fc.className = 'lm-face'; fc.setAttribute('aria-hidden', 'true');
-b.prepend(sh); b.insertBefore(fc, sh.nextSibling);
-}
-});
-document.addEventListener('click', (e) => {
-const btn = e.target.closest('.lm-btn, .clc-btn, .motion-toggle');
-if (!btn) return;
-const r = btn.getBoundingClientRect();
-const holder = document.createElement('span');
-holder.className = 'lm-ripples';
-const s = document.createElement('span');
-s.className = 'lm-ripple';
-s.style.left = (e.clientX - r.left) + 'px';
-s.style.top = (e.clientY - r.top) + 'px';
-holder.appendChild(s);
-btn.appendChild(holder);
-setTimeout(() => holder.remove(), 700);
-}, { passive: true });
 /* ============================================================
 3. DOC 1: TILTED GRID SCROLLABLE (EL PROBLEMA REAL)
 Dirección corregida + auto-rotación lenta + pausa de 10s al mover
@@ -1592,8 +1524,8 @@ stat: "⚡ Solo quedan 73 cupos"
 const n = problemCards.length;
 let tghPos = 0, tghTarget = 0, tghDragging = false, tghDragX = 0, tghDragPos = 0, tghRaf = null;
 let tghAutoActive = true, tghResumeTimer = null, lastTickTime = 0, tghVisible = true;
-const TGH_DWELL = 3000;      // la card se queda quieta 3 s en el centro antes de pasar a la siguiente
-const TGH_PAUSE_MS = 10000;  // 10 segundos de pausa tras interacción del usuario
+const TGH_DWELL = 3000;      /* la card se queda quieta 3 s en el centro antes de pasar a la siguiente */
+const TGH_PAUSE_MS = 10000;  /* 10 segundos de pausa tras interacción del usuario */
 let curLayout = { pitch: 35, unit: 10, limit: 70, radius: '50cqw' };
 let tileEls = [];
 const tghCountEl = document.getElementById('tghCount');
@@ -1610,7 +1542,7 @@ tileEls.forEach((el, i) => {
 let d = i - tghPos;
 d = ((d % n) + n) % n;
 if (d > n / 2) d -= n;
-// Negamos d para que d > 0 quede a la derecha y el avance siga la dirección natural
+/* Negamos d para que d > 0 quede a la derecha y el avance siga la dirección natural */
 const deg = -d * pitch;
 if (Math.abs(deg) > limit + 10) {
 el.style.visibility = 'hidden';
@@ -1715,6 +1647,7 @@ goTo(Math.round(tghPos) + (e.deltaX > 0 ? 1 : -1));
 }, { passive: false });
 const updateGrid = () => {
 const rect = tiltContainer.getBoundingClientRect();
+if (!rect.width || !rect.height) return;
 const isMobile = rect.width < 760;
 const curBendDeg = isMobile ? 32 : 76;
 const bend = (Math.min(85, Math.max(5, curBendDeg)) * Math.PI) / 180;
@@ -1760,11 +1693,12 @@ let tghW = Math.round(tiltContainer.clientWidth), tghRz = null;
 if ('ResizeObserver' in window) {
 new ResizeObserver(() => {
 if (tghRz) return;
-tghRz = requestAnimationFrame(() => { tghRz = null; const w = Math.round(tiltContainer.clientWidth); if (w === tghW) return; tghW = w; updateGrid(); });
+tghRz = requestAnimationFrame(() => { tghRz = null; const w = Math.round(tiltContainer.clientWidth); if (w === tghW && tileEls.length) return; tghW = w; updateGrid(); });
 }).observe(tiltContainer);
 }
 new IntersectionObserver(([en]) => { tghVisible = en.isIntersecting; if (tghVisible) scheduleTick(); }).observe(tiltContainer);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) scheduleTick(); });
+window.addEventListener('load', () => { updateGrid(); scheduleTick(); });
 updateGrid();
 scheduleTick();
 }
@@ -1811,7 +1745,7 @@ const img = new Image(); img.crossOrigin = "anonymous"; img.decoding = "async";
 img.onload = () => { gl.bindTexture(gl.TEXTURE_2D, t); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img); entry.aspect = img.naturalWidth / img.naturalHeight; entry.ready = true; kick(); };
 img.src = s.image; return entry;
 });
-resize(); window.addEventListener('resize', resize);
+resize(); window.addEventListener('resize', resize); window.addEventListener('load', resize);
 const top = document.createElement('div'); top.className = 'clc-top'; top.innerHTML = `<b>Para Creadores</b><span>Desliza para explorar</span>`; carouselContainer.appendChild(top);
 const copy = document.createElement('div'); copy.className = 'clc-copy'; carouselContainer.appendChild(copy);
 const ctl = document.createElement('div'); ctl.className = 'clc-ctl'; ctl.innerHTML = `<span class="clc-count">01 <i>/ 0${slides.length}</i></span><span class="clc-bar"><span style="transform:scaleX(${1/slides.length})"></span></span><div class="clc-btns"><button class="clc-btn clc-prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 5l-7 7 7 7"/></svg></button><button class="clc-btn clc-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 5l7 7-7 7"/></svg></button></div>`; carouselContainer.appendChild(ctl);
@@ -1848,7 +1782,9 @@ const bar = carouselContainer.querySelector('.clc-bar>span');
 if (bar) bar.style.transform = `scaleX(${(currentIndex + 1) / slides.length})`;
 };
 const resize = () => {
-const rect = carouselContainer.getBoundingClientRect(); W = rect.width; H = rect.height;
+const rect = carouselContainer.getBoundingClientRect();
+if (!rect.width || !rect.height) return;
+W = rect.width; H = rect.height;
 dpr = Math.min(lite ? 1.25 : 1.75, window.devicePixelRatio || 1);
 const canvas = carouselContainer.querySelector('canvas'); if (!canvas) return;
 canvas.width = W * dpr; canvas.height = H * dpr;
@@ -1970,9 +1906,9 @@ if (cfWrapEl && cfFooterEl && 'IntersectionObserver' in window) {
   const measure = () => {
     const sw = stage.clientWidth;
     let w, f;
-    if (sw >= 900) { w = Math.min(430, sw * 0.36); f = 1.06; }        /* escritorio: cards grandes con aire */
-    else if (sw >= 640) { w = Math.min(360, sw * 0.44); f = 1.0; }    /* tablet */
-    else { w = Math.min(340, sw * 0.74); f = 0.82; }                  /* móvil: se asoman las laterales */
+    if (sw >= 900) { w = Math.min(380, sw * 0.34); f = 1.02; }        /* escritorio: las cards no se pisan */
+    else if (sw >= 640) { w = Math.min(340, sw * 0.4); f = 0.95; }    /* tablet */
+    else { w = Math.min(340, sw * 0.72); f = 0.8; }                   /* móvil: se asoman las laterales */
     root.style.setProperty('--cc-w', w + 'px');
     step = w * f;
     layout();
@@ -2049,14 +1985,16 @@ if (cfWrapEl && cfFooterEl && 'IntersectionObserver' in window) {
 /* ============================================================
 5. GSAP ANIMATIONS
 ============================================================ */
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (typeof gsap === 'undefined' || reducedMotion) {
+let gsapInitialized = false;
+const initGSAP = () => {
+if (gsapInitialized) return;
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 document.getElementById('counter-num').textContent = '322,572';
-if (typeof gsap === 'undefined') document.documentElement.classList.add('no-gsap');
-else document.querySelectorAll('.mosaic-grid').forEach(el => el.style.transform = 'rotate(-8deg)');
+document.querySelectorAll('.mosaic-grid').forEach(el => el.style.transform = 'rotate(-8deg)');
 return;
 }
-if (!window.ScrollTrigger) { console.warn('[Chazky] ScrollTrigger no cargó'); return; }
+if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+gsapInitialized = true;
 gsap.registerPlugin(ScrollTrigger);
 ScrollTrigger.config({ ignoreMobileResize: true }); /* evita saltos cuando la barra del navegador móvil sube/baja */
 if (window.MotionPathPlugin) gsap.registerPlugin(MotionPathPlugin);
@@ -2127,7 +2065,7 @@ const inspecting = !!gallery.querySelector(':focus-visible') || gallery.matches(
 for (const t of gtracks) {
 if (t.lane.scrollLeft !== t.rendered) { t.position = t.lane.scrollLeft; t.rendered = t.lane.scrollLeft; t.resumeAt = time + 0.8; }
 if (time < t.resumeAt || inspecting || !t.period) continue;
-t.position = ((t.position + t.direction * Math.min(elapsed, 48) * 0.032) % t.period + t.period) % t.period;
+t.position = gsap.utils.wrap(0, t.period, t.position + t.direction * Math.min(elapsed, 48) * 0.032);
 t.lane.scrollLeft = t.position; t.rendered = t.lane.scrollLeft;
 }
 };
@@ -2171,19 +2109,7 @@ lane.addEventListener('touchmove', e => { if (g && g.h && e.cancelable) e.preven
 });
 measure();
 const ro = new ResizeObserver(measure); gtracks.forEach(t => ro.observe(t.group));
-/* Bucle propio con rAF: las galerías se mueven aunque GSAP falle en producción */
-let laneRaf = null, laneLast = 0;
-const laneLoop = (ts) => {
-laneRaf = null;
-const dt = laneLast ? Math.min(48, ts - laneLast) : 16;
-laneLast = ts;
-tick(ts / 1000, dt);
-laneRaf = requestAnimationFrame(laneLoop);
-};
-const io = new IntersectionObserver(([entry]) => {
-if (entry.isIntersecting) { laneLast = 0; if (!laneRaf) laneRaf = requestAnimationFrame(laneLoop); }
-else if (laneRaf) { cancelAnimationFrame(laneRaf); laneRaf = null; }
-});
+const io = new IntersectionObserver(([entry]) => { gsap.ticker.remove(tick); if (entry.isIntersecting) gsap.ticker.add(tick); });
 io.observe(gallery);
 }
 gsap.from('.sim-card', { y: 40, opacity: 0, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '.sim-card', start: 'top 80%' } });
@@ -2258,7 +2184,7 @@ const bar = document.createElement('i'); bar.style.height = h + 'px'; waveform.a
 }
 gsap.from('.dual-cta-box', { y: 30, opacity: 0, stagger: .15, duration: .6, ease: 'power3.out', scrollTrigger: { trigger: '.creator-cta-wrap', start: 'top 85%' } });
 /* ============================================================
-7. FOOTER CINEMÁTICO: parallax del texto gigante + reveal + botones magnéticos
+7. FOOTER CINEMÁTICO: parallax del texto gigante + reveal (botones estáticos)
 ============================================================ */
 const cfWrap = document.getElementById('cfWrap');
 if (cfWrap) {
@@ -2271,23 +2197,14 @@ if (cfWrap) {
     { y: 50, opacity: 0 },
     { y: 0, opacity: 1, stagger: 0.15, ease: 'power3.out',
       scrollTrigger: { trigger: cfWrap, start: 'top 40%', end: 'bottom bottom', scrub: 1 } });
-
-  if (matchMedia('(hover: hover)').matches) {
-    document.querySelectorAll('.cf-magnetic').forEach((el) => {
-      el.addEventListener('mousemove', (e) => {
-        const r = el.getBoundingClientRect();
-        const x = e.clientX - r.left - r.width / 2, y = e.clientY - r.top - r.height / 2;
-        gsap.to(el, { x: x * 0.4, y: y * 0.4, rotationX: -y * 0.15, rotationY: x * 0.15, scale: 1.05, transformPerspective: 600, ease: 'power2.out', duration: 0.4 });
-      });
-      el.addEventListener('mouseleave', () => {
-        gsap.to(el, { x: 0, y: 0, rotationX: 0, rotationY: 0, scale: 1, ease: 'elastic.out(1, 0.3)', duration: 1.2 });
-      });
-    });
-  }
 }
 if (document.fonts?.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
+window.addEventListener('load', () => ScrollTrigger.refresh());
 const faqEl = document.getElementById('faq');
 if (faqEl) new IntersectionObserver((en, o) => { if (en[0].isIntersecting) { requestAnimationFrame(() => ScrollTrigger.refresh()); o.disconnect(); } }, { rootMargin: '300px' }).observe(faqEl);
+};
+initGSAP();
+window.addEventListener('load', initGSAP);
 });
 </script>
 </body>
