@@ -97,29 +97,6 @@ background:var(--glass-bg); backdrop-filter:var(--glass-blur); -webkit-backdrop-
 border:1px solid var(--glass-border); border-radius:24px; box-shadow:var(--glass-shadow);
 transition:transform .4s, background .4s, border-color .4s;
 }
-.btn-apple {
-min-height: var(--cta-h); display: inline-flex; align-items: center; justify-content: space-between; gap: 16px;
-padding: 8px 8px 8px 24px; background: rgba(255, 255, 255, 0.9); color: #000;
-border-radius: 99px; font-size: 0.9rem; font-weight: 600; letter-spacing: -0.01em;
-transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-}
-.btn-apple:hover { background: #ffffff; transform: scale(1.02); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
-.btn-apple .icon-circle {
-width: 32px; height: 32px; background: #000; color: #fff; border-radius: 50%;
-display: grid; place-items: center; transition: transform 0.3s;
-}
-.btn-apple:hover .icon-circle { transform: translateX(2px); }
-.btn-apple .icon-circle svg { width: 14px; height: 14px; }
-.nav-btn-apple { min-height:0; padding: 6px 6px 6px 20px; font-size: 0.85rem; }
-.nav-btn-apple .icon-circle { width: 28px; height: 28px; }
-.btn-glass {
-display: inline-flex; align-items: center; justify-content: center; gap: 12px;
-padding: 14px 28px; background: var(--glass-bg); backdrop-filter: var(--glass-blur);
--webkit-backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border);
-border-radius: 99px; color: var(--ink); font-size: 0.9rem; font-weight: 600;
-transition: all 0.3s; min-height: var(--cta-h);
-}
-.btn-glass:hover { background: var(--glass-bg-hover); border-color: var(--glass-border-hi); }
 /* ============================================================
 HEADER
 ============================================================ */
@@ -445,7 +422,6 @@ FAQ, SINGLE CREATOR CTA, FOOTER
 .dual-cta-box input{flex:1;padding:14px 18px;border-radius:99px;background:rgba(0,0,0,.3);border:1px solid var(--glass-border);color:var(--ink);font-size:.82rem;min-width:0; outline:none;}
 .dual-cta-box input::placeholder{color:var(--muted)}
 .dual-cta-box input:focus{border-color:var(--accent);}
-.dual-cta-box form button { position:absolute; right:6px; top:6px; bottom:6px; padding:0 20px; border-radius:99px; background:var(--accent); color:#000; font-weight:700; font-size:.85rem; transition:background .2s; }
 /* ============================================================
 CARRUSEL COVERFLOW · FUTURAS CAMPAÑAS
 ============================================================ */
@@ -596,7 +572,6 @@ RESPONSIVE
 .faq-grid{grid-template-columns:minmax(0,1fr);gap:10px}
 .dual-cta-box{padding:28px 20px;}
 .dual-cta-box form{flex-direction:column; position:relative;}
-.dual-cta-box form button { position:static; margin-top:8px; padding:14px; width:100%; }
 }
 @media(prefers-reduced-motion:reduce){
 *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
@@ -612,9 +587,6 @@ AJUSTES v3 · ESPACIADO, CTAs SUTILES, RENDIMIENTO
 .editorial{padding-block:var(--sec-y)}
 .people{padding:var(--sec-y) 0}
 /* CTAs: jerarquía suave → primario (blanco) · glass · enlace */
-.btn-apple{padding:6px 6px 6px 20px;font-size:.84rem;gap:14px;box-shadow:none}
-.btn-apple:not(.nav-btn-apple) .icon-circle{width:32px;height:32px}
-.btn-glass{padding:0 22px;font-size:.84rem;font-weight:500;color:rgba(245,245,247,.9)}
 .split-link{font-size:.84rem;font-weight:500}
 .split-link--creator{color:rgba(245,245,247,.72);text-decoration:underline;text-decoration-color:rgba(255,255,255,.18);text-decoration-thickness:1px;text-underline-offset:6px;transition:color .25s,text-decoration-color .25s,transform .25s}
 .split-link--creator:hover{color:var(--accent);text-decoration-color:var(--accent-line)}
@@ -718,12 +690,111 @@ html.lite .cf-aurora{display:none}
 .req-list li b{max-width:58%}
 .req-list .win{padding:14px}
 }
+/* ============================================================
+INTRO PIXEL · puertas que se abren con el scroll
+============================================================ */
+.pi-scroll{position:relative;height:250vh;height:250svh;margin-bottom:-30vh;margin-bottom:-30svh}
+.pi-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;isolation:isolate;contain:layout style paint;background:#000}
+.pi-content{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;background:radial-gradient(ellipse 52% 36% at 50% 46%,rgba(255,214,10,.08),transparent 72%),radial-gradient(ellipse 80% 46% at 50% 100%,rgba(79,122,238,.08),transparent 72%),radial-gradient(ellipse 80% 60% at 50% 40%,#0d0d10 0%,#000 100%)}
+.pi-eyebrow{display:inline-flex;align-items:center;gap:14px;margin:0 0 1.3rem;font-size:.7rem;font-weight:500;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);opacity:var(--pi-e,0);transform:translateY(calc((1 - var(--pi-e,0)) * 24px))}
+.pi-eyebrow::before,.pi-eyebrow::after{content:"";width:clamp(18px,6vw,40px);height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35))}
+.pi-eyebrow::after{transform:scaleX(-1)}
+.pi-title{margin:0;font-size:clamp(3.5rem,13vw,8.5rem);font-weight:700;letter-spacing:-.05em;line-height:.95;background:linear-gradient(180deg,#fff 0%,#a0a0a8 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 36px rgba(255,214,10,.14));opacity:var(--pi-t,0);transform:translateY(calc((1 - var(--pi-t,0)) * 32px))}
+.pi-text{margin:1.5rem 0 0;font-size:clamp(.95rem,2.2vw,1.15rem);letter-spacing:-.01em;color:var(--muted);opacity:var(--pi-x,0);transform:translateY(calc((1 - var(--pi-x,0)) * 24px))}
+.pi-text em{font-style:normal;color:var(--accent)}
+.pi-dots{display:flex;gap:7px;margin-top:2rem;opacity:var(--pi-x,0);transform:translateY(calc((1 - var(--pi-x,0)) * 16px))}
+.pi-dots i{width:6px;height:6px;background:var(--accent)}
+.pi-dots i:nth-child(2){background:var(--blue)}
+.pi-dots i:nth-child(3){background:#8C63DA}
+.pi-doors{position:absolute;inset:0;z-index:2;pointer-events:none}
+.pi-door{position:absolute;overflow:hidden;background:#07050f;will-change:transform;backface-visibility:hidden;transform:translate3d(0,0,0)}
+.pi-door__img{position:absolute}
+.pi-canvas{display:block;width:100%;height:100%;object-fit:cover;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;image-rendering:pixelated}
+.pi-door--l{top:0;left:0;width:50%;height:100%}
+.pi-door--l .pi-door__img{top:0;left:0;width:200%;height:100%}
+.pi-door--r{top:0;left:50%;width:50%;height:100%}
+.pi-door--r .pi-door__img{top:0;right:0;width:200%;height:100%}
+.pi-seam{position:absolute;top:0;left:50%;width:2px;height:100%;transform:translateX(-1px);z-index:3;pointer-events:none;background:linear-gradient(to bottom,transparent 8%,rgba(255,214,10,.65) 50%,transparent 92%);box-shadow:0 0 14px rgba(255,214,10,.18);opacity:calc(1 - var(--pi-p,0) * 2)}
+.pi-hint{position:absolute;left:50%;bottom:max(32px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none;font:600 .66rem/1 ui-monospace,"SF Mono",Menlo,Consolas,monospace;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.78);text-shadow:0 1px 8px rgba(0,0,0,.7);opacity:clamp(0,calc(1 - var(--pi-p,0) * 3.5),1)}
+.pi-hint svg{animation:pi-bounce 2.2s ease-in-out infinite}
+@keyframes pi-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+@media(max-width:768px){
+.pi-door--l{top:0;left:0;width:100%;height:50%}
+.pi-door--l .pi-door__img{top:0;left:0;width:100%;height:200%}
+.pi-door--r{top:50%;left:0;width:100%;height:50%}
+.pi-door--r .pi-door__img{top:auto;bottom:0;left:0;width:100%;height:200%}
+.pi-seam{top:50%;left:0;width:100%;height:2px;transform:translateY(-1px);background:linear-gradient(to right,transparent 8%,rgba(255,214,10,.65) 50%,transparent 92%)}
+}
+@media(prefers-reduced-motion:reduce){.pi-scroll{display:none}.pi-hint svg{animation:none}}
+/* El header aparece cuando la intro termina de abrirse */
+.chazky-header{transition:opacity .45s ease,transform .45s ease}
+body.pi-intro .chazky-header{opacity:0;transform:translateY(-14px);pointer-events:none}
+/* ============================================================
+BOTÓN LIQUID METAL (cromo líquido) · anillo cromado + cara negra
+============================================================ */
+:root{--cta-h:46px;--lm-ring:conic-gradient(from 210deg at 50% 50%,#f6f6f8,#8c8c94,#fff,#6b6b74,#e8e8ed,#9b9ba4,#f6f6f8)}
+.lm-btn{position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:8px;box-sizing:border-box;min-height:var(--cta-h);margin:0;padding:0 30px;border:2px solid transparent;border-radius:999px;font-family:inherit;font-size:.88rem;font-weight:500;line-height:1;color:#cfcfd6;text-decoration:none;white-space:nowrap;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent;text-shadow:0 1px 2px rgba(0,0,0,.5);background:linear-gradient(180deg,#202020 0%,#000 100%) padding-box,var(--lm-ring) border-box;box-shadow:0 0 0 1px rgba(0,0,0,.3),0 14px 8px rgba(0,0,0,.06),0 8px 5px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.18);transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .25s,color .25s}
+.lm-btn:hover{color:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.4),0 12px 6px rgba(0,0,0,.05),0 8px 5px rgba(0,0,0,.1),0 4px 4px rgba(0,0,0,.15)}
+.lm-btn:active{transform:translateY(1px) scale(.98)}
+.lm-btn:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.lm-shader,.lm-face{display:none;position:absolute;border-radius:inherit}
+.lm-live{background:none}
+.lm-live .lm-shader{display:block;inset:-2px;z-index:-2;overflow:hidden}
+.lm-live .lm-face{display:block;inset:0;z-index:-1;background:linear-gradient(180deg,#202020 0%,#000 100%)}
+.lm-shader canvas{position:absolute!important;inset:0;width:100%!important;height:100%!important;display:block!important;border-radius:inherit}
+.lm-label{position:relative;display:inline-flex;align-items:center;gap:8px}
+.lm-label svg{width:16px;height:16px;flex:none}
+.lm-label svg:not(.lm-arrow){color:var(--accent)}
+.lm-arrow{width:14px!important;height:14px!important;transition:transform .3s}
+.lm-btn:hover .lm-arrow{transform:translateX(3px)}
+.lm-ripples{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none}
+.lm-ripple{position:absolute;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.4) 0%,rgba(255,255,255,0) 70%);animation:lm-ripple .6s ease-out forwards}
+@keyframes lm-ripple{0%{transform:translate(-50%,-50%) scale(0);opacity:.6}100%{transform:translate(-50%,-50%) scale(4);opacity:0}}
+.lm-btn.lm-sm{min-height:36px;padding:0 20px;font-size:.8rem}
+.lm-btn.lm-nav{min-height:40px;padding:0 22px;font-size:.84rem}
+.lm-btn.lm-block{display:flex;width:100%}
+.lm-btn.lm-icon{width:46px;min-height:46px;padding:0}
+.lm-icon svg{width:18px;height:18px}
+.cf-magnetic.lm-btn{transition:box-shadow .25s,color .25s}
+/* flechas de los carruseles con el mismo anillo cromado */
+.clc-btn{background:linear-gradient(180deg,#202020,#000) padding-box,var(--lm-ring) border-box!important;border:2px solid transparent!important;box-shadow:0 8px 14px rgba(0,0,0,.4)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.dual-cta-box form{gap:10px;align-items:center}
+.dual-cta-box form .lm-btn{flex:none}
+.dual-cta-box input{min-height:46px}
+@media(max-width:759px){
+.lm-btn{padding:0 24px}
+.lm-btn.lm-sm{padding:0 16px}
+.lm-btn.lm-nav{padding:0 18px}
+.dual-cta-box form .lm-btn{width:100%}
+}
+@media(prefers-reduced-motion:reduce){.lm-btn{transition:none}}
 </style>
 </head>
 <body>
 <div id="top">
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.body.classList.add('pi-intro')</script>
+<!-- ===================== INTRO PIXEL (puertas que se abren con el scroll) ===================== -->
+<section class="pi-scroll" id="piScroll" aria-label="Introducción">
+<div class="pi-stage" id="piStage">
+<div class="pi-content">
+<p class="pi-eyebrow">Bienvenido a</p>
+<p class="pi-title">Chazky</p>
+<p class="pi-text">La atención es la nueva <em>moneda.</em></p>
+<div class="pi-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+</div>
+<div class="pi-doors" aria-hidden="true">
+<div class="pi-door pi-door--l"><div class="pi-door__img"><canvas class="pi-canvas"></canvas></div></div>
+<div class="pi-door pi-door--r"><div class="pi-door__img"><canvas class="pi-canvas"></canvas></div></div>
+</div>
+<div class="pi-seam" aria-hidden="true"></div>
+<div class="pi-hint" aria-hidden="true">
+<span>Desliza</span>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+</div>
+</div>
+</section>
 <header class="chazky-header">
-<a href="#top" class="chazky-logo" aria-label="Chazky inicio"><img src="logo.png" alt="Chazky" class="chazky-logo-img" /></a>
+<a href="#hero" class="chazky-logo" aria-label="Chazky inicio"><img src="logo.png" alt="Chazky" class="chazky-logo-img" /></a>
 <nav aria-label="Navegación principal">
 <a href="#creadores">Ganancias</a>
 <a href="#beneficios">Beneficios</a>
@@ -732,12 +803,7 @@ html.lite .cf-aurora{display:none}
 <a href="#simulador">Para marcas</a>
 <a href="#faq">FAQ</a>
 </nav>
-<a href="#unete" class="btn-apple nav-btn-apple">
-Ser Creador
-<span class="icon-circle">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-</span>
-</a>
+<a href="#unete" class="lm-btn lm-nav"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Ser Creador<svg class="lm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
 </header>
 <main>
 <!-- ===================== HERO ===================== -->
@@ -781,13 +847,8 @@ Ser Creador
 </h1>
 <p class="hero-sub">Monetiza tus redes sociales desde el primer video. Elige campañas de negocios, conciertos y marcas que necesitan atención, publica con tu estilo y cobra por cada 1.000 vistas directo a tu Nequi o Daviplata.</p>
 <div class="hero-ctas">
-<a href="#unete" class="btn-apple">
-Quiero ser Creador
-<span class="icon-circle">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-</span>
-</a>
-<a href="#creadores" class="btn-glass">¿Cuánto puedo ganar?</a>
+<a href="#unete" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Quiero ser Creador<svg class="lm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
+<a href="#creadores" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">¿Cuánto puedo ganar?</span></a>
 </div>
 <div class="hero-stat">
 <div><small>Ganas por 1K vistas</small><strong class="accent">$4.200 COP</strong></div>
@@ -814,7 +875,7 @@ Quiero ser Creador
 </div>
 </div>
 <div class="split-cta-bar">
-<a href="#unete" class="btn-glass">Quiero monetizar mis vistas</a>
+<a href="#unete" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Quiero monetizar mis vistas</span></a>
 <a href="#creadores" class="split-link split-link--creator">Ver cuánto puedo ganar →</a>
 </div>
 </div>
@@ -842,7 +903,7 @@ Quiero ser Creador
 </article>
 </div>
 <div class="split-cta-bar">
-<a href="#unete" class="btn-apple">Registrarme gratis<span class="icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
+<a href="#unete" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Registrarme gratis<svg class="lm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
 </div>
 </section>
 <!-- ===================== CREATORS ===================== -->
@@ -878,7 +939,7 @@ Quiero ser Creador
 </article>
 </div>
 <div class="split-cta-bar">
-<a href="#unete" class="btn-glass">Registrarme como creador</a>
+<a href="#unete" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Registrarme como creador</span></a>
 <a href="#marcas" class="split-link split-link--creator">Ver cómo y cuándo te pagamos →</a>
 </div>
 </div>
@@ -952,10 +1013,7 @@ Quiero ser Creador
 <span style="font-size:.82rem;color:var(--muted);display:block;margin-bottom:6px">Visualizaciones estimadas</span>
 <div class="sim-total" id="simTotalViews">166.667 <span>vistas</span></div>
 </div>
-<a href="#unete" class="btn-apple" style="width:100%;margin-top:24px;justify-content:space-between;">
-Lanzar esta campaña
-<span class="icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-</a>
+<a href="#unete"  style="margin-top:24px" class="lm-btn lm-block"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Lanzar esta campaña<svg class="lm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
 </div>
 <div class="sim-result">
 <div class="sim-result-header"><h3>Proyección a 30 días</h3><strong id="simHeaderViews">167K</strong></div>
@@ -1039,7 +1097,7 @@ Lanzar esta campaña
 <div class="dash-step"><div class="dash-step-num">2</div><div class="dash-step-content"><h4>¿Cada cuánto se paga?</h4><p><strong>Cada semana</strong> revisamos y liquidamos tus vistas orgánicas verificadas. Sin mínimo de retiro: si generaste vistas, cobras.</p></div></div>
 <div class="dash-step"><div class="dash-step-num">3</div><div class="dash-step-content"><h4>Casi ningún requisito vs. la competencia</h4><p>No necesitas 10K seguidores como TikTok, ni 1K subs + 4.000 hrs como YouTube, ni RUT. Solo tu celular, cuenta pública y ganas de crear.</p></div></div>
 <div class="split-cta-bar">
-<a href="#unete" class="btn-apple">Empezar a cobrar en Chazky<span class="icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
+<a href="#unete" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Empezar a cobrar en Chazky<svg class="lm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a>
 <a href="#creadores" class="split-link split-link--creator">Ver tabla de ganancias →</a>
 </div>
 </div>
@@ -1105,7 +1163,7 @@ Lanzar esta campaña
 <h2>Hazle espacio<br />a tu próxima <span class="accent">idea.</span></h2>
 <p>Un video distinto puede cambiarlo todo. Graba desde tu cuarto, cuenta una historia real sobre una marca o un evento y convierte tu creatividad en ingresos semanales.</p>
 <div class="editorial-actions">
-<a href="#unete" class="btn-glass">Empezar como Creador</a>
+<a href="#unete" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Empezar como Creador</span></a>
 <a href="#library" class="split-link split-link--creator">Ver futuras campañas →</a>
 </div>
 <div class="trust">
@@ -1148,7 +1206,7 @@ Lanzar esta campaña
 <details class="faq-item"><summary>¿Qué son los Founding Creators?</summary><p>Son los primeros 100 creadores en unirse a Chazky. Reciben CPM doble (2x) de por vida, acceso prioritario a las mejores campañas y badge verificado.</p></details>
 </div>
 <div class="split-cta-bar" style="justify-content:center">
-<a href="#unete" class="btn-glass">Regístrate gratis como Creador</a>
+<a href="#unete" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Regístrate gratis como Creador</span></a>
 </div>
 </div>
 </section>
@@ -1162,7 +1220,7 @@ Lanzar esta campaña
 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
 <h3>Únete como <span class="accent">Creador</span></h3>
 <p>Crea contenido sobre conciertos, negocios y marcas reales y gana $4.200 COP por cada 1.000 vistas directo a tu Nequi.</p>
-<form class="waitlist-form" data-role="creator"><input type="email" required placeholder="tu@correo.com" aria-label="Tu correo como creador" /><button type="submit" class="btn-apple">Unirme</button></form>
+<form class="waitlist-form" data-role="creator"><input type="email" required placeholder="tu@correo.com" aria-label="Tu correo como creador" /><button type="submit" class="lm-btn"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label">Unirme</span></button></form>
 </div>
 </div>
 <p style="margin-top:20px;font-size:.66rem;color:var(--muted)">Sin spam. Solo te escribimos cuando abramos tu ola.</p>
@@ -1186,15 +1244,15 @@ Lanzar esta campaña
       <h2 class="cf-heading" id="cfHeading">¿Listo para<br>empezar?</h2>
       <div class="cf-links" id="cfLinks">
         <div class="cf-row">
-          <a href="#unete" class="cf-pill cf-pill--lg cf-magnetic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Ser Creador</a>
-          <a href="#creadores" class="cf-pill cf-pill--lg cf-magnetic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Ver cuánto ganar</a>
+          <a href="#unete" class="lm-btn cf-magnetic"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Ser Creador</span></a>
+          <a href="#creadores" class="lm-btn cf-magnetic"><span class="lm-shader" aria-hidden="true"></span><span class="lm-face" aria-hidden="true"></span><span class="lm-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Ver cuánto ganar</span></a>
         </div>
         <div class="cf-row">
-          <a href="#beneficios" class="cf-pill cf-pill--sm cf-magnetic">Beneficios</a>
-          <a href="#library" class="cf-pill cf-pill--sm cf-magnetic">Futuras campañas</a>
-          <a href="#marcas" class="cf-pill cf-pill--sm cf-magnetic">Pagos</a>
-          <a href="#simulador" class="cf-pill cf-pill--sm cf-magnetic">Para marcas</a>
-          <a href="#faq" class="cf-pill cf-pill--sm cf-magnetic">FAQ</a>
+          <a href="#beneficios" class="lm-btn lm-sm lm-static cf-magnetic">Beneficios</a>
+          <a href="#library" class="lm-btn lm-sm lm-static cf-magnetic">Futuras campañas</a>
+          <a href="#marcas" class="lm-btn lm-sm lm-static cf-magnetic">Pagos</a>
+          <a href="#simulador" class="lm-btn lm-sm lm-static cf-magnetic">Para marcas</a>
+          <a href="#faq" class="lm-btn lm-sm lm-static cf-magnetic">FAQ</a>
         </div>
       </div>
     </div>
@@ -1202,7 +1260,7 @@ Lanzar esta campaña
     <div class="cf-bottom">
       <div class="cf-copy">© 2026 Chazky · Cifras ilustrativas en beta</div>
       <div class="cf-pill cf-made"><span>Hecho con</span><span class="cf-heart">❤</span><span>en</span><b>Colombia</b></div>
-      <button type="button" id="cfTop" class="cf-pill cf-top cf-magnetic" aria-label="Volver arriba"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg></button>
+      <button type="button" id="cfTop" class="lm-btn lm-icon lm-static cf-magnetic" aria-label="Volver arriba"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg></button>
     </div>
   </footer>
 </div>
@@ -1211,6 +1269,136 @@ Lanzar esta campaña
 <!-- ============================================================
 SCRIPTS
 ============================================================ -->
+<script>
+/* ============================================================
+INTRO PIXEL: escena pixel art generada por código (sin imágenes que descargar)
++ puertas que se abren con el scroll
+============================================================ */
+(function () {
+"use strict";
+const root = document.getElementById('piScroll');
+if (!root) return;
+if (matchMedia('(prefers-reduced-motion: reduce)').matches) { root.remove(); document.body.classList.remove('pi-intro'); return; }
+const stage = document.getElementById('piStage');
+const doorL = root.querySelector('.pi-door--l'), doorR = root.querySelector('.pi-door--r');
+const canvases = root.querySelectorAll('.pi-canvas');
+
+/* ---------- Escena pixel art ---------- */
+const hex = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+const BAYER = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
+function rng(seed) { return () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+function makeScene(W, H) {
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d'), img = g.createImageData(W, H), d = img.data, rand = rng(11);
+  const R = (a, b) => a + Math.floor(rand() * (b - a + 1));
+  const px = (x, y, col) => { x |= 0; y |= 0; if (x < 0 || y < 0 || x >= W || y >= H) return; const i = (y * W + x) * 4; d[i] = col[0]; d[i + 1] = col[1]; d[i + 2] = col[2]; d[i + 3] = 255; };
+  const rect = (x, y, w, h, col) => { for (let yy = 0; yy < h; yy++) for (let xx = 0; xx < w; xx++) px(x + xx, y + yy, col); };
+  /* degradado en escalones con tramado Bayer (el sello del pixel art) */
+  const ramp = (stops, t, x, y) => {
+    t = Math.max(0, Math.min(1, t));
+    let i = 0; while (i < stops.length - 2 && t > stops[i + 1][0]) i++;
+    const a = stops[i], b = stops[i + 1], f = (t - a[0]) / (b[0] - a[0]);
+    return (f > BAYER[y & 3][x & 3] / 16) ? b[1] : a[1];
+  };
+  const SKY = [[0, '#04050d'], [.2, '#0b0a24'], [.38, '#1c1148'], [.54, '#3b1a6b'], [.68, '#7c2a86'], [.8, '#c2417a'], [.9, '#f0683c'], [.96, '#ff9f1c'], [1, '#ffd60a']].map(([p, h]) => [p, hex(h)]);
+  const SUN = [[0, '#fff08a'], [.5, '#ffc21f'], [1, '#ff5a36']].map(([p, h]) => [p, hex(h)]);
+  const WATER = [[0, '#1b1040'], [.5, '#0d0820'], [1, '#04030a']].map(([p, h]) => [p, hex(h)]);
+
+  const horizon = Math.round(H * 0.6), base = horizon + Math.round(H * 0.04), cx = Math.round(W / 2);
+  /* cielo */
+  for (let y = 0; y < horizon; y++) for (let x = 0; x < W; x++) px(x, y, ramp(SKY, y / horizon, x, y));
+  /* estrellas */
+  const stars = Math.round(W * H * 0.006);
+  for (let n = 0; n < stars; n++) {
+    const x = R(0, W - 1), y = R(0, Math.round(horizon * 0.6)), r = rand();
+    if (r < 0.06) { const col = hex('#ffffff'); px(x, y, col); px(x - 1, y, col); px(x + 1, y, col); px(x, y - 1, col); px(x, y + 1, col); }
+    else px(x, y, hex(r < 0.26 ? '#ffd60a' : r < 0.42 ? '#7ea0ff' : '#cfd3ff'));
+  }
+  /* sol con franjas */
+  const sr = Math.round(Math.min(H * 0.22, W * 0.34)), cy = horizon - Math.round(sr * 0.1);
+  for (let y = cy - sr; y <= cy + sr; y++) {
+    const dy = y - cy, half = Math.floor(Math.sqrt(Math.max(0, sr * sr - dy * dy)));
+    if (dy > 0 && ((dy % 6) < Math.floor((dy / sr) * 4))) continue;
+    for (let x = cx - half; x <= cx + half; x++) px(x, y, ramp(SUN, (y - (cy - sr)) / (2 * sr), x, y));
+  }
+  /* nubes planas */
+  const cloud = (x, y, w, col) => { rect(x, y, w, 1, col); rect(x + 2, y + 1, w - 4, 1, col); rect(x - 2, y - 1, Math.max(2, w >> 1), 1, col); };
+  cloud(R(2, Math.max(3, W >> 2)), R(Math.round(H * .14), Math.round(H * .26)), R(12, 24), hex('#2c1b5e'));
+  cloud(R(Math.round(W * .6), W - 24), R(Math.round(H * .2), Math.round(H * .34)), R(14, 26), hex('#3b1a6b'));
+  cloud(cx - R(14, 30), horizon - Math.round(sr * 1.05), R(18, 30), hex('#8a2f86'));
+  cloud(cx + R(2, 16), horizon - Math.round(sr * 0.45), R(16, 28), hex('#a53a7a'));
+  /* skyline lejano */
+  const far = hex('#2b1559');
+  for (let x = 0; x < W;) { const w = R(4, 9), h = R(Math.round(H * .06), Math.round(H * .16)); rect(x, base - h, w, h, far); x += w + (rand() < .3 ? R(1, 2) : 0); }
+  /* skyline cercano con ventanas */
+  const body = hex('#0a0714'), edge = hex('#1a0d33'), wins = [];
+  const bw = Math.max(7, Math.round(H * 0.07));
+  for (let x = -2; x < W;) {
+    const w = R(bw, bw + 7), k = 0.5 + 0.5 * Math.abs((x + w / 2) - cx) / (W / 2);
+    let h = Math.round(R(Math.round(H * .16), Math.round(H * .4)) * k);
+    if (Math.abs((x + w / 2) - cx) < sr * 0.95) h = Math.min(h, Math.round(sr * 0.55)); /* deja ver el sol en el centro */
+    const top = base - h;
+    rect(x, top, w, h + 2, body); rect(x, top, 1, h, edge);
+    for (let wx = x + 2; wx < x + w - 1; wx += 3) for (let wy = top + 3; wy < base - 2; wy += 4) {
+      if (rand() < 0.26) { const r = rand(), col = hex(r < .55 ? '#ffd60a' : r < .8 ? '#4F7AEE' : '#e85d8f'); rect(wx, wy, 1, 2, col); wins.push([wx, wy, r < .55 ? 0 : r < .8 ? 1 : 2]); }
+    }
+    if (rand() < .35) { const ax = x + (w >> 1), ah = R(3, 6); rect(ax, top - ah, 1, ah, body); px(ax, top - ah - 1, hex('#ff4d4d')); }
+    else if (rand() < .3 && w > 9) rect(x + 2, top - 2, w - 4, 2, body);
+    x += w + (rand() < .25 ? 1 : 0);
+  }
+  /* río con reflejos */
+  for (let y = base; y < H; y++) for (let x = 0; x < W; x++) px(x, y, ramp(WATER, (y - base) / Math.max(1, H - base), x, y));
+  for (let dy = 1; dy < sr * 1.4; dy += 2) {
+    const hw = Math.round(sr * 0.6 * (1 - dy / (sr * 1.5))), y = base + dy, col = hex(dy < sr * .5 ? '#ffc21f' : dy < sr ? '#ff8a2a' : '#c2417a');
+    for (let x = cx - hw; x < cx + hw; x += R(4, 9)) rect(x, y, R(2, 5), 1, col);
+  }
+  const dim = [hex('#6b5b12'), hex('#2a3f80'), hex('#7a2f55')];
+  wins.forEach(([wx, wy, t]) => { if (rand() < .5) px(wx, base + Math.round((base - wy) * 0.6), dim[t]); });
+  g.putImageData(img, 0, 0);
+  return c;
+}
+
+let key = '';
+function build() {
+  const sw = stage.clientWidth || innerWidth, sh = stage.clientHeight || innerHeight;
+  const aspect = Math.min(2.4, Math.max(0.4, sw / sh)), H = sw <= 768 ? 128 : 144, W = Math.max(48, Math.round(H * aspect));
+  if (key === W + 'x' + H) return; key = W + 'x' + H;
+  const scene = makeScene(W, H);
+  canvases.forEach((cv) => { cv.width = W; cv.height = H; cv.getContext('2d').drawImage(scene, 0, 0); });
+}
+
+/* ---------- Scroll → puertas ---------- */
+const clamp01 = (v) => v < 0 ? 0 : v > 1 ? 1 : v;
+let ticking = false, last = -1, visible = true;
+function update() {
+  ticking = false;
+  if (!visible && last === 1) return;
+  const rect = root.getBoundingClientRect();
+  const dist = Math.max(1, root.offsetHeight - stage.offsetHeight);
+  const p = clamp01(-rect.top / dist);
+  if (last < 0 || Math.abs(p - last) > 0.0004) {
+    last = p;
+    root.style.setProperty('--pi-p', p.toFixed(4));
+    root.style.setProperty('--pi-e', clamp01((p - 0.15) / 0.35).toFixed(3));
+    root.style.setProperty('--pi-t', clamp01((p - 0.25) / 0.35).toFixed(3));
+    root.style.setProperty('--pi-x', clamp01((p - 0.35) / 0.35).toFixed(3));
+    if (innerWidth <= 768) { doorL.style.transform = `translate3d(0,${-p * 100}%,0)`; doorR.style.transform = `translate3d(0,${p * 100}%,0)`; }
+    else { doorL.style.transform = `translate3d(${-p * 100}%,0,0)`; doorR.style.transform = `translate3d(${p * 100}%,0,0)`; }
+  }
+  document.body.classList.toggle('pi-intro', p < 0.92);
+}
+const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+let rz = null;
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { build(); last = -1; onScroll(); }, 200); }, { passive: true });
+window.addEventListener('pageshow', () => { last = -1; onScroll(); });
+if ('IntersectionObserver' in window) new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible) onScroll(); }).observe(root);
+
+build();
+update();
+})();
+</script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 /* Detección de dispositivos modestos / ahorro de datos: se aligeran efectos sin quitar animaciones */
@@ -1333,7 +1521,7 @@ stat: "⚡ Solo quedan 73 cupos"
 const n = problemCards.length;
 let tghPos = 0, tghTarget = 0, tghDragging = false, tghDragX = 0, tghDragPos = 0, tghRaf = null;
 let tghAutoActive = true, tghResumeTimer = null, lastTickTime = 0, tghVisible = true;
-const TGH_AUTO_SPEED = 0.131; // tarjetas/seg (30% más lento que 0.187)
+const TGH_DWELL = 3000;      // la card se queda quieta 3 s en el centro antes de pasar a la siguiente
 const TGH_PAUSE_MS = 10000;  // 10 segundos de pausa tras interacción del usuario
 let curLayout = { pitch: 35, unit: 10, limit: 70, radius: '50cqw' };
 let tileEls = [];
@@ -1361,15 +1549,22 @@ el.style.transform = `translateZ(${radius}) rotateY(${deg.toFixed(3)}deg) transl
 }
 });
 };
+let tghAdvTimer = null;
+const scheduleAdvance = (delay = TGH_DWELL) => {
+clearTimeout(tghAdvTimer);
+if (!tghAutoActive || !tghVisible || document.hidden || tghDragging) return;
+tghAdvTimer = setTimeout(() => {
+if (!tghAutoActive || !tghVisible || document.hidden || tghDragging) return;
+tghTarget = Math.round(tghTarget) + 1;
+updateCounter(tghTarget);
+scheduleTick();
+}, delay);
+};
 const pauseAutoplay = () => {
 tghAutoActive = false;
+clearTimeout(tghAdvTimer);
 clearTimeout(tghResumeTimer);
-tghResumeTimer = setTimeout(() => {
-tghAutoActive = true;
-lastTickTime = performance.now();
-tghTarget = tghPos;
-scheduleTick();
-}, TGH_PAUSE_MS);
+tghResumeTimer = setTimeout(() => { tghAutoActive = true; scheduleAdvance(TGH_DWELL); }, TGH_PAUSE_MS);
 };
 const tickScroll = (now) => {
 tghRaf = null;
@@ -1377,21 +1572,13 @@ if (!tghVisible || document.hidden) return;
 const dt = lastTickTime ? Math.min(0.05, (now - lastTickTime) / 1000) : 0.016;
 lastTickTime = now;
 if (!tghDragging) {
-if (tghAutoActive) {
-tghPos = wrapPos(tghPos + TGH_AUTO_SPEED * dt);
-tghTarget = tghPos;
-updateCounter(tghPos);
-renderTransforms();
-tghRaf = requestAnimationFrame(tickScroll);
-return;
-} else {
 const diff = tghTarget - tghPos;
-tghPos += diff * 0.14;
+tghPos += diff * (1 - Math.pow(0.89, dt * 60)); /* suavizado independiente de los fps */
 if (Math.abs(diff) < 0.001) {
 tghPos = tghTarget;
 renderTransforms();
+scheduleAdvance(TGH_DWELL); /* llegó al centro: espera 3 s y avanza */
 return;
-}
 }
 }
 renderTransforms();
@@ -1710,9 +1897,13 @@ if (cfWrapEl && cfFooterEl && 'IntersectionObserver' in window) {
   };
 
   const measure = () => {
-    const w = Math.min(360, stage.clientWidth * 0.72);
+    const sw = stage.clientWidth;
+    let w, f;
+    if (sw >= 900) { w = Math.min(380, sw * 0.34); f = 1.02; }        /* escritorio: las cards no se pisan */
+    else if (sw >= 640) { w = Math.min(340, sw * 0.4); f = 0.95; }    /* tablet */
+    else { w = Math.min(340, sw * 0.72); f = 0.8; }                   /* móvil: se asoman las laterales */
     root.style.setProperty('--cc-w', w + 'px');
-    step = w * 0.78;
+    step = w * f;
     layout();
   };
 
