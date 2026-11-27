@@ -692,8 +692,8 @@ html.lite .cf-aurora{display:none}
 /* ============================================================
 INTRO PIXEL · puertas que se abren con el scroll
 ============================================================ */
-.pi-scroll{position:relative;height:250vh;height:250svh;margin-bottom:-30vh;margin-bottom:-30svh}
-.pi-stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;isolation:isolate;background:#000}
+.pi-scroll{position:relative;z-index:20;height:250vh;height:250svh;margin-bottom:-30vh;margin-bottom:-30svh}
+.pi-stage{position:-webkit-sticky;position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;isolation:isolate;background:#000}
 .pi-content{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;background:radial-gradient(ellipse 52% 36% at 50% 46%,rgba(255,214,10,.08),transparent 72%),radial-gradient(ellipse 80% 46% at 50% 100%,rgba(79,122,238,.08),transparent 72%),radial-gradient(ellipse 80% 60% at 50% 40%,#0d0d10 0%,#000 100%)}
 .pi-eyebrow{display:inline-flex;align-items:center;gap:14px;margin:0 0 1.3rem;font-size:.7rem;font-weight:500;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);opacity:var(--pi-e,0);transform:translateY(calc((1 - var(--pi-e,0)) * 24px))}
 .pi-eyebrow::before,.pi-eyebrow::after{content:"";width:clamp(18px,6vw,40px);height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35))}
@@ -1278,6 +1278,10 @@ INTRO PIXEL: escena pixel art generada por código (sin imágenes que descargar)
 ============================================================ */
 (function () {
 "use strict";
+if ('scrollRestoration' in history && !location.hash) {
+  history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+}
 const root = document.getElementById('piScroll');
 if (!root) return;
 if (matchMedia('(prefers-reduced-motion: reduce)').matches) { root.remove(); document.body.classList.remove('pi-intro'); return; }
@@ -1524,8 +1528,8 @@ stat: "⚡ Solo quedan 73 cupos"
 const n = problemCards.length;
 let tghPos = 0, tghTarget = 0, tghDragging = false, tghDragX = 0, tghDragPos = 0, tghRaf = null;
 let tghAutoActive = true, tghResumeTimer = null, lastTickTime = 0, tghVisible = true;
-const TGH_DWELL = 3000;      /* la card se queda quieta 3 s en el centro antes de pasar a la siguiente */
-const TGH_PAUSE_MS = 10000;  /* 10 segundos de pausa tras interacción del usuario */
+const TGH_DWELL = 3000;
+const TGH_PAUSE_MS = 10000;
 let curLayout = { pitch: 35, unit: 10, limit: 70, radius: '50cqw' };
 let tileEls = [];
 const tghCountEl = document.getElementById('tghCount');
@@ -1542,7 +1546,6 @@ tileEls.forEach((el, i) => {
 let d = i - tghPos;
 d = ((d % n) + n) % n;
 if (d > n / 2) d -= n;
-/* Negamos d para que d > 0 quede a la derecha y el avance siga la dirección natural */
 const deg = -d * pitch;
 if (Math.abs(deg) > limit + 10) {
 el.style.visibility = 'hidden';
@@ -1576,11 +1579,11 @@ const dt = lastTickTime ? Math.min(0.05, (now - lastTickTime) / 1000) : 0.016;
 lastTickTime = now;
 if (!tghDragging) {
 const diff = tghTarget - tghPos;
-tghPos += diff * (1 - Math.pow(0.89, dt * 60)); /* suavizado independiente de los fps */
+tghPos += diff * (1 - Math.pow(0.89, dt * 60));
 if (Math.abs(diff) < 0.001) {
 tghPos = tghTarget;
 renderTransforms();
-scheduleAdvance(TGH_DWELL); /* llegó al centro: espera 3 s y avanza */
+scheduleAdvance(TGH_DWELL);
 return;
 }
 }
@@ -1847,8 +1850,8 @@ if (cfWrapEl && cfFooterEl && 'IntersectionObserver' in window) {
       pay: '$4.2K', meta: 'Todas las redes', img: 'https://picsum.photos/seed/indie-artist/720/360.webp' }
   ];
   const N = items.length;
-  const INTERVAL = 5000;   /* avanza sola cada 5 s */
-  const PAUSE = 15000;     /* si el usuario lo toca, se detiene 15 s */
+  const INTERVAL = 5000;
+  const PAUSE = 15000;
   const before = Math.min(2, Math.floor((N - 1) / 2)), after = Math.min(2, Math.ceil((N - 1) / 2));
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const wrap = (v) => ((v % N) + N) % N;
@@ -1906,15 +1909,14 @@ if (cfWrapEl && cfFooterEl && 'IntersectionObserver' in window) {
   const measure = () => {
     const sw = stage.clientWidth;
     let w, f;
-    if (sw >= 900) { w = Math.min(380, sw * 0.34); f = 1.02; }        /* escritorio: las cards no se pisan */
-    else if (sw >= 640) { w = Math.min(340, sw * 0.4); f = 0.95; }    /* tablet */
-    else { w = Math.min(340, sw * 0.72); f = 0.8; }                   /* móvil: se asoman las laterales */
+    if (sw >= 900) { w = Math.min(380, sw * 0.34); f = 1.02; }
+    else if (sw >= 640) { w = Math.min(340, sw * 0.4); f = 0.95; }
+    else { w = Math.min(340, sw * 0.72); f = 0.8; }
     root.style.setProperty('--cc-w', w + 'px');
     step = w * f;
     layout();
   };
 
-  /* Autoplay: cada 5 s; tras cualquier interacción espera 15 s antes de retomar */
   const running = () => !reduced && !dragging && visible && !document.hidden;
   const schedule = () => {
     clearTimeout(timer);
@@ -1941,8 +1943,6 @@ if (cfWrapEl && cfFooterEl && 'IntersectionObserver' in window) {
     if (slot !== index) { e.preventDefault(); select(slot); }
   });
 
-  /* Arrastre con bloqueo de eje: si la intención es vertical, la página scrollea normal;
-     solo se arrastra el carrusel cuando el gesto es claramente horizontal. */
   stage.addEventListener('pointerdown', (e) => {
     if (!e.isPrimary || (e.pointerType === 'mouse' && e.button !== 0)) return;
     gesture = { x: e.clientX, y: e.clientY, t: performance.now(), h: false };
@@ -1996,7 +1996,7 @@ return;
 if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 gsapInitialized = true;
 gsap.registerPlugin(ScrollTrigger);
-ScrollTrigger.config({ ignoreMobileResize: true }); /* evita saltos cuando la barra del navegador móvil sube/baja */
+ScrollTrigger.config({ ignoreMobileResize: true });
 if (window.MotionPathPlugin) gsap.registerPlugin(MotionPathPlugin);
 const counter = { v: 319386 };
 const counterEl = document.getElementById('counter-num');
@@ -2196,10 +2196,13 @@ if (cfWrap) {
   gsap.fromTo(['#cfHeading', '#cfLinks'],
     { y: 50, opacity: 0 },
     { y: 0, opacity: 1, stagger: 0.15, ease: 'power3.out',
-      scrollTrigger: { trigger: cfWrap, start: 'top 40%', end: 'bottom bottom', scrub: 1 } });
+      scrollTrigger: { trigger: cfWrap, start: 'top 85%', end: 'bottom bottom', scrub: 1 } });
 }
 if (document.fonts?.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
-window.addEventListener('load', () => ScrollTrigger.refresh());
+window.addEventListener('load', () => {
+  ScrollTrigger.refresh();
+  setTimeout(() => ScrollTrigger.refresh(), 500);
+});
 const faqEl = document.getElementById('faq');
 if (faqEl) new IntersectionObserver((en, o) => { if (en[0].isIntersecting) { requestAnimationFrame(() => ScrollTrigger.refresh()); o.disconnect(); } }, { rootMargin: '300px' }).observe(faqEl);
 };
